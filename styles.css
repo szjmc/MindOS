@@ -1,0 +1,40 @@
+/*
+
+This CSS file will be included with your plugin, and
+available in the app when your plugin is enabled.
+
+If your plugin does not need CSS, delete this file.
+
+*/
+.ai-prompt-collector-help {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.ai-prompt-collector-json {
+  width: 100%;
+  min-height: 220px;
+  box-sizing: border-box;
+  font-family: var(--font-monospace);
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.ai-prompt-collector-actions {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 24px;
+  flex-wrap: wrap;
+}
+
+.ai-prompt-collector-code {
+  display: block;
+  padding: 8px 10px;
+  margin-top: 8px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-monospace);
+  word-break: break-all;
+}

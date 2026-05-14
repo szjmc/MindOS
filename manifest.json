@@ -1,0 +1,9 @@
+{
+  "id": "ai-prompt-collector",
+  "name": "AI Prompt Collector",
+  "version": "0.2.0",
+  "minAppVersion": "1.5.12",
+  "description": "Collect prompts from Doubao and other AI tools, classify them and save as structured notes.",
+  "author": "Samdrup Gyamco",
+  "isDesktopOnly": true
+}
