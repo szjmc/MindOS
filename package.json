@@ -1,8 +1,7 @@
 {
   "name": "obsidian-ai-prompt-collector",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "private": true,
-  "description": "Obsidian plugin for collecting AI conversations and transforming them into structured knowledge docs.",
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs --prod"

@@ -1,32 +1,25 @@
-import esbuild from "esbuild";
+import esbuild from 'esbuild';
+import process from 'node:process';
 
-const isProd = process.argv.includes("--prod");
+const isProd = process.argv.includes('--prod');
+
+const opts = {
+  entryPoints: ['main.ts'],
+  bundle: true,
+  external: ['obsidian'],
+  format: 'cjs',
+  target: 'es2020',
+  logLevel: 'info',
+  treeShaking: true,
+  outfile: 'main.js',
+  sourcemap: !isProd,
+};
 
 if (isProd) {
-  await esbuild.build({
-    entryPoints: ["src/main.ts"],
-    bundle: true,
-    external: ["obsidian", "electron"],
-    format: "cjs",
-    target: "es2018",
-    logLevel: "info",
-    sourcemap: false,
-    treeShaking: true,
-    outfile: "main.js"
-  });
+  esbuild.build(opts).catch(() => process.exit(1));
 } else {
-  const ctx = await esbuild.context({
-    entryPoints: ["src/main.ts"],
-    bundle: true,
-    external: ["obsidian", "electron"],
-    format: "cjs",
-    target: "es2018",
-    logLevel: "info",
-    sourcemap: "inline",
-    treeShaking: true,
-    outfile: "main.js"
-  });
-
-  await ctx.watch();
-  console.log("Watching for changes...");
+  esbuild.context(opts).then((ctx) => {
+    ctx.watch();
+    console.log('Watching...');
+  }).catch(() => process.exit(1));
 }
