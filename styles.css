@@ -1,8 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   AI Prompt Collector - LLM Wiki UI v0.4
+   MindOS - Your Second Brain, OS-Level
+   Plugin UI Stylesheet
    ═══════════════════════════════════════════════════════════ */
 
-.workspace-leaf-content[data-type="ai-task-center-view"] .view-content {
+.workspace-leaf-content[data-type="mindos-view"] .view-content {
   padding: 0 !important;
   overflow: hidden !important;
   height: 100%;
@@ -10,15 +11,15 @@
   flex-direction: column;
 }
 
-.apc-root {
-  --apc-primary: #7c3aed;
-  --apc-primary-hover: #6d28d9;
-  --apc-success: #10b981;
-  --apc-warning: #f59e0b;
-  --apc-danger: #ef4444;
-  --apc-info: #3b82f6;
-  --apc-radius: 10px;
-  --apc-radius-sm: 6px;
+.mindos-root {
+  --mindos-primary: #7c3aed;
+  --mindos-primary-hover: #6d28d9;
+  --mindos-success: #10b981;
+  --mindos-warning: #f59e0b;
+  --mindos-danger: #ef4444;
+  --mindos-info: #3b82f6;
+  --mindos-radius: 10px;
+  --mindos-radius-sm: 6px;
 
   flex: 1;
   min-height: 0;
@@ -26,7 +27,7 @@
   flex-direction: column;
 }
 
-.apc-task-center {
+.mindos-task-center {
   flex: 1;
   min-height: 0;
   padding: 14px;
@@ -39,11 +40,11 @@
   font-size: 13px;
 }
 
-@keyframes apc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes apc-expand { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes mindos-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes mindos-expand { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── 顶部工具栏 ── */
-.apc-topbar {
+.mindos-topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,18 +52,23 @@
   border-bottom: 1px solid var(--background-modifier-border);
   flex-shrink: 0;
 }
-.apc-topbar-left { flex: 1; }
-.apc-topbar-right { display: flex; gap: 4px; }
+.mindos-topbar-left { flex: 1; }
+.mindos-topbar-right { display: flex; gap: 4px; }
 
-.apc-brand { display: flex; align-items: center; gap: 8px; }
-.apc-brand-icon { display: flex; color: var(--apc-primary); }
-.apc-brand-icon svg { width: 20px; height: 20px; }
-.apc-brand-text {
+.mindos-brand { display: flex; align-items: center; gap: 8px; }
+.mindos-brand-icon { display: flex; color: var(--mindos-primary); }
+.mindos-brand-icon svg { width: 20px; height: 20px; }
+.mindos-brand-text {
   font-size: 16px;
   font-weight: 700;
   color: var(--text-normal);
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--mindos-primary), var(--mindos-info));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.apc-version-tag {
+.mindos-version-tag {
   font-size: 10px;
   color: var(--text-muted);
   padding: 2px 6px;
@@ -71,7 +77,7 @@
   font-weight: 500;
 }
 
-.apc-icon-btn {
+.mindos-icon-btn {
   width: 32px;
   height: 32px;
   display: flex;
@@ -79,20 +85,20 @@
   justify-content: center;
   background: transparent;
   border: none;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.apc-icon-btn:hover {
+.mindos-icon-btn:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
 }
-.apc-icon-btn svg { width: 16px; height: 16px; }
+.mindos-icon-btn svg { width: 16px; height: 16px; }
 
 /* ── 状态横幅 ── */
-.apc-banner {
-  border-radius: var(--apc-radius);
+.mindos-banner {
+  border-radius: var(--mindos-radius);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -101,25 +107,25 @@
   background: var(--background-secondary);
   flex-shrink: 0;
 }
-.apc-banner.status-running {
+.mindos-banner.status-running {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(124, 58, 237, 0.08));
   border-color: rgba(59, 130, 246, 0.3);
 }
-.apc-banner.status-awaiting_review {
+.mindos-banner.status-awaiting_review {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.05));
   border-color: rgba(245, 158, 11, 0.4);
 }
-.apc-banner.status-done {
+.mindos-banner.status-done {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.05));
   border-color: rgba(16, 185, 129, 0.3);
 }
-.apc-banner.status-error {
+.mindos-banner.status-error {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
   border-color: rgba(239, 68, 68, 0.4);
 }
 
-.apc-banner-head { display: flex; align-items: center; gap: 12px; }
-.apc-banner-icon {
+.mindos-banner-head { display: flex; align-items: center; gap: 12px; }
+.mindos-banner-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,38 +135,38 @@
   background: var(--background-primary);
   flex-shrink: 0;
 }
-.apc-banner-icon svg { width: 20px; height: 20px; }
-.apc-banner.status-running .apc-banner-icon { color: var(--apc-info); }
-.apc-banner.status-running .apc-banner-icon svg { animation: apc-spin 1.2s linear infinite; }
-.apc-banner.status-awaiting_review .apc-banner-icon { color: var(--apc-warning); }
-.apc-banner.status-done .apc-banner-icon { color: var(--apc-success); }
-.apc-banner.status-error .apc-banner-icon { color: var(--apc-danger); }
+.mindos-banner-icon svg { width: 20px; height: 20px; }
+.mindos-banner.status-running .mindos-banner-icon { color: var(--mindos-info); }
+.mindos-banner.status-running .mindos-banner-icon svg { animation: mindos-spin 1.2s linear infinite; }
+.mindos-banner.status-awaiting_review .mindos-banner-icon { color: var(--mindos-warning); }
+.mindos-banner.status-done .mindos-banner-icon { color: var(--mindos-success); }
+.mindos-banner.status-error .mindos-banner-icon { color: var(--mindos-danger); }
 
-.apc-banner-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.apc-banner-title { font-size: 15px; font-weight: 600; color: var(--text-normal); }
-.apc-banner-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.mindos-banner-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.mindos-banner-title { font-size: 15px; font-weight: 600; color: var(--text-normal); }
+.mindos-banner-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
 
-.apc-banner-error {
+.mindos-banner-error {
   display: flex;
   gap: 6px;
   align-items: flex-start;
   padding: 8px 10px;
   background: rgba(239, 68, 68, 0.1);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   font-size: 12px;
   color: var(--text-error);
 }
-.apc-banner-error-icon { display: flex; }
-.apc-banner-error-icon svg { width: 14px; height: 14px; }
+.mindos-banner-error-icon { display: flex; }
+.mindos-banner-error-icon svg { width: 14px; height: 14px; }
 
-.apc-banner-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.mindos-banner-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
 
 /* ── 大按钮 ── */
-.apc-btn-large {
+.mindos-btn-large {
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   border: 1px solid var(--background-modifier-border);
   background: var(--background-primary);
   color: var(--text-normal);
@@ -170,32 +176,32 @@
   transition: all 0.15s ease;
   gap: 4px;
 }
-.apc-btn-large:hover { background: var(--background-modifier-hover); transform: translateY(-1px); }
-.apc-btn-large svg { width: 14px; height: 14px; }
-.apc-btn-large.is-primary {
-  background: var(--apc-primary);
+.mindos-btn-large:hover { background: var(--background-modifier-hover); transform: translateY(-1px); }
+.mindos-btn-large svg { width: 14px; height: 14px; }
+.mindos-btn-large.is-primary {
+  background: var(--mindos-primary);
   color: #fff;
   border-color: transparent;
   box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
 }
-.apc-btn-large.is-primary:hover { background: var(--apc-primary-hover); }
-.apc-btn-large.is-danger {
-  background: var(--apc-danger);
+.mindos-btn-large.is-primary:hover { background: var(--mindos-primary-hover); }
+.mindos-btn-large.is-danger {
+  background: var(--mindos-danger);
   color: #fff;
   border-color: transparent;
 }
-.apc-btn-large.is-danger:hover { background: #dc2626; }
-.apc-btn-large.is-ghost {
+.mindos-btn-large.is-danger:hover { background: #dc2626; }
+.mindos-btn-large.is-ghost {
   background: transparent;
   border-color: var(--background-modifier-border);
 }
 
 /* ── 普通按钮 ── */
-.apc-btn {
+.mindos-btn {
   display: inline-flex;
   align-items: center;
   padding: 6px 12px;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   border: 1px solid var(--background-modifier-border);
   background: var(--background-secondary);
   color: var(--text-normal);
@@ -205,12 +211,12 @@
   transition: all 0.15s;
   gap: 3px;
 }
-.apc-btn:hover { background: var(--background-modifier-hover); }
-.apc-btn svg { width: 13px; height: 13px; }
+.mindos-btn:hover { background: var(--background-modifier-hover); }
+.mindos-btn svg { width: 13px; height: 13px; }
 
-.apc-btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.mindos-btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 
-.apc-mini-btn {
+.mindos-mini-btn {
   width: 26px;
   height: 26px;
   display: flex;
@@ -218,22 +224,22 @@
   justify-content: center;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s;
   padding: 0;
 }
-.apc-mini-btn:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
-.apc-mini-btn svg { width: 14px; height: 14px; }
-.apc-mini-btn.is-success {
-  background: var(--apc-success);
+.mindos-mini-btn:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.mindos-mini-btn svg { width: 14px; height: 14px; }
+.mindos-mini-btn.is-success {
+  background: var(--mindos-success);
   color: #fff;
   border-color: transparent;
 }
-.apc-mini-btn.is-success:hover { background: #059669; }
-.apc-mini-btn.is-warning {
-  background: var(--apc-warning);
+.mindos-mini-btn.is-success:hover { background: #059669; }
+.mindos-mini-btn.is-warning {
+  background: var(--mindos-warning);
   color: #fff;
   border-color: transparent;
   width: auto;
@@ -243,61 +249,61 @@
 }
 
 /* ── 流水线面板 ── */
-.apc-pipeline-card {
+.mindos-pipeline-card {
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
   border: 1px solid rgba(124, 58, 237, 0.25);
-  border-radius: var(--apc-radius);
+  border-radius: var(--mindos-radius);
   padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   flex-shrink: 0;
 }
-.apc-pipeline-card.is-collapsed {
+.mindos-pipeline-card.is-collapsed {
   padding: 10px 14px;
   gap: 0;
 }
-.apc-pipeline-head {
+.mindos-pipeline-head {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   user-select: none;
 }
-.apc-pipeline-title-icon { display: flex; color: var(--apc-primary); }
-.apc-pipeline-title-icon svg { width: 16px; height: 16px; }
-.apc-pipeline-title {
+.mindos-pipeline-title-icon { display: flex; color: var(--mindos-primary); }
+.mindos-pipeline-title-icon svg { width: 16px; height: 16px; }
+.mindos-pipeline-title {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-normal);
   flex: 1;
 }
-.apc-pipeline-chev { display: flex; color: var(--apc-primary); opacity: 0.7; }
-.apc-pipeline-chev svg { width: 16px; height: 16px; }
+.mindos-pipeline-chev { display: flex; color: var(--mindos-primary); opacity: 0.7; }
+.mindos-pipeline-chev svg { width: 16px; height: 16px; }
 
-.apc-pipeline-stages { display: flex; flex-direction: column; gap: 4px; }
-.apc-pipeline-stage {
+.mindos-pipeline-stages { display: flex; flex-direction: column; gap: 4px; }
+.mindos-pipeline-stage {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
   background: var(--background-primary);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   border-left: 3px solid var(--background-modifier-border);
   transition: all 0.2s ease;
 }
-.apc-pipeline-stage.status-pending { opacity: 0.5; }
-.apc-pipeline-stage.status-running {
-  border-left-color: var(--apc-info);
+.mindos-pipeline-stage.status-pending { opacity: 0.5; }
+.mindos-pipeline-stage.status-running {
+  border-left-color: var(--mindos-info);
   background: rgba(59, 130, 246, 0.05);
 }
-.apc-pipeline-stage.status-done { border-left-color: var(--apc-success); }
-.apc-pipeline-stage.status-failed {
-  border-left-color: var(--apc-danger);
+.mindos-pipeline-stage.status-done { border-left-color: var(--mindos-success); }
+.mindos-pipeline-stage.status-failed {
+  border-left-color: var(--mindos-danger);
   background: rgba(239, 68, 68, 0.05);
 }
 
-.apc-pipeline-stage-num {
+.mindos-pipeline-stage-num {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -310,44 +316,44 @@
   font-weight: 700;
   flex-shrink: 0;
 }
-.apc-pipeline-stage-num svg { width: 12px; height: 12px; }
-.apc-pipeline-stage.status-running .apc-pipeline-stage-num {
-  background: var(--apc-info);
+.mindos-pipeline-stage-num svg { width: 12px; height: 12px; }
+.mindos-pipeline-stage.status-running .mindos-pipeline-stage-num {
+  background: var(--mindos-info);
   color: #fff;
 }
-.apc-pipeline-stage.status-running .apc-pipeline-stage-num svg {
-  animation: apc-spin 1.2s linear infinite;
+.mindos-pipeline-stage.status-running .mindos-pipeline-stage-num svg {
+  animation: mindos-spin 1.2s linear infinite;
 }
-.apc-pipeline-stage.status-done .apc-pipeline-stage-num {
-  background: var(--apc-success);
+.mindos-pipeline-stage.status-done .mindos-pipeline-stage-num {
+  background: var(--mindos-success);
   color: #fff;
 }
-.apc-pipeline-stage.status-failed .apc-pipeline-stage-num {
-  background: var(--apc-danger);
+.mindos-pipeline-stage.status-failed .mindos-pipeline-stage-num {
+  background: var(--mindos-danger);
   color: #fff;
 }
 
-.apc-pipeline-stage-text {
+.mindos-pipeline-stage-text {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
-.apc-pipeline-stage-label {
+.mindos-pipeline-stage-label {
   font-size: 12.5px;
   font-weight: 600;
   color: var(--text-normal);
 }
-.apc-pipeline-stage-detail {
+.mindos-pipeline-stage-detail {
   font-size: 11px;
   color: var(--text-muted);
   word-break: break-all;
 }
 
-.apc-pipeline-summary {
+.mindos-pipeline-summary {
   background: var(--background-primary);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   padding: 8px 10px;
   font-size: 11.5px;
   color: var(--text-muted);
@@ -355,16 +361,16 @@
 }
 
 /* ── 待审核 actions ── */
-.apc-section { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-.apc-section-head {
+.mindos-section { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.mindos-section-head {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 0 2px;
 }
-.apc-section-icon { display: flex; color: var(--text-muted); }
-.apc-section-icon svg { width: 14px; height: 14px; }
-.apc-section-title {
+.mindos-section-icon { display: flex; color: var(--text-muted); }
+.mindos-section-icon svg { width: 14px; height: 14px; }
+.mindos-section-title {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
@@ -372,68 +378,68 @@
   letter-spacing: 0.05em;
   flex: 1;
 }
-.apc-section-badge {
+.mindos-section-badge {
   font-size: 11px;
   font-weight: 600;
   padding: 1px 7px;
   border-radius: 99px;
-  background: var(--apc-primary);
+  background: var(--mindos-primary);
   color: #fff;
 }
 
-.apc-action-list { display: flex; flex-direction: column; gap: 8px; }
-.apc-action-card {
+.mindos-action-list { display: flex; flex-direction: column; gap: 8px; }
+.mindos-action-card {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
-  border-left: 3px solid var(--apc-info);
-  border-radius: var(--apc-radius);
+  border-left: 3px solid var(--mindos-info);
+  border-radius: var(--mindos-radius);
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.apc-action-card.op-create { border-left-color: var(--apc-success); }
-.apc-action-card.op-update { border-left-color: var(--apc-info); }
-.apc-action-card.op-append_section { border-left-color: var(--apc-warning); }
-.apc-action-card.op-link { border-left-color: var(--apc-primary); }
+.mindos-action-card.op-create { border-left-color: var(--mindos-success); }
+.mindos-action-card.op-update { border-left-color: var(--mindos-info); }
+.mindos-action-card.op-append_section { border-left-color: var(--mindos-warning); }
+.mindos-action-card.op-link { border-left-color: var(--mindos-primary); }
 
-.apc-action-card-head { display: flex; align-items: center; gap: 8px; }
-.apc-op-badge {
+.mindos-action-card-head { display: flex; align-items: center; gap: 8px; }
+.mindos-op-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 10px;
   font-weight: 700;
   padding: 3px 8px;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   text-transform: uppercase;
 }
-.apc-op-badge svg { width: 10px; height: 10px; }
-.apc-op-badge.op-create { background: rgba(16, 185, 129, 0.15); color: var(--apc-success); }
-.apc-op-badge.op-update { background: rgba(59, 130, 246, 0.15); color: var(--apc-info); }
-.apc-op-badge.op-append_section { background: rgba(245, 158, 11, 0.15); color: var(--apc-warning); }
-.apc-op-badge.op-link { background: rgba(124, 58, 237, 0.15); color: var(--apc-primary); }
+.mindos-op-badge svg { width: 10px; height: 10px; }
+.mindos-op-badge.op-create { background: rgba(16, 185, 129, 0.15); color: var(--mindos-success); }
+.mindos-op-badge.op-update { background: rgba(59, 130, 246, 0.15); color: var(--mindos-info); }
+.mindos-op-badge.op-append_section { background: rgba(245, 158, 11, 0.15); color: var(--mindos-warning); }
+.mindos-op-badge.op-link { background: rgba(124, 58, 237, 0.15); color: var(--mindos-primary); }
 
-.apc-action-type-label { font-size: 11px; color: var(--text-muted); flex: 1; }
-.apc-action-card-ops { display: flex; gap: 4px; }
+.mindos-action-type-label { font-size: 11px; color: var(--text-muted); flex: 1; }
+.mindos-action-card-ops { display: flex; gap: 4px; }
 
-.apc-action-card-title {
+.mindos-action-card-title {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-normal);
   line-height: 1.4;
 }
-.apc-action-card-brief {
+.mindos-action-card-brief {
   font-size: 12px;
   color: var(--text-muted);
   line-height: 1.5;
   padding: 6px 10px;
   background: var(--background-primary);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   border-left: 2px solid var(--background-modifier-border);
 }
-.apc-action-card-reason,
-.apc-action-card-rounds {
+.mindos-action-card-reason,
+.mindos-action-card-rounds {
   display: flex;
   align-items: flex-start;
   gap: 5px;
@@ -441,31 +447,31 @@
   color: var(--text-faint);
   line-height: 1.5;
 }
-.apc-action-card-rounds {
+.mindos-action-card-rounds {
   font-family: var(--font-monospace);
 }
-.apc-action-reason-icon { display: flex; margin-top: 2px; }
-.apc-action-reason-icon svg { width: 11px; height: 11px; }
+.mindos-action-reason-icon { display: flex; margin-top: 2px; }
+.mindos-action-reason-icon svg { width: 11px; height: 11px; }
 
-.apc-action-preview-wrap { display: flex; flex-direction: column; gap: 6px; }
-.apc-action-preview-toggle {
+.mindos-action-preview-wrap { display: flex; flex-direction: column; gap: 6px; }
+.mindos-action-preview-toggle {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: var(--apc-info);
+  color: var(--mindos-info);
   cursor: pointer;
   user-select: none;
   width: fit-content;
 }
-.apc-action-preview-toggle:hover { color: var(--text-accent-hover); }
-.apc-toggle-icon { display: flex; }
-.apc-toggle-icon svg { width: 12px; height: 12px; }
+.mindos-action-preview-toggle:hover { color: var(--text-accent-hover); }
+.mindos-toggle-icon { display: flex; }
+.mindos-toggle-icon svg { width: 12px; height: 12px; }
 
-.apc-action-preview {
+.mindos-action-preview {
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   padding: 10px 12px;
   font-family: var(--font-monospace);
   font-size: 11.5px;
@@ -476,8 +482,8 @@
   overflow-y: auto;
 }
 
-.apc-action-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.apc-tag {
+.mindos-action-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.mindos-tag {
   font-size: 10px;
   padding: 2px 7px;
   background: var(--background-modifier-border);
@@ -487,33 +493,33 @@
 }
 
 /* ── 快速开始引导 ── */
-.apc-guide {
+.mindos-guide {
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(59, 130, 246, 0.04));
   border: 1px solid rgba(124, 58, 237, 0.2);
-  border-radius: var(--apc-radius);
+  border-radius: var(--mindos-radius);
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   flex-shrink: 0;
 }
-.apc-guide.is-collapsed {
+.mindos-guide.is-collapsed {
   padding: 10px 14px;
   gap: 0;
 }
 
-.apc-guide-title-row {
+.mindos-guide-title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
   user-select: none;
   padding: 2px 0;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
 }
-.apc-guide-title-row:hover { background: rgba(124, 58, 237, 0.05); }
+.mindos-guide-title-row:hover { background: rgba(124, 58, 237, 0.05); }
 
-.apc-guide-title {
+.mindos-guide-title {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -521,61 +527,61 @@
   font-weight: 700;
   color: var(--text-normal);
 }
-.apc-guide-icon { display: flex; color: var(--apc-primary); }
-.apc-guide-icon svg { width: 20px; height: 20px; }
-.apc-guide-chev { display: flex; color: var(--apc-primary); opacity: 0.7; }
-.apc-guide-chev svg { width: 16px; height: 16px; }
+.mindos-guide-icon { display: flex; color: var(--mindos-primary); }
+.mindos-guide-icon svg { width: 20px; height: 20px; }
+.mindos-guide-chev { display: flex; color: var(--mindos-primary); opacity: 0.7; }
+.mindos-guide-chev svg { width: 16px; height: 16px; }
 
-.apc-guide-subtitle { font-size: 12px; color: var(--text-muted); }
-.apc-guide-steps { display: flex; flex-direction: column; gap: 8px; }
-.apc-guide-step {
+.mindos-guide-subtitle { font-size: 12px; color: var(--text-muted); font-style: italic; }
+.mindos-guide-steps { display: flex; flex-direction: column; gap: 8px; }
+.mindos-guide-step {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.apc-guide-step:hover {
-  border-color: var(--apc-primary);
+.mindos-guide-step:hover {
+  border-color: var(--mindos-primary);
   background: var(--background-modifier-hover);
   transform: translateX(2px);
 }
-.apc-guide-step-num {
+.mindos-guide-step-num {
   width: 26px;
   height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--apc-primary);
+  background: var(--mindos-primary);
   color: #fff;
   border-radius: 50%;
   font-size: 12px;
   font-weight: 700;
   flex-shrink: 0;
 }
-.apc-guide-step-icon { display: flex; color: var(--text-muted); }
-.apc-guide-step-icon svg { width: 16px; height: 16px; }
-.apc-guide-step-text { flex: 1; display: flex; flex-direction: column; }
-.apc-guide-step-title { font-size: 13px; font-weight: 600; color: var(--text-normal); }
-.apc-guide-step-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.apc-guide-step-arrow { display: flex; color: var(--text-muted); }
-.apc-guide-step-arrow svg { width: 14px; height: 14px; }
+.mindos-guide-step-icon { display: flex; color: var(--text-muted); }
+.mindos-guide-step-icon svg { width: 16px; height: 16px; }
+.mindos-guide-step-text { flex: 1; display: flex; flex-direction: column; }
+.mindos-guide-step-title { font-size: 13px; font-weight: 600; color: var(--text-normal); }
+.mindos-guide-step-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.mindos-guide-step-arrow { display: flex; color: var(--text-muted); }
+.mindos-guide-step-arrow svg { width: 14px; height: 14px; }
 
-.apc-guide-cta { display: flex; justify-content: center; margin-top: 4px; }
+.mindos-guide-cta { display: flex; justify-content: center; margin-top: 4px; }
 
 /* ── 折叠面板 ── */
-.apc-collapsible {
+.mindos-collapsible {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius);
+  border-radius: var(--mindos-radius);
   overflow: hidden;
   flex-shrink: 0;
 }
-.apc-collapsible-head {
+.mindos-collapsible-head {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -584,19 +590,19 @@
   user-select: none;
   transition: background 0.15s;
 }
-.apc-collapsible-head:hover { background: var(--background-modifier-hover); }
+.mindos-collapsible-head:hover { background: var(--background-modifier-hover); }
 
-.apc-collapsible-chev { display: flex; color: var(--text-muted); flex-shrink: 0; }
-.apc-collapsible-chev svg { width: 14px; height: 14px; }
-.apc-collapsible-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
-.apc-collapsible-icon svg { width: 14px; height: 14px; }
-.apc-collapsible-title {
+.mindos-collapsible-chev { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-collapsible-chev svg { width: 14px; height: 14px; }
+.mindos-collapsible-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-collapsible-icon svg { width: 14px; height: 14px; }
+.mindos-collapsible-title {
   flex: 1;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-normal);
 }
-.apc-collapsible-badge {
+.mindos-collapsible-badge {
   font-size: 11px;
   padding: 1px 8px;
   border-radius: 99px;
@@ -605,97 +611,97 @@
   font-weight: 600;
   flex-shrink: 0;
 }
-.apc-collapsible-body {
+.mindos-collapsible-body {
   padding: 12px;
   border-top: 1px solid var(--background-modifier-border);
   background: var(--background-primary);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  animation: apc-expand 0.2s ease;
+  animation: mindos-expand 0.2s ease;
   overflow-x: hidden;
   word-wrap: break-word;
 }
 
 /* ── 统计卡片 ── */
-.apc-stat-big {
+.mindos-stat-big {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 12px;
   background: var(--background-secondary);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
 }
-.apc-stat-big-value {
+.mindos-stat-big-value {
   font-size: 32px;
   font-weight: 700;
-  color: var(--apc-primary);
+  color: var(--mindos-primary);
   line-height: 1;
 }
-.apc-stat-big-label {
+.mindos-stat-big-label {
   font-size: 11px;
   color: var(--text-muted);
   margin-top: 4px;
   text-transform: uppercase;
 }
 
-.apc-stat-grid {
+.mindos-stat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 6px;
 }
-.apc-stat-grid.two-cols { grid-template-columns: 1fr 1fr; }
-.apc-stat-cell {
+.mindos-stat-grid.two-cols { grid-template-columns: 1fr 1fr; }
+.mindos-stat-cell {
   background: var(--background-secondary);
   padding: 8px 10px;
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   border: 1px solid var(--background-modifier-border);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.apc-stat-cell-label { font-size: 10.5px; color: var(--text-muted); }
-.apc-stat-cell-value {
+.mindos-stat-cell-label { font-size: 10.5px; color: var(--text-muted); }
+.mindos-stat-cell-value {
   font-size: 16px;
   font-weight: 700;
   color: var(--text-normal);
 }
-.apc-stat-cell-value.is-success { color: var(--apc-success); font-size: 13px; }
-.apc-stat-cell-value.is-error { color: var(--apc-danger); font-size: 13px; }
+.mindos-stat-cell-value.is-success { color: var(--mindos-success); font-size: 13px; }
+.mindos-stat-cell-value.is-error { color: var(--mindos-danger); font-size: 13px; }
 
-.apc-warn-row {
+.mindos-warn-row {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 10px;
   background: rgba(245, 158, 11, 0.1);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   font-size: 12px;
-  color: var(--apc-warning);
+  color: var(--mindos-warning);
 }
-.apc-warn-icon { display: flex; }
-.apc-warn-icon svg { width: 14px; height: 14px; }
+.mindos-warn-icon { display: flex; }
+.mindos-warn-icon svg { width: 14px; height: 14px; }
 
 /* ── 结果列表 ── */
-.apc-result-list { display: flex; flex-direction: column; gap: 8px; }
-.apc-result-card {
+.mindos-result-list { display: flex; flex-direction: column; gap: 8px; }
+.mindos-result-card {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.apc-result-card.is-error { border-color: rgba(239, 68, 68, 0.4); }
-.apc-result-card-head {
+.mindos-result-card.is-error { border-color: rgba(239, 68, 68, 0.4); }
+.mindos-result-card-head {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
-.apc-result-summary { flex: 1; font-size: 12.5px; color: var(--text-normal); font-weight: 500; }
-.apc-action-count-tag {
+.mindos-result-summary { flex: 1; font-size: 12.5px; color: var(--text-normal); font-weight: 500; }
+.mindos-action-count-tag {
   font-size: 10px;
   padding: 2px 7px;
   background: var(--background-modifier-border);
@@ -703,21 +709,21 @@
   border-radius: 99px;
   font-weight: 600;
 }
-.apc-result-error {
+.mindos-result-error {
   display: flex;
   gap: 5px;
   align-items: flex-start;
   padding: 6px 8px;
   background: rgba(239, 68, 68, 0.1);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   font-size: 11px;
   color: var(--text-error);
 }
-.apc-result-error-icon { display: flex; }
-.apc-result-error-icon svg { width: 12px; height: 12px; }
+.mindos-result-error-icon { display: flex; }
+.mindos-result-error-icon svg { width: 12px; height: 12px; }
 
-.apc-result-files { display: flex; flex-direction: column; gap: 3px; }
-.apc-file-link {
+.mindos-result-files { display: flex; flex-direction: column; gap: 3px; }
+.mindos-file-link {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -725,28 +731,28 @@
   padding: 4px 6px;
   border-radius: 4px;
 }
-.apc-file-link:hover { background: var(--background-modifier-hover); }
-.apc-file-link-icon { display: flex; color: var(--text-muted); }
-.apc-file-link-icon svg { width: 12px; height: 12px; }
-.apc-file-link-path {
+.mindos-file-link:hover { background: var(--background-modifier-hover); }
+.mindos-file-link-icon { display: flex; color: var(--text-muted); }
+.mindos-file-link-icon svg { width: 12px; height: 12px; }
+.mindos-file-link-path {
   color: var(--text-muted);
   cursor: pointer;
   font-family: var(--font-monospace);
   font-size: 10.5px;
   word-break: break-all;
 }
-.apc-file-link-path:hover {
+.mindos-file-link-path:hover {
   color: var(--text-accent);
   text-decoration: underline;
 }
-.apc-file-link-title {
+.mindos-file-link-title {
   flex: 1;
   color: var(--text-normal);
   cursor: pointer;
   font-weight: 500;
 }
-.apc-file-link-title:hover { color: var(--text-accent); }
-.apc-file-link-op {
+.mindos-file-link-title:hover { color: var(--text-accent); }
+.mindos-file-link-op {
   font-size: 9px;
   font-weight: 700;
   padding: 1px 5px;
@@ -754,16 +760,16 @@
   text-transform: uppercase;
   cursor: pointer;
 }
-.apc-file-link-op.op-create { background: rgba(16, 185, 129, 0.15); color: var(--apc-success); }
-.apc-file-link-op.op-update { background: rgba(59, 130, 246, 0.15); color: var(--apc-info); }
-.apc-file-link-op.op-append_section { background: rgba(245, 158, 11, 0.15); color: var(--apc-warning); }
-.apc-file-link-op.op-link { background: rgba(124, 58, 237, 0.15); color: var(--apc-primary); }
+.mindos-file-link-op.op-create { background: rgba(16, 185, 129, 0.15); color: var(--mindos-success); }
+.mindos-file-link-op.op-update { background: rgba(59, 130, 246, 0.15); color: var(--mindos-info); }
+.mindos-file-link-op.op-append_section { background: rgba(245, 158, 11, 0.15); color: var(--mindos-warning); }
+.mindos-file-link-op.op-link { background: rgba(124, 58, 237, 0.15); color: var(--mindos-primary); }
 
 /* ── 日志 ── */
-.apc-log-box {
+.mindos-log-box {
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--apc-radius-sm);
+  border-radius: var(--mindos-radius-sm);
   padding: 8px 10px;
   font-family: var(--font-monospace);
   font-size: 11px;
@@ -774,20 +780,20 @@
   flex-direction: column;
   gap: 1px;
 }
-.apc-log-line {
+.mindos-log-line {
   padding: 1px 4px;
   border-radius: 2px;
   word-break: break-all;
   white-space: pre-wrap;
 }
-.apc-log-line.log-default { color: var(--text-muted); }
-.apc-log-line.log-error { color: var(--text-error); }
-.apc-log-line.log-success { color: var(--apc-success); }
-.apc-log-line.log-info { color: var(--apc-info); }
-.apc-log-line.log-warn { color: var(--apc-warning); }
+.mindos-log-line.log-default { color: var(--text-muted); }
+.mindos-log-line.log-error { color: var(--text-error); }
+.mindos-log-line.log-success { color: var(--mindos-success); }
+.mindos-log-line.log-info { color: var(--mindos-info); }
+.mindos-log-line.log-warn { color: var(--mindos-warning); }
 
 /* ── 空状态 ── */
-.apc-empty {
+.mindos-empty {
   text-align: center;
   color: var(--text-muted);
   font-size: 12px;
@@ -795,19 +801,1890 @@
 }
 
 /* ── 滚动条 ── */
-.apc-task-center::-webkit-scrollbar,
-.apc-log-box::-webkit-scrollbar,
-.apc-action-preview::-webkit-scrollbar {
+.mindos-task-center::-webkit-scrollbar,
+.mindos-log-box::-webkit-scrollbar,
+.mindos-action-preview::-webkit-scrollbar {
   width: 8px;
 }
-.apc-task-center::-webkit-scrollbar-thumb,
-.apc-log-box::-webkit-scrollbar-thumb,
-.apc-action-preview::-webkit-scrollbar-thumb {
+.mindos-task-center::-webkit-scrollbar-thumb,
+.mindos-log-box::-webkit-scrollbar-thumb,
+.mindos-action-preview::-webkit-scrollbar-thumb {
   background: var(--background-modifier-border);
   border-radius: 4px;
 }
-.apc-task-center::-webkit-scrollbar-thumb:hover,
-.apc-log-box::-webkit-scrollbar-thumb:hover,
-.apc-action-preview::-webkit-scrollbar-thumb:hover {
+.mindos-task-center::-webkit-scrollbar-thumb:hover,
+.mindos-log-box::-webkit-scrollbar-thumb:hover,
+.mindos-action-preview::-webkit-scrollbar-thumb:hover {
   background: var(--text-faint);
+}
+/* ═══════════════════════════════════════════════════════════
+   v0.5 - Retrieve UI（追加到原 styles.css 末尾）
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Tab 栏 ── */
+.mindos-tab-bar {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  flex-shrink: 0;
+}
+
+.mindos-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.mindos-tab-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+.mindos-tab-btn.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.3);
+}
+.mindos-tab-btn.is-active .mindos-tab-btn-icon { color: #fff; }
+
+.mindos-tab-btn-icon { display: flex; }
+.mindos-tab-btn-icon svg { width: 14px; height: 14px; }
+.mindos-tab-btn-label { font-weight: 600; }
+
+/* ── 索引状态卡 ── */
+.mindos-index-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.mindos-index-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mindos-index-card-icon { display: flex; color: var(--mindos-primary); }
+.mindos-index-card-icon svg { width: 16px; height: 16px; }
+.mindos-index-card-title { font-size: 13px; font-weight: 700; color: var(--text-normal); }
+
+.mindos-index-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-index-empty {
+  font-size: 12px;
+  color: var(--mindos-warning);
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: var(--mindos-radius-sm);
+}
+
+.mindos-index-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mindos-index-stat {
+  font-size: 11.5px;
+  padding: 3px 9px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-normal);
+  font-variant-numeric: tabular-nums;
+}
+.mindos-index-stat.is-pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--mindos-warning);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.mindos-vectorize-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+}
+.mindos-vp-bar {
+  height: 4px;
+  background: var(--background-modifier-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.mindos-vp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mindos-info), var(--mindos-primary));
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+.mindos-vp-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.mindos-vp-tokens {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.mindos-index-ops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mindos-btn.is-danger-text { color: var(--mindos-danger); }
+
+/* ── 配额卡 ── */
+.mindos-quota-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.mindos-quota-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mindos-quota-icon { display: flex; color: var(--mindos-info); }
+.mindos-quota-icon svg { width: 14px; height: 14px; }
+.mindos-quota-title { font-size: 12px; font-weight: 600; color: var(--text-muted); flex: 1; }
+
+.mindos-quota-bar {
+  height: 5px;
+  background: var(--background-modifier-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.mindos-quota-bar-fill {
+  height: 100%;
+  background: var(--mindos-success);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+.mindos-quota-bar-fill.is-warning { background: var(--mindos-warning); }
+.mindos-quota-bar-fill.is-danger { background: var(--mindos-danger); }
+
+.mindos-quota-text {
+  display: flex;
+  align-items: center;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-quota-used { color: var(--text-normal); font-weight: 600; }
+.mindos-quota-cost { color: var(--text-muted); }
+
+/* ── 搜索框 ── */
+.mindos-search-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.mindos-search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 6px 12px;
+  background: var(--background-secondary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  transition: border-color 0.15s;
+}
+.mindos-search-input-row:focus-within {
+  border-color: var(--mindos-primary);
+}
+
+.mindos-search-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-search-icon svg { width: 16px; height: 16px; }
+
+.mindos-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-normal);
+  padding: 8px 0;
+}
+.mindos-search-input::placeholder { color: var(--text-faint); }
+
+.mindos-search-go-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mindos-primary);
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mindos-search-go-btn:hover { background: var(--mindos-primary-hover); }
+.mindos-search-go-btn svg { width: 14px; height: 14px; }
+
+/* ── 搜索选项 ── */
+.mindos-search-options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.mindos-search-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mindos-mode-label { font-size: 11px; color: var(--text-muted); }
+.mindos-mode-btn {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-mode-btn:hover { background: var(--background-modifier-hover); }
+.mindos-mode-btn.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mindos-search-tip {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 搜索状态 ── */
+.mindos-search-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.mindos-search-loading-icon { display: flex; }
+.mindos-search-loading-icon svg {
+  width: 14px;
+  height: 14px;
+  animation: mindos-spin 1.2s linear infinite;
+}
+
+.mindos-search-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--mindos-radius);
+  font-size: 12px;
+  color: var(--text-error);
+}
+.mindos-search-error-icon { display: flex; }
+.mindos-search-error-icon svg { width: 14px; height: 14px; }
+
+/* ── 搜索结果 ── */
+.mindos-search-results-header {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+.mindos-search-results-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mindos-search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-search-result-item {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.mindos-search-result-item:hover {
+  border-color: var(--mindos-primary);
+  background: var(--background-modifier-hover);
+}
+
+.mindos-search-result-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-search-result-type-icon {
+  display: flex;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mindos-search-result-type-icon svg { width: 16px; height: 16px; }
+
+.mindos-search-result-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.mindos-search-result-title:hover { color: var(--mindos-primary); }
+
+.mindos-search-result-type {
+  font-size: 10px;
+  padding: 2px 7px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+.mindos-search-result-score {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-search-result-score.is-excellent {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--mindos-success);
+}
+.mindos-search-result-score.is-good {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--mindos-info);
+}
+.mindos-search-result-score.is-medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--mindos-warning);
+}
+.mindos-search-result-score.is-low {
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.mindos-search-result-path {
+  font-family: var(--font-monospace);
+  font-size: 10.5px;
+  color: var(--text-faint);
+  cursor: pointer;
+  word-break: break-all;
+}
+.mindos-search-result-path:hover { color: var(--text-accent); text-decoration: underline; }
+
+.mindos-search-result-preview {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 8px 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  border-left: 2px solid var(--mindos-primary);
+}
+.mindos-search-result-preview.chunk-mode {
+  font-family: var(--font-monospace);
+  font-size: 11.5px;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mindos-search-result-section-info,
+.mindos-search-result-sections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+.mindos-search-sections-icon { display: flex; color: var(--text-muted); }
+.mindos-search-sections-icon svg { width: 11px; height: 11px; }
+.mindos-search-sections-label { font-size: 11px; color: var(--text-muted); }
+.mindos-search-section-tag {
+  font-size: 10.5px;
+  padding: 2px 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-normal);
+  cursor: pointer;
+  font-weight: 500;
+}
+.mindos-search-section-tag:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mindos-search-result-ops {
+  display: flex;
+  gap: 6px;
+}
+.mindos-mini-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.mindos-mini-action-btn:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.mindos-mini-action-btn svg { width: 12px; height: 12px; }
+
+/* ── 搜索提示 ── */
+.mindos-search-hints {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--mindos-radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mindos-search-hints-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.mindos-search-hints-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mindos-search-hint-tag {
+  padding: 5px 11px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-search-hint-tag:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+/* ── 空状态扩展 ── */
+.mindos-empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+  color: var(--text-faint);
+}
+.mindos-empty-icon svg { width: 28px; height: 28px; }
+/* ═══════════════════════════════════════════════════════════
+   v0.5 - RAG 问答 UI（追加到 styles.css 末尾）
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 会话顶栏 ── */
+.mindos-session-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  flex-shrink: 0;
+}
+
+.mindos-session-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.mindos-session-title-icon { display: flex; color: var(--mindos-primary); }
+.mindos-session-title-icon svg { width: 14px; height: 14px; }
+.mindos-session-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.mindos-session-title:hover { color: var(--mindos-primary); }
+.mindos-session-meta {
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.mindos-session-ops {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── 主区布局 ── */
+.mindos-chat-main {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── 会话列表 ── */
+.mindos-session-list {
+  width: 180px;
+  flex-shrink: 0;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mindos-session-list-title {
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-session-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mindos-session-item {
+  padding: 8px 10px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mindos-session-item:hover { background: var(--background-modifier-hover); }
+.mindos-session-item.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+}
+.mindos-session-item.is-active .mindos-session-item-meta { color: rgba(255,255,255,0.7); }
+
+.mindos-session-item-title {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mindos-session-item-meta {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 对话区 ── */
+.mindos-chat-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  overflow: hidden;
+}
+
+.mindos-chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── 空对话引导 ── */
+.mindos-chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 12px;
+}
+.mindos-chat-empty-icon {
+  display: flex;
+  color: var(--mindos-primary);
+  opacity: 0.7;
+}
+.mindos-chat-empty-icon svg { width: 48px; height: 48px; }
+.mindos-chat-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-chat-empty-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.mindos-chat-empty-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+.mindos-chat-empty-example {
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 12px;
+  color: var(--text-normal);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.mindos-chat-empty-example:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+/* ── 消息气泡 ── */
+.mindos-chat-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-chat-msg.role-user {
+  align-items: flex-end;
+}
+
+.mindos-chat-msg-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.mindos-chat-msg-icon { display: flex; }
+.mindos-chat-msg-icon svg { width: 12px; height: 12px; }
+.mindos-chat-msg-role { font-weight: 600; }
+.mindos-chat-msg-tokens {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.mindos-chat-msg-body {
+  padding: 10px 14px;
+  border-radius: var(--mindos-radius);
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 92%;
+  word-wrap: break-word;
+}
+
+.mindos-chat-msg.role-user .mindos-chat-msg-body {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-bottom-right-radius: var(--mindos-radius-sm);
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body * { color: #fff; }
+
+.mindos-chat-msg.role-assistant .mindos-chat-msg-body {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+  border-bottom-left-radius: var(--mindos-radius-sm);
+}
+
+.mindos-chat-msg-body p { margin: 0 0 8px 0; }
+.mindos-chat-msg-body p:last-child { margin-bottom: 0; }
+.mindos-chat-msg-body pre {
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 10px;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body pre {
+  background: rgba(0, 0, 0, 0.2);
+}
+.mindos-chat-msg-body code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body code {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ── 引用 ── */
+.mindos-chat-citations {
+  margin-top: 4px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 92%;
+}
+
+.mindos-chat-citations-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mindos-chat-citations-icon { display: flex; color: var(--mindos-primary); }
+.mindos-chat-citations-icon svg { width: 12px; height: 12px; }
+.mindos-chat-citations-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mindos-chat-citations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mindos-citation-item {
+  background: var(--background-primary);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mindos-citation-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.mindos-citation-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mindos-primary);
+  cursor: pointer;
+}
+.mindos-citation-title:hover { text-decoration: underline; }
+.mindos-citation-section {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+}
+.mindos-citation-score {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-citation-score.is-excellent { background: rgba(16, 185, 129, 0.15); color: var(--mindos-success); }
+.mindos-citation-score.is-good { background: rgba(59, 130, 246, 0.15); color: var(--mindos-info); }
+.mindos-citation-score.is-medium { background: rgba(245, 158, 11, 0.15); color: var(--mindos-warning); }
+.mindos-citation-score.is-low { background: var(--background-modifier-border); color: var(--text-muted); }
+
+.mindos-citation-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── 错误信息 ── */
+.mindos-chat-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 12px;
+  color: var(--text-error);
+}
+.mindos-chat-error-icon { display: flex; }
+.mindos-chat-error-icon svg { width: 14px; height: 14px; }
+
+/* ── 输入区 ── */
+.mindos-chat-input-wrap {
+  padding: 10px 0 0 0;
+  flex-shrink: 0;
+}
+
+.mindos-chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--background-secondary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 6px 6px 6px 12px;
+  transition: border-color 0.15s;
+}
+.mindos-chat-input-row:focus-within {
+  border-color: var(--mindos-primary);
+}
+
+.mindos-chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--text-normal);
+  resize: none;
+  min-height: 36px;
+  max-height: 160px;
+  padding: 8px 0;
+  line-height: 1.5;
+  font-family: inherit;
+}
+.mindos-chat-input::placeholder { color: var(--text-faint); }
+.mindos-chat-input:disabled { opacity: 0.6; }
+
+.mindos-chat-input-btns {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  padding-bottom: 2px;
+}
+
+.mindos-chat-send-btn,
+.mindos-chat-stop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: var(--mindos-radius-sm);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-chat-send-btn {
+  background: var(--mindos-primary);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+}
+.mindos-chat-send-btn:hover { background: var(--mindos-primary-hover); }
+.mindos-chat-send-btn svg { width: 16px; height: 16px; }
+
+.mindos-chat-stop-btn {
+  background: var(--mindos-danger);
+  color: #fff;
+}
+.mindos-chat-stop-btn:hover { background: #dc2626; }
+.mindos-chat-stop-btn svg { width: 12px; height: 12px; }
+
+/* ── 响应式：宽度小时隐藏会话列表 ── */
+@media (max-width: 600px) {
+  .mindos-session-list {
+    display: none;
+  }
+}
+/* ═══════════════════════════════════════════════════════════
+   MindOS v0.6 - Recall 复习模块样式
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── 今日统计横幅 ─── */
+.mindos-recall-today-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(16, 185, 129, 0.08));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--mindos-radius);
+  flex-shrink: 0;
+}
+
+.mindos-recall-today-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.mindos-recall-today-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mindos-recall-today-icon {
+  display: flex;
+  color: var(--mindos-primary);
+}
+.mindos-recall-today-icon svg { width: 16px; height: 16px; }
+
+.mindos-recall-today-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-recall-today-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mindos-recall-today-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.mindos-recall-today-right {
+  flex-shrink: 0;
+}
+
+.mindos-recall-streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mindos-warning);
+}
+.mindos-recall-streak svg { width: 16px; height: 16px; }
+
+/* ─── 统计小芯片 ─── */
+.mindos-recall-stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  font-size: 12px;
+}
+
+.mindos-recall-stat-chip-icon {
+  display: flex;
+  color: var(--mindos-primary);
+}
+.mindos-recall-stat-chip-icon svg { width: 12px; height: 12px; }
+
+.mindos-recall-stat-chip-value {
+  font-weight: 700;
+  color: var(--text-normal);
+  font-variant-numeric: tabular-nums;
+}
+
+.mindos-recall-stat-chip-label {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ─── 场景网格 ─── */
+.mindos-recall-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.mindos-recall-scenario-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 140px;
+}
+.mindos-recall-scenario-card:hover {
+  border-color: var(--mindos-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+.mindos-recall-scenario-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-recall-scenario-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--mindos-primary), var(--mindos-info));
+  border-radius: var(--mindos-radius-sm);
+  color: #fff;
+  flex-shrink: 0;
+}
+.mindos-recall-scenario-icon-wrap svg { width: 16px; height: 16px; }
+
+.mindos-recall-scenario-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-normal);
+  flex: 1;
+}
+
+.mindos-recall-scenario-due-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  background: var(--mindos-danger);
+  color: #fff;
+  border-radius: 99px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.mindos-recall-scenario-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.mindos-recall-scenario-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.mindos-recall-scenario-stat {
+  font-size: 11px;
+  padding: 2px 7px;
+  background: var(--background-primary);
+  border-radius: 99px;
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+}
+.mindos-recall-scenario-stat.is-new {
+  color: var(--mindos-primary);
+  border-color: rgba(124, 58, 237, 0.3);
+  background: rgba(124, 58, 237, 0.08);
+}
+.mindos-recall-scenario-stat.is-due {
+  color: var(--mindos-warning);
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.08);
+}
+.mindos-recall-scenario-stat.is-mastered {
+  color: var(--mindos-success);
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.mindos-recall-scenario-no-cards {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.mindos-recall-scenario-btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mindos-recall-all-done {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--mindos-success);
+  font-weight: 600;
+}
+.mindos-recall-all-done svg { width: 14px; height: 14px; }
+
+.mindos-recall-scenario-loading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+.mindos-recall-scenario-loading svg {
+  width: 14px;
+  height: 14px;
+  animation: mindos-spin 1.2s linear infinite;
+}
+
+.mindos-recall-scenario-error {
+  font-size: 12px;
+  color: var(--mindos-danger);
+}
+
+/* ─── Wiki 生成提示 ─── */
+.mindos-recall-wiki-gen-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px dashed rgba(59, 130, 246, 0.3);
+  border-radius: var(--mindos-radius);
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mindos-recall-wiki-gen-icon {
+  display: flex;
+  color: var(--mindos-info);
+  flex-shrink: 0;
+}
+.mindos-recall-wiki-gen-icon svg { width: 14px; height: 14px; }
+
+/* ─── 生成面板 ─── */
+.mindos-recall-gen-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.mindos-recall-gen-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-recall-gen-panel-head svg { width: 16px; height: 16px; color: var(--mindos-primary); }
+.mindos-recall-gen-panel-head .mindos-icon-btn { margin-left: auto; }
+
+.mindos-recall-gen-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-recall-gen-opt-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mindos-recall-gen-select {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 3px 8px;
+  font-size: 12px;
+  color: var(--text-normal);
+}
+
+.mindos-recall-gen-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-recall-gen-btn-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ─── 复习会话进度 ─── */
+.mindos-recall-session-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mindos-recall-session-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.mindos-recall-session-info svg { width: 14px; height: 14px; }
+
+.mindos-recall-session-label {
+  font-weight: 600;
+  color: var(--text-normal);
+  flex: 1;
+}
+
+.mindos-recall-session-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.mindos-recall-progress-bar {
+  height: 6px;
+  background: var(--background-modifier-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.mindos-recall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mindos-primary), var(--mindos-success));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.mindos-recall-session-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mindos-recall-session-acc {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mindos-success);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── 复习卡片 ─── */
+.mindos-recall-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 200px;
+  animation: mindos-expand 0.2s ease;
+}
+
+.mindos-recall-card-new-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mindos-primary);
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 99px;
+  padding: 2px 8px;
+  width: fit-content;
+}
+.mindos-recall-card-new-badge svg { width: 11px; height: 11px; }
+
+.mindos-recall-card-source {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+}
+.mindos-recall-card-source svg { width: 11px; height: 11px; }
+.mindos-recall-card-source-path { color: var(--mindos-primary); }
+
+.mindos-recall-card-front {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: 1.5;
+}
+.mindos-recall-card-front p { margin: 0; }
+
+.mindos-recall-card-hints {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mindos-recall-hints-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mindos-warning);
+}
+
+.mindos-recall-hint-item {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding-left: 8px;
+  border-left: 2px solid rgba(245, 158, 11, 0.4);
+}
+
+.mindos-recall-card-divider {
+  height: 1px;
+  background: var(--background-modifier-border);
+  margin: 4px 0;
+}
+
+.mindos-recall-card-back {
+  font-size: 13px;
+  color: var(--text-normal);
+  line-height: 1.7;
+}
+.mindos-recall-card-back p { margin: 0 0 8px 0; }
+.mindos-recall-card-back p:last-child { margin-bottom: 0; }
+.mindos-recall-card-back pre {
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  overflow-x: auto;
+}
+.mindos-recall-card-back code {
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.mindos-recall-card-back table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.mindos-recall-card-back th,
+.mindos-recall-card-back td {
+  border: 1px solid var(--background-modifier-border);
+  padding: 5px 8px;
+  text-align: left;
+}
+.mindos-recall-card-back th {
+  background: var(--background-primary);
+  font-weight: 600;
+}
+
+.mindos-recall-card-examples {
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-recall-examples-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mindos-info);
+}
+
+.mindos-recall-example-item {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.mindos-recall-example-item p { margin: 0; }
+
+/* ─── 翻转区 ─── */
+.mindos-recall-flip-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 8px 0;
+}
+
+.mindos-recall-flip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--mindos-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--mindos-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+.mindos-recall-flip-btn:hover {
+  background: var(--mindos-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+}
+.mindos-recall-flip-btn svg { width: 18px; height: 18px; }
+
+.mindos-recall-flip-hint {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+/* ─── 评分区 ─── */
+.mindos-recall-rating-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.mindos-recall-rating-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  font-weight: 500;
+}
+
+.mindos-recall-rating-btns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.mindos-recall-rating-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 8px;
+  border-radius: var(--mindos-radius);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--background-secondary);
+}
+.mindos-recall-rating-btn:hover {
+  transform: translateY(-2px);
+}
+
+.mindos-recall-rating-btn-icon {
+  display: flex;
+}
+.mindos-recall-rating-btn-icon svg { width: 20px; height: 20px; }
+
+.mindos-recall-rating-btn-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-recall-rating-btn-sublabel {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.mindos-recall-rating-btn.is-again {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.06);
+}
+.mindos-recall-rating-btn.is-again:hover {
+  border-color: var(--mindos-danger);
+  background: rgba(239, 68, 68, 0.12);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+.mindos-recall-rating-btn.is-again .mindos-recall-rating-btn-icon { color: var(--mindos-danger); }
+
+.mindos-recall-rating-btn.is-hard {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.06);
+}
+.mindos-recall-rating-btn.is-hard:hover {
+  border-color: var(--mindos-warning);
+  background: rgba(245, 158, 11, 0.12);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+.mindos-recall-rating-btn.is-hard .mindos-recall-rating-btn-icon { color: var(--mindos-warning); }
+
+.mindos-recall-rating-btn.is-good {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.06);
+}
+.mindos-recall-rating-btn.is-good:hover {
+  border-color: var(--mindos-info);
+  background: rgba(59, 130, 246, 0.12);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+.mindos-recall-rating-btn.is-good .mindos-recall-rating-btn-icon { color: var(--mindos-info); }
+
+.mindos-recall-rating-btn.is-easy {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.06);
+}
+.mindos-recall-rating-btn.is-easy:hover {
+  border-color: var(--mindos-success);
+  background: rgba(16, 185, 129, 0.12);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+.mindos-recall-rating-btn.is-easy .mindos-recall-rating-btn-icon { color: var(--mindos-success); }
+
+/* ─── 退出行 ─── */
+.mindos-recall-exit-row {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── 会话总结 ─── */
+.mindos-recall-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  animation: mindos-expand 0.3s ease;
+}
+
+.mindos-recall-summary-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-recall-summary-title-row svg { width: 24px; height: 24px; color: var(--mindos-warning); }
+
+.mindos-recall-summary-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mindos-recall-summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius);
+  min-width: 72px;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-recall-summary-stat-icon {
+  display: flex;
+  color: var(--mindos-primary);
+}
+.mindos-recall-summary-stat-icon svg { width: 18px; height: 18px; }
+
+.mindos-recall-summary-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-normal);
+  font-variant-numeric: tabular-nums;
+}
+
+.mindos-recall-summary-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.mindos-recall-summary-dist {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-recall-summary-dist-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.mindos-recall-dist-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 99px;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.mindos-recall-dist-seg {
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  cursor: default;
+}
+.mindos-recall-dist-seg.is-again { background: var(--mindos-danger); }
+.mindos-recall-dist-seg.is-hard  { background: var(--mindos-warning); }
+.mindos-recall-dist-seg.is-good  { background: var(--mindos-info); }
+.mindos-recall-dist-seg.is-easy  { background: var(--mindos-success); }
+
+.mindos-recall-summary-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* ═══════════════════════════════════════════════════════════
+   v0.6.1 修复样式追加
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── 历史对话折叠态 ─── */
+.mindos-session-list.is-collapsed {
+  width: 44px;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+.mindos-session-list.is-collapsed .mindos-session-list-scroll {
+  padding: 4px;
+}
+
+.mindos-session-item-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+.mindos-session-item-mini:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+.mindos-session-item-mini.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+}
+.mindos-session-item-mini svg { width: 16px; height: 16px; }
+
+/* ─── Wiki 生成面板内嵌版 ─── */
+.mindos-recall-gen-panel.is-inline {
+  position: static;
+  width: auto;
+  bottom: auto;
+  right: auto;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  margin: 10px 0;
+  z-index: auto;
+  box-shadow: none;
+  animation: mindos-expand 0.2s ease;
+}
+
+/* ─── 答题输入区 ─── */
+.mindos-recall-answer-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  margin-top: 8px;
+}
+
+.mindos-recall-answer-label-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.mindos-recall-answer-label-row svg { width: 12px; height: 12px; }
+
+.mindos-recall-answer-shortcut-hint {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+  padding: 1px 6px;
+  background: var(--background-primary);
+  border-radius: 3px;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-recall-answer-input {
+  width: 100%;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-normal);
+  resize: none;
+  min-height: 60px;
+  max-height: 200px;
+  font-family: inherit;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.mindos-recall-answer-input:focus {
+  border-color: var(--mindos-primary);
+}
+.mindos-recall-answer-input::placeholder {
+  color: var(--text-faint);
+}
+
+/* ─── 用户答案展示 + 标准答案标题 ─── */
+.mindos-recall-user-answer {
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--mindos-radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.mindos-recall-user-answer-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mindos-info);
+}
+.mindos-recall-user-answer-head svg { width: 12px; height: 12px; }
+
+.mindos-recall-user-answer-body {
+  font-size: 12px;
+  color: var(--text-normal);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.mindos-recall-card-standard-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-recall-card-standard-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mindos-success);
+}
+.mindos-recall-card-standard-head svg { width: 12px; height: 12px; }
+
+/* ─── 评分按钮的快捷键标签 ─── */
+.mindos-recall-rating-btn-key {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 9px;
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+  padding: 1px 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.mindos-recall-rating-btn {
+  position: relative;
 }

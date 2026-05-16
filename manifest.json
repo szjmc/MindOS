@@ -1,9 +1,9 @@
 {
-  "id": "ai-prompt-collector",
-  "name": "AI Prompt Collector",
-  "version": "0.4.0",
+  "id": "mindos",
+  "name": "MindOS",
+  "version": "0.6.0",
   "minAppVersion": "1.5.12",
-  "description": "LLM Wiki - Three-layer knowledge architecture (raw/wiki/schema) with INDEX.md, inspired by Karpathy.",
+  "description": "Your Second Brain, OS-Level. AI-powered personal knowledge management system.",
   "author": "Samdrup Gyamco",
   "isDesktopOnly": true
 }
