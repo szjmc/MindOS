@@ -336,3 +336,41 @@ export const CUSTOM_SCENARIO_TEMPLATES: Array<Partial<CustomScenario> & {
     tags: ["数学", "公式"],
   },
 ];
+
+// ================================================================
+// Express 输出引擎 (v0.7)
+// ================================================================
+
+export const EXPRESS_STORAGE_DIR  = '_system/express';
+export const EXPRESS_DRAFTS_DIR   = '_system/express/drafts';
+export const EXPRESS_MAX_DRAFTS   = 50;  // 最多保留草稿数
+
+// 字数预设
+export const EXPRESS_LENGTH_MAP: Record<'short' | 'medium' | 'long', {
+  label: string;
+  description: string;
+  targetWords: number;
+  sectionsHint: number;
+}> = {
+  short: {
+    label: '短文',
+    description: '约 500-800 字',
+    targetWords: 650,
+    sectionsHint: 3
+  },
+  medium: {
+    label: '中文',
+    description: '约 1000-2000 字',
+    targetWords: 1500,
+    sectionsHint: 5
+  },
+  long: {
+    label: '长文',
+    description: '约 2000-4000 字',
+    targetWords: 3000,
+    sectionsHint: 7
+  }
+};
+
+// Wiki 检索上下文条数上限（避免超 token）
+export const EXPRESS_MAX_CONTEXT_CHUNKS = 8;
