@@ -1,9 +1,9 @@
 {
   "id": "mindos",
   "name": "MindOS",
-  "version": "0.6.0",
+  "version": "0.6.5",
   "minAppVersion": "1.5.12",
-  "description": "Your Second Brain, OS-Level. AI-powered personal knowledge management system.",
+  "description": "Your Second Brain, OS-Level. AI 知识管理 + 智能复习系统。",
   "author": "Samdrup Gyamco",
   "isDesktopOnly": true
 }

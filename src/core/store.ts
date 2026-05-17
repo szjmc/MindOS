@@ -26,6 +26,8 @@ import {
   RecallDailyStats,
   RecallScenario,
   RecallScenarioConfig,
+  RecallView_Mode,
+  CardManagerFilter,
 } from "./types";
 
 // ═══════════════════════════════════════════════════════════
@@ -420,6 +422,17 @@ export class RecallStore {
         newCardCount: 0,
         totalCards: 0,
       },
+      // ✅ v0.6 管理界面默认状态
+      viewMode: "scenario_home",
+      managerScenario: "wiki",
+      managerFilter: {
+        searchQuery: "",
+        statusFilter: "all",
+        tagFilter: "",
+        sortBy: "updated_desc",
+      },
+      managerCards: [],
+      managerSelectedIds: new Set<string>(),
     };
   }
 
@@ -499,5 +512,50 @@ export class RecallStore {
 
   private emit() {
     for (const fn of this.listeners) fn();
+  }
+
+    // ════════════════════════════════════════════════════════════
+  // v0.6 卡片管理 - 状态变更方法
+  // ════════════════════════════════════════════════════════════
+
+  setViewMode(mode: RecallView_Mode) {
+    this.state.viewMode = mode;
+    this.emit();
+  }
+
+  setManagerScenario(scenario: RecallScenario) {
+    this.state.managerScenario = scenario;
+    this.state.managerSelectedIds.clear();
+    this.emit();
+  }
+
+  setManagerFilter(filter: Partial<CardManagerFilter>) {
+    this.state.managerFilter = { ...this.state.managerFilter, ...filter };
+    this.emit();
+  }
+
+  // ✅ 新增辅助方法（修复 view-recall 调用）
+  setManagerSelectedIdsClear() {
+    this.state.managerSelectedIds.clear();
+    this.emit();
+  }
+
+  toggleSelectCard(id: string) {
+    if (this.state.managerSelectedIds.has(id)) {
+      this.state.managerSelectedIds.delete(id);
+    } else {
+      this.state.managerSelectedIds.add(id);
+    }
+    this.emit();
+  }
+
+  selectAllCards(ids: string[]) {
+    this.state.managerSelectedIds = new Set(ids);
+    this.emit();
+  }
+
+  clearSelectedCards() {
+    this.state.managerSelectedIds.clear();
+    this.emit();
   }
 }

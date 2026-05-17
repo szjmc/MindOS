@@ -428,6 +428,13 @@ export interface RecallState {
   todayStats: RecallDailyStats | null;
   selectedScenario: RecallScenario;
   scenarioConfig: RecallScenarioConfig;
+
+  // ✅ v0.6 新增：管理界面状态
+  viewMode: RecallView_Mode;            // 当前显示哪个界面
+  managerScenario: RecallScenario;      // 管理面板正在管理哪个场景
+  managerFilter: CardManagerFilter;
+  managerCards: RecallCard[];           // 当前过滤后的卡片
+  managerSelectedIds: Set<string>;      // 多选 ID 集合
 }
 
 export interface RecallScenarioConfig {
@@ -459,4 +466,344 @@ export interface VocabCardMeta {
   wordList: string;
   partOfSpeech: string;
   difficulty: number;
+}
+// ═══════════════════════════════════════════════════════════
+// v0.6 卡片管理界面状态
+// ═══════════════════════════════════════════════════════════
+
+export type RecallView_Mode = "scenario_home" | "card_manager" | "review";
+
+export interface CardManagerFilter {
+  searchQuery: string;
+  statusFilter: "all" | "new" | "learning" | "review" | "mastered" | "suspended";
+  tagFilter: string;
+  sortBy: "updated_desc" | "created_desc" | "next_review" | "alpha";
+}
+
+// 扩展 RecallState（修改原接口）
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 英语单词场景类型
+// ═══════════════════════════════════════════════════════════
+
+export type WordListSource = "builtin" | "custom" | "imported";
+export type VocabReviewMode = "cn_to_en" | "en_to_cn" | "spell" | "mixed";
+
+export interface WordEntry {
+  word: string;                    // 单词本身
+  phonetic?: string;               // 音标（如 [ˈæpl]）
+  partOfSpeech?: string;           // 词性（n. v. adj. adv.）
+  definitions: string[];           // 中文释义（可多个）
+  englishDef?: string;             // 英文释义
+  examples?: Array<{
+    en: string;
+    cn?: string;
+  }>;
+  synonyms?: string[];             // 同义词
+  antonyms?: string[];             // 反义词
+  difficulty?: number;             // 1-5 难度等级
+  frequency?: number;              // 词频排名（越小越常用）
+  tags?: string[];                 // 主题标签（如 "学术"、"商务"）
+}
+
+export interface WordList {
+  id: string;                      // 词库唯一标识（如 "cet4"、"custom_my_words"）
+  name: string;                    // 显示名（如 "大学英语四级"）
+  description?: string;            // 描述
+  source: WordListSource;
+  level?: string;                  // CET4 / CET6 / 考研 / IELTS / TOEFL / GRE 等
+  totalWords: number;
+  language: "en";                  // 预留：未来支持多语言
+  cover?: string;                  // emoji 封面
+  createdAt: string;
+  updatedAt: string;
+  // 学习配置（用户独立设置）
+  config?: WordListUserConfig;
+}
+
+export interface WordListUserConfig {
+  enabled: boolean;                // 是否启用该词库
+  newPerDay: number;               // 每日新词数量（默认 10）
+  reviewMode: VocabReviewMode;     // 复习模式
+  startIndex: number;              // 当前学到第几个（按 frequency 顺序）
+  totalLearned: number;            // 已学习单词数（缓存值）
+}
+
+export interface VocabCardMetadata {
+  word: string;
+  phonetic?: string;
+  partOfSpeech?: string;
+  wordList: string;                // 所属词库 ID
+  reviewMode: VocabReviewMode;     // 该卡片的复习模式
+  frequency?: number;              // 词频
+  // 完整词条副本（避免反查词库）
+  entry?: WordEntry;
+}
+
+// 词库使用统计
+export interface WordListProgress {
+  wordListId: string;
+  totalWords: number;
+  startedWords: number;            // 已生成卡片的单词数
+  masteredWords: number;
+  inProgressWords: number;
+  lastStudiedAt?: string;
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 多语言短语场景类型
+// ═══════════════════════════════════════════════════════════
+
+export type SupportedLanguage =
+  | "ja"      // 日语
+  | "ko"      // 韩语
+  | "es"      // 西班牙语
+  | "fr"      // 法语
+  | "de"      // 德语
+  | "it"      // 意大利语
+  | "ru"      // 俄语
+  | "pt"      // 葡萄牙语
+  | "ar"      // 阿拉伯语
+  | "zh"      // 中文
+  | "en"      // 英语
+  | "custom"; // 自定义
+
+export interface PhraseCardMetadata {
+  language: SupportedLanguage;
+  customLanguage?: string;          // 当 language=custom 时的语言名
+  category?: string;                // 主题分类（如"日常问候"、"商务用语"）
+  romanization?: string;            // 罗马音/拼音/IPA 等
+  level?: string;                   // 难度（N5/N4/A1/A2 等）
+}
+
+export interface PhraseEntry {
+  phrase: string;
+  translation: string;              // 翻译
+  romanization?: string;            // 发音
+  category?: string;
+  level?: string;
+  notes?: string;                   // 语法/用法说明
+  examples?: string[];              // 例句
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 概念场景类型
+// ═══════════════════════════════════════════════════════════
+
+export interface ConceptCardMetadata {
+  conceptName: string;              // 概念名（如"封装"、"递归"）
+  domain?: string;                  // 领域（如"OOP"、"算法"）
+  relatedConcepts?: string[];       // 关联概念
+  sourcePath?: string;
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 面试助手类型
+// ═══════════════════════════════════════════════════════════
+
+export type SkillLevel = "basic" | "intermediate" | "advanced" | "expert";
+export type SkillStatus = "mastered" | "partial" | "missing";
+
+export interface SkillRequirement {
+  skill: string;                    // 技能/知识点名称
+  category: string;                 // 分类（编程语言/框架/数据库/工具等）
+  required: boolean;                // 是否硬性要求
+  level: SkillLevel;                // 期望掌握程度
+  keywords: string[];               // 提取的关键词（用于匹配 Wiki）
+  // 匹配结果
+  status?: SkillStatus;
+  matchedPages?: string[];          // 匹配到的 Wiki 页面路径
+  coverage?: number;                // 0-1，覆盖度
+}
+
+export interface InterviewQuestion {
+  id: string;
+  category: string;                 // 技术 / 行为 / 系统设计 等
+  skill?: string;                   // 关联技能
+  difficulty: "easy" | "medium" | "hard";
+  question: string;
+  hints?: string[];
+  referenceAnswer?: string;         // 参考答案
+  followUps?: string[];             // 追问问题
+}
+
+export interface JDAnalysis {
+  id: string;
+  // 基本信息
+  company?: string;
+  position: string;
+  level?: string;                   // 初级/中级/高级/Senior 等
+  location?: string;
+  salary?: string;
+  // 原始 JD
+  rawText: string;
+  // AI 解析结果
+  description: string;              // AI 提炼的职位概述
+  responsibilities: string[];       // 主要职责
+  requirements: string[];           // 任职要求原文
+  skills: SkillRequirement[];       // 提取的技能清单
+  niceToHave: string[];             // 加分项
+  // 知识盘点结果
+  gapAnalysis?: {
+    masteredCount: number;
+    partialCount: number;
+    missingCount: number;
+    overallReadiness: number;       // 0-1 整体准备度
+    summary: string;
+  };
+  // 模拟题（Part 2 生成）
+  questions?: InterviewQuestion[];
+  // 时间
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InterviewCardMetadata {
+  jdId?: string;                    // 所属的 JD 分析 ID
+  jdPosition?: string;              // 职位名
+  skill?: string;                   // 关联技能
+  questionId?: string;              // 关联问题 ID
+  category?: string;                // 技术/行为/系统设计
+  difficulty?: "easy" | "medium" | "hard";
+}
+
+export interface InterviewState {
+  currentJD: JDAnalysis | null;
+  jdList: JDAnalysis[];
+  isAnalyzing: boolean;
+  analysisError: string;
+  // 用于知识盘点的状态
+  isGapAnalyzing: boolean;
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 模拟面试类型
+// ═══════════════════════════════════════════════════════════
+
+export type MockInterviewMode = "self_test" | "ai_interviewer";
+
+export interface MockInterviewState {
+  jdId: string;
+  questions: InterviewQuestion[];
+  currentIndex: number;
+  answers: MockInterviewAnswer[];
+  startedAt: string;
+  finishedAt?: string;
+}
+
+export interface MockInterviewAnswer {
+  questionId: string;
+  userAnswer: string;
+  evaluation?: AnswerEvaluation;
+  responseTimeMs: number;
+  reviewedAt: string;
+}
+
+export interface AnswerEvaluation {
+  score: number;                    // 0-100 综合得分
+  strengths: string[];              // 答得好的点
+  weaknesses: string[];             // 不足
+  improvements: string[];           // 改进建议
+  modelAnswer?: string;             // 模范答案（如果用户答案太差）
+  followUpHints?: string[];         // 面试官可能的追问
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 自定义场景类型
+// ═══════════════════════════════════════════════════════════
+
+export type CustomFieldType =
+  | "text"          // 单行文本
+  | "textarea"      // 多行文本
+  | "markdown"      // Markdown 内容
+  | "tags"          // 标签列表
+  | "select"        // 下拉选择
+  | "number";       // 数字
+
+export interface CustomFieldDef {
+  key: string;                      // 字段标识（英文，唯一）
+  label: string;                    // 显示名
+  type: CustomFieldType;
+  required?: boolean;
+  placeholder?: string;
+  options?: string[];               // select 类型的可选项
+  defaultValue?: string;
+}
+
+export interface CustomScenario {
+  id: string;                       // 场景唯一 ID（如 "custom_poetry"）
+  name: string;                     // 显示名（如 "古诗词记忆"）
+  description?: string;
+  cover?: string;                   // emoji
+  // 字段定义（前 2 个会作为正面/背面默认渲染）
+  fields: CustomFieldDef[];
+  // 卡片渲染模板（支持 {{key}} 占位符）
+  frontTemplate: string;
+  backTemplate: string;
+  hintsTemplate?: string;
+  // AI 生成配置（可选）
+  aiEnabled: boolean;
+  aiSystemPrompt?: string;          // AI 出题的系统提示
+  aiUserPromptTemplate?: string;    // 用户传参的提示模板
+  // 元数据
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CustomCardMetadata {
+  scenarioId: string;               // 所属自定义场景
+  fieldValues: Record<string, any>; // 各字段值
+}
+
+// ═══════════════════════════════════════════════════════════
+// v0.6 统计 Dashboard 类型
+// ═══════════════════════════════════════════════════════════
+
+export type DashboardPeriod = "today" | "week" | "month" | "all";
+
+export interface DashboardOverview {
+  period: DashboardPeriod;
+  // 综合数据
+  totalReviewed: number;          // 复习总数
+  totalCorrect: number;           // 正确总数
+  averageAccuracy: number;        // 平均正确率（0-1）
+  totalTimeMs: number;            // 总用时（毫秒）
+  totalNewCards: number;          // 新学卡片数
+  totalDays: number;              // 学习天数
+  // 卡片库总览
+  totalCards: number;             // 卡片库总数
+  cardsByStatus: Record<string, number>;
+  cardsByScenario: Record<string, number>;
+  // 待复习
+  dueToday: number;               // 今日待复习
+  newAvailable: number;           // 可用新卡片
+  // 连续学习
+  currentStreak: number;          // 当前连续天数
+  longestStreak: number;          // 历史最长连续
+  // 趋势数据
+  dailyTrend: Array<{
+    date: string;
+    reviewed: number;
+    correct: number;
+    accuracy: number;
+    newCards: number;
+    timeMs: number;
+  }>;
+  // 热力图（最近 90 天）
+  heatmap: Array<{
+    date: string;
+    count: number;
+    level: 0 | 1 | 2 | 3 | 4;     // 强度等级（0=无）
+  }>;
+  // 场景对比
+  scenarioStats: Array<{
+    scenario: string;
+    label: string;
+    icon: string;
+    totalReviewed: number;
+    totalCards: number;
+    masteredCount: number;
+    accuracy: number;
+  }>;
 }

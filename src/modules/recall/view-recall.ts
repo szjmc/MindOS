@@ -38,14 +38,28 @@ export class RecallView {
   render(parent: HTMLElement) {
     const state = this.plugin.recallStore.getState();
 
-    // 复习中需要监听键盘
+    // ✅ 修改：面试场景特殊路由（含模拟面试子状态）
+    if (
+      state.selectedScenario === "interview" &&
+      !state.currentSession &&
+      state.viewMode !== "card_manager"
+    ) {
+      // 检查是否在模拟面试中
+      if (this.plugin.mockInterviewView.isInSession() ||
+          (this.plugin.mockInterviewView as any).state?.finishedAt) {
+        this.plugin.mockInterviewView.render(parent);
+      } else {
+        this.plugin.interviewView.render(parent);
+      }
+      return;
+    }
+
     if (state.currentSession && state.currentCard) {
       this.attachKeyboardListener();
     } else {
       this.removeKeyboardListener();
     }
 
-    // ── 焦点恢复（如果在输入答案中）──
     const activeEl = document.activeElement as HTMLElement | null;
     let savedAnswer: { selectionStart: number; selectionEnd: number; value: string } | null = null;
     if (activeEl === this.answerInputEl && this.answerInputEl) {
@@ -58,7 +72,10 @@ export class RecallView {
 
     this.answerInputEl = null;
 
-    if (state.currentSession && state.currentCard) {
+    // ✅ v0.6.5 新增：根据 viewMode 路由到不同界面
+    if (state.viewMode === "card_manager") {
+      this.plugin.cardManagerView.render(parent);
+    } else if (state.currentSession && state.currentCard) {
       this.renderReviewSession(parent);
     } else if (state.currentSession && !state.currentCard) {
       this.renderSessionSummary(parent);
@@ -141,6 +158,9 @@ export class RecallView {
   // 场景主页
   // ════════════════════════════════════════════════════════════
   private renderScenarioHome(parent: HTMLElement) {
+    // ✅ 新增：场景主页顶部工具栏
+    this.renderHomeToolbar(parent);
+
     this.renderTodayBanner(parent);
 
     const grid = parent.createDiv({ cls: "mindos-recall-scenario-grid" });
@@ -154,6 +174,29 @@ export class RecallView {
     }
 
     this.renderWikiGenSection(parent);
+  }
+
+  /**
+   * ✅ 新增：场景主页顶部工具栏（含「管理卡片」入口）
+   */
+  private renderHomeToolbar(parent: HTMLElement) {
+    const bar = parent.createDiv({ cls: "mindos-recall-home-toolbar" });
+
+    bar.createDiv({ cls: "mindos-recall-home-toolbar-spacer" });
+
+    // ✅ 新增：数据看板按钮
+    const dashboardBtn = bar.createEl("button", { cls: "mindos-btn" });
+    setIcon(dashboardBtn.createSpan(), "bar-chart-3");
+    dashboardBtn.createSpan({ text: " 数据看板" });
+    dashboardBtn.onclick = () => this.openDashboard();
+
+    const manageBtn = bar.createEl("button", { cls: "mindos-btn" });
+    setIcon(manageBtn.createSpan(), "list");
+    manageBtn.createSpan({ text: " 管理卡片" });
+    manageBtn.onclick = () => {
+      this.plugin.recallStore.setManagerScenario("wiki");
+      this.plugin.recallStore.setViewMode("card_manager");
+    };
   }
 
   private renderTodayBanner(parent: HTMLElement) {
@@ -299,6 +342,86 @@ export class RecallView {
           this.toggleWikiGenPanel(rootParent);
         };
       }
+            // ✅ 新增：命令行场景的「生成卡片」按钮
+      if (scenario === "command") {
+        const genBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(genBtn.createSpan(), "sparkles");
+        genBtn.createSpan({ text: " 生成卡片" });
+        genBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.toggleCommandGenPanel(rootParent);
+        };
+      }
+
+            // ✅ 新增：单词场景的「词库管理」按钮
+      if (scenario === "vocab") {
+        const wlBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(wlBtn.createSpan(), "book-open-check");
+        wlBtn.createSpan({ text: " 词库管理" });
+        wlBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.openWordListManager();
+        };
+      }
+
+            // ✅ 新增：每个场景卡片都有「管理」按钮
+      if (stats.total > 0) {
+        const mgrBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(mgrBtn.createSpan(), "list");
+        mgrBtn.createSpan({ text: " 管理" });
+        mgrBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.plugin.recallStore.setManagerScenario(scenario);
+          this.plugin.recallStore.setViewMode("card_manager");
+        };
+      }
+
+            // ✅ 新增：概念场景的「生成卡片」按钮
+      if (scenario === "concept") {
+        const genBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(genBtn.createSpan(), "sparkles");
+        genBtn.createSpan({ text: " 生成卡片" });
+        genBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.openConceptGenerator();
+        };
+      }
+
+      // ✅ 新增：多语言场景的「添加短语」按钮
+      if (scenario === "phrase") {
+        const addBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(addBtn.createSpan(), "plus-circle");
+        addBtn.createSpan({ text: " 添加短语" });
+        addBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.openPhraseGenerator();
+        };
+      }
+
+            // ✅ 新增：面试场景特殊入口（点击直接进入面试主面板）
+      if (scenario === "interview") {
+        const enterBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(enterBtn.createSpan(), "briefcase");
+        enterBtn.createSpan({ text: " 进入面试助手" });
+        enterBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.plugin.recallStore.setSelectedScenario("interview");
+          // 触发 render
+          this.plugin.recallStore.reset();
+          this.plugin.recallStore.setSelectedScenario("interview");
+        };
+      }
+
+            // ✅ 新增：自定义场景的「场景管理」按钮
+      if (scenario === "custom") {
+        const mgmtBtn = btnRow.createEl("button", { cls: "mindos-btn" });
+        setIcon(mgmtBtn.createSpan(), "settings-2");
+        mgmtBtn.createSpan({ text: " 场景管理" });
+        mgmtBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.openCustomScenarioManager();
+        };
+      }
     }).catch(() => {
       card.empty();
       card.createDiv({
@@ -393,6 +516,113 @@ export class RecallView {
         new Notice("✅ Wiki 卡片生成完成！");
         panel.remove();
         // 触发刷新
+        const todayStats = await this.plugin.recallCardStore.getTodayStats();
+        this.plugin.recallStore.setTodayStats(todayStats);
+
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        this.plugin.recallStore.setGenerating(false, msg);
+        new Notice(`❌ 生成失败：${msg}`);
+        genBtn.disabled = false;
+      }
+    };
+  }
+
+    // ════════════════════════════════════════════════════════════
+  // 命令行生成面板
+  // ════════════════════════════════════════════════════════════
+  private toggleCommandGenPanel(parent: HTMLElement) {
+    const existing = parent.querySelector(".mindos-recall-gen-panel");
+    if (existing) {
+      existing.remove();
+      return;
+    }
+    this.showCommandGenPanel(parent);
+  }
+
+  private showCommandGenPanel(parent: HTMLElement) {
+    const panel = parent.createDiv({ cls: "mindos-recall-gen-panel is-inline" });
+
+    const head = panel.createDiv({ cls: "mindos-recall-gen-panel-head" });
+    const hi = head.createSpan();
+    setIcon(hi, "terminal");
+    head.createSpan({ text: " 生成命令行复习卡片" });
+    const closeBtn = head.createEl("button", { cls: "mindos-icon-btn" });
+    setIcon(closeBtn, "x");
+    closeBtn.onclick = () => panel.remove();
+
+    const opts = panel.createDiv({ cls: "mindos-recall-gen-opts" });
+
+    // 数据源选择
+    const sourceRow = opts.createDiv({ cls: "mindos-recall-gen-opt-row" });
+    sourceRow.createSpan({ text: "数据源：" });
+    const sourceSelect = sourceRow.createEl("select", { cls: "mindos-recall-gen-select" });
+    [
+      { value: "both", label: "📚 内置库 + Wiki 扫描" },
+      { value: "builtin", label: "📦 仅内置命令库（50+ 常用）" },
+      { value: "wiki", label: "🔍 仅扫描 Wiki 中的代码块" },
+    ].forEach((s) => {
+      const opt = sourceSelect.createEl("option", { value: s.value, text: s.label });
+      if (s.value === "both") opt.selected = true;
+    });
+
+    // Wiki 每页最多生成
+    const maxRow = opts.createDiv({ cls: "mindos-recall-gen-opt-row" });
+    maxRow.createSpan({ text: "Wiki 每页最多：" });
+    const maxSelect = maxRow.createEl("select", { cls: "mindos-recall-gen-select" });
+    [3, 5, 8, 10].forEach((n) => {
+      const opt = maxSelect.createEl("option", { value: String(n), text: `${n} 张` });
+      if (n === 5) opt.selected = true;
+    });
+
+    // 跳过已有
+    const onlyNewRow = opts.createDiv({ cls: "mindos-recall-gen-opt-row" });
+    onlyNewRow.createSpan({ text: "跳过已生成的页面：" });
+    const onlyNewCheck = onlyNewRow.createEl("input");
+    onlyNewCheck.type = "checkbox";
+    onlyNewCheck.checked = true;
+
+    // 进度条
+    const progressWrap = panel.createDiv({ cls: "mindos-recall-gen-progress" });
+    progressWrap.style.display = "none";
+
+    const progressBar = progressWrap.createDiv({ cls: "mindos-vp-bar" });
+    const progressFill = progressBar.createDiv({ cls: "mindos-vp-bar-fill" });
+    const progressText = progressWrap.createDiv({ cls: "mindos-vp-text" });
+
+    // 按钮
+    const btnRow = panel.createDiv({ cls: "mindos-recall-gen-btn-row" });
+    const genBtn = btnRow.createEl("button", { cls: "mindos-btn-large is-primary" });
+    setIcon(genBtn.createSpan(), "sparkles");
+    genBtn.createSpan({ text: " 开始生成" });
+
+    genBtn.onclick = async () => {
+      genBtn.disabled = true;
+      progressWrap.style.display = "block";
+      this.plugin.recallStore.setGenerating(true);
+
+      try {
+        const result = await this.plugin.recallCommandGenerator.generate(
+          {
+            source: sourceSelect.value as any,
+            maxCardsPerPage: parseInt(maxSelect.value),
+            onlyNewPages: onlyNewCheck.checked,
+          },
+          (p) => {
+            const pct = p.total > 0 ? Math.round((p.done / p.total) * 100) : 100;
+            progressFill.style.width = `${pct}%`;
+            progressText.setText(
+              p.total > 0
+                ? `${p.done}/${p.total} 文件 · 已生成 ${p.newCards} 张${p.currentFile ? " · " + this.shortenPath(p.currentFile) : ""}`
+                : `已生成 ${p.newCards} 张`,
+            );
+          },
+        );
+
+        this.plugin.recallStore.setGenerating(false);
+        new Notice(`✅ 命令行卡片生成完成：${result.newCards} 张`);
+        panel.remove();
+
         const todayStats = await this.plugin.recallCardStore.getTodayStats();
         this.plugin.recallStore.setTodayStats(todayStats);
 
@@ -606,23 +836,38 @@ export class RecallView {
   }
 
   /**
-   * ✅ 新增：答题输入区
-   * 用户可以在翻转前先输入答案，便于自我检验
+   * ✅ v0.6.5 优化：根据场景调整答题区域
    */
   private renderAnswerInputArea(parent: HTMLElement, card: RecallCard) {
     const wrap = parent.createDiv({ cls: "mindos-recall-answer-input-area" });
 
     const labelRow = wrap.createDiv({ cls: "mindos-recall-answer-label-row" });
     const ic = labelRow.createSpan();
-    setIcon(ic, "edit-3");
-    labelRow.createSpan({ text: " 写下你的答案（可选）" });
+
+    // ✅ 根据场景调整提示文案
+    if (card.scenario === "command") {
+      setIcon(ic, "terminal");
+      labelRow.createSpan({ text: " 输入命令（可选，验证后自动判分）" });
+    } else if (card.scenario === "vocab") {
+      setIcon(ic, "type");
+      labelRow.createSpan({ text: " 输入单词（可选）" });
+    } else {
+      setIcon(ic, "edit-3");
+      labelRow.createSpan({ text: " 写下你的答案（可选）" });
+    }
+
     labelRow.createSpan({
       cls: "mindos-recall-answer-shortcut-hint",
       text: "Ctrl+Enter 翻转",
     });
 
     const textarea = wrap.createEl("textarea", { cls: "mindos-recall-answer-input" });
-    textarea.placeholder = "在此回忆并写下你的答案...（不写也可以直接翻转）";
+    if (card.scenario === "command") {
+      textarea.placeholder = "在此输入命令，例如：git commit -m \"...\"";
+      textarea.style.fontFamily = "var(--font-monospace)";
+    } else {
+      textarea.placeholder = "在此回忆并写下你的答案...（不写也可以直接翻转）";
+    }
     textarea.value = this.answerInputCache;
     this.answerInputEl = textarea;
 
@@ -630,17 +875,14 @@ export class RecallView {
     textarea.addEventListener("compositionend", () => { this.isComposing = false; });
 
     textarea.addEventListener("input", () => {
-      // 实时缓存到内存（不触发 store 更新避免 re-render）
       this.answerInputCache = textarea.value;
-      // 自动调整高度
       textarea.style.height = "auto";
       textarea.style.height = Math.min(textarea.scrollHeight, 200) + "px";
     });
 
-    // 自动聚焦
     setTimeout(() => textarea.focus(), 50);
   }
-
+  
   private renderFlipArea(parent: HTMLElement) {
     const area = parent.createDiv({ cls: "mindos-recall-flip-area" });
 
@@ -882,6 +1124,92 @@ export class RecallView {
   // 工具
   // ════════════════════════════════════════════════════════════
 
+    // ════════════════════════════════════════════════════════════
+  // 词库管理（单词场景）
+  // ════════════════════════════════════════════════════════════
+  private openWordListManager() {
+    // 动态 import 避免循环依赖
+    import("./word-list-manager-modal").then(({ WordListManagerModal }) => {
+      const modal = new WordListManagerModal(
+        this.plugin.app,
+        this.plugin.wordListStore,
+        this.plugin.vocabGenerator,
+        this.plugin.recallCardStore,
+        async () => {
+          // 配置或卡片变更时刷新主页统计
+          const todayStats = await this.plugin.recallCardStore.getTodayStats();
+          this.plugin.recallStore.setTodayStats(todayStats);
+        },
+      );
+      modal.open();
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // 概念场景入口
+  // ════════════════════════════════════════════════════════════
+  private openConceptGenerator() {
+    import("./concept-phrase-modal").then(({ ConceptGenerateModal }) => {
+      const modal = new ConceptGenerateModal(
+        this.plugin.app,
+        this.plugin.conceptGenerator,
+        async () => {
+          const todayStats = await this.plugin.recallCardStore.getTodayStats();
+          this.plugin.recallStore.setTodayStats(todayStats);
+        },
+      );
+      modal.open();
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // 多语言场景入口
+  // ════════════════════════════════════════════════════════════
+  private openPhraseGenerator() {
+    import("./concept-phrase-modal").then(({ PhraseGenerateModal }) => {
+      const modal = new PhraseGenerateModal(
+        this.plugin.app,
+        this.plugin.phraseGenerator,
+        async () => {
+          const todayStats = await this.plugin.recallCardStore.getTodayStats();
+          this.plugin.recallStore.setTodayStats(todayStats);
+        },
+      );
+      modal.open();
+    });
+  }
+
+    // ════════════════════════════════════════════════════════════
+  // 自定义场景管理入口
+  // ════════════════════════════════════════════════════════════
+  private openCustomScenarioManager() {
+    import("./custom-scenario-modals").then(({ CustomScenarioListModal }) => {
+      const modal = new CustomScenarioListModal(
+        this.plugin.app,
+        this.plugin.customScenarioStore,
+        this.plugin.recallCardStore,
+        this.plugin.aiCardGenerator,
+        async () => {
+          const todayStats = await this.plugin.recallCardStore.getTodayStats();
+          this.plugin.recallStore.setTodayStats(todayStats);
+        },
+      );
+      modal.open();
+    });
+  }
+
+    // ════════════════════════════════════════════════════════════
+  // 数据看板入口
+  // ════════════════════════════════════════════════════════════
+  private openDashboard() {
+    import("./dashboard-view").then(({ DashboardView }) => {
+      const modal = new DashboardView(
+        this.plugin.app,
+        this.plugin.dashboardService,
+      );
+      modal.open();
+    });
+  }
   /**
    * ✅ 智能时长格式化（修复显示 491 分钟的问题）
    */

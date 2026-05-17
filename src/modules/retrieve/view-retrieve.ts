@@ -634,10 +634,15 @@ export class MindOSRetrieveView extends ItemView {
 
     const bar = parent.createDiv({ cls: "mindos-session-bar" });
 
-    // ✅ 折叠/展开 历史按钮
-    const toggleBtn = bar.createEl("button", { cls: "mindos-icon-btn" });
+    // ✅ 折叠/展开按钮（左侧紧贴）
+    const toggleBtn = bar.createEl("button", { cls: "mindos-icon-btn mindos-session-toggle" });
     setIcon(toggleBtn, this.sessionListCollapsed ? "panel-left-open" : "panel-left-close");
-    toggleBtn.setAttribute("title", this.sessionListCollapsed ? "展开对话历史" : "折叠对话历史");
+    toggleBtn.setAttribute(
+      "title",
+      this.sessionListCollapsed
+        ? `展开对话历史 (${state.sessions.length})`
+        : "折叠对话历史",
+    );
     toggleBtn.onclick = () => {
       this.sessionListCollapsed = !this.sessionListCollapsed;
       this.render();
@@ -698,7 +703,6 @@ export class MindOSRetrieveView extends ItemView {
       };
     }
   }
-
   private renderSessionList(parent: HTMLElement) {
     const state = this.plugin.retrieveStore.getState();
     const list = parent.createDiv({ cls: "mindos-session-list" });
