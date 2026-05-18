@@ -92,7 +92,7 @@ import { ExpressView, EXPRESS_VIEW_TYPE } from "./src/modules/express/view-expre
 import { ArticleStore } from "./src/modules/express/article-store";
 import { OutlineBuilder } from "./src/modules/express/outline-builder";
 import { ArticleGenerator } from "./src/modules/express/article-generator";
-
+import { TTSService } from "./src/modules/recall/tts-service";
 // ================================================================
 
 const DEFAULT_UI_COLLAPSED: UICollapsedState = {
@@ -160,6 +160,21 @@ const DEFAULT_SETTINGS: MindOSSettings = {
   recallNewCardsPerDay: 20,
   recallReviewLimit: 100,
   recallAutoGenerate: false,
+
+    // v0.7 Express
+  expressExportFolder: "wiki/articles",
+
+    // v0.7 Recall TTS
+  recallTTSEnabled: true,
+  recallTTSLang: "en-US",
+  recallTTSRate: 1.0,
+  recallTTSPitch: 1.0,
+  recallTTSVolume: 1.0,
+  recallTTSPreferredVoice: "",
+
+    // v0.7 Recall Vocab TTS Hotkey
+  recallVocabTTSHotkey: "Shift+Space",
+  recallVocabTTSHotkeyAlt: "Alt+S",
 };
 
 export default class MindOSPlugin extends Plugin {
@@ -221,6 +236,7 @@ export default class MindOSPlugin extends Plugin {
   articleStore!: ArticleStore;
   outlineBuilder!: OutlineBuilder;
   articleGenerator!: ArticleGenerator;
+  ttsService = new TTSService();
 
   private stopRequested = false;
   private currentRounds: ConversationRound[] | null = null;
@@ -621,6 +637,22 @@ export default class MindOSPlugin extends Plugin {
         return result;
       },
     };
+  }
+
+  async speakVocab(text: string) {
+    try {
+      await this.ttsService.speak(text, {
+        enabled: this.settings.recallTTSEnabled ?? true,
+        lang: this.settings.recallTTSLang ?? "en-US",
+        rate: this.settings.recallTTSRate ?? 1.0,
+        pitch: this.settings.recallTTSPitch ?? 1.0,
+        volume: this.settings.recallTTSVolume ?? 1.0,
+        preferredVoice: (this.settings.recallTTSPreferredVoice || undefined) as any,
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      new Notice(`TTS 失败：${msg}`);
+    }
   }
 
   // ════════════════════════════════════════════════════════════

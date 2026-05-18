@@ -1,0 +1,782 @@
+/* ================================================================
+   Express 输出引擎 (v0.7)
+   ================================================================ */
+
+.mindos-express {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--background-primary);
+  font-size: 14px;
+}
+
+.mindos-express .express-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mindos-express .express-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-express .express-header-logo {
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+}
+
+.mindos-express .express-header-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-express .express-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* steps */
+.mindos-express .express-steps {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.mindos-express .express-step {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.mindos-express .express-step.active {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+  font-weight: 600;
+}
+
+.mindos-express .express-step.reachable {
+  cursor: pointer;
+  color: var(--text-normal);
+}
+
+.mindos-express .express-step.reachable:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* content */
+.mindos-express .express-content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* buttons */
+.mindos-express .express-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+.mindos-express .express-btn:hover { background: var(--background-modifier-hover); }
+.mindos-express .express-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.mindos-express .express-btn-primary {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+.mindos-express .express-btn-primary:hover { filter: brightness(1.1); background: var(--color-accent); }
+
+.mindos-express .express-btn-ghost {
+  background: transparent;
+  border-color: var(--background-modifier-border);
+}
+.mindos-express .express-btn-ghost:hover { background: var(--background-modifier-hover); }
+
+.mindos-express .express-btn-danger {
+  background: var(--background-modifier-error);
+  color: var(--text-error);
+  border-color: var(--background-modifier-error);
+}
+.mindos-express .express-btn-danger:hover { filter: brightness(1.1); }
+
+.mindos-express .express-btn-sm { padding: 4px 10px; font-size: 12px; }
+.mindos-express .express-btn-lg { padding: 10px 24px; font-size: 14px; border-radius: 8px; }
+.mindos-express .express-btn-full { width: 100%; justify-content: center; }
+
+/* form */
+.mindos-express .express-form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mindos-express .express-form-group-row { flex-direction: row; align-items: center; }
+
+.mindos-express .express-label { font-size: 13px; font-weight: 600; color: var(--text-normal); }
+.mindos-express .express-label-sm { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+
+.mindos-express .express-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.mindos-express .express-input:focus { outline: none; border-color: var(--color-accent); }
+
+.mindos-express .express-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: 13px;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.mindos-express .express-textarea:focus { outline: none; border-color: var(--color-accent); }
+.mindos-express .express-textarea-sm { font-size: 12px; }
+
+.mindos-express .express-divider {
+  border: none;
+  border-top: 1px solid var(--background-modifier-border);
+  margin: 16px 0;
+}
+
+.mindos-express .express-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+/* home */
+.mindos-express .express-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  gap: 12px;
+}
+.mindos-express .express-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 24px;
+}
+.mindos-express .express-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0;
+}
+.mindos-express .express-empty-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 280px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mindos-express .express-draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mindos-express .express-draft-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-express .express-draft-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+.mindos-express .express-draft-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mindos-express .express-draft-style {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--background-primary);
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-express .express-draft-status {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* scope status tags to express */
+.mindos-express .status-outline    { background: #fff3cd; color: #856404; }
+.mindos-express .status-generating { background: #cce5ff; color: #004085; }
+.mindos-express .status-draft      { background: #d4edda; color: #155724; }
+.mindos-express .status-exported   { background: #e8d5f5; color: #6f42c1; }
+
+.theme-dark .mindos-express .status-outline    { background: #332700; color: #ffc107; }
+.theme-dark .mindos-express .status-generating { background: #003366; color: #66b2ff; }
+.theme-dark .mindos-express .status-draft      { background: #0d2e17; color: #4caf50; }
+.theme-dark .mindos-express .status-exported   { background: #2a1040; color: #ce93d8; }
+
+.mindos-express .express-draft-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: 1.4;
+}
+.mindos-express .express-draft-topic { font-size: 12px; color: var(--text-muted); }
+.mindos-express .express-draft-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+.mindos-express .express-draft-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+/* compose */
+.mindos-express .express-compose-body {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.mindos-express .express-step-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: 6px;
+}
+
+.mindos-express .express-step-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.mindos-express .express-step-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* style grid */
+.mindos-express .express-style-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.mindos-express .express-style-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mindos-express .express-style-card:hover {
+  border-color: var(--color-accent);
+  background: var(--background-modifier-hover);
+}
+.mindos-express .express-style-card.active {
+  border-color: var(--color-accent);
+  background: var(--background-secondary-alt, var(--background-secondary));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+.mindos-express .express-style-icon { font-size: 20px; line-height: 1; }
+.mindos-express .express-style-name { font-size: 13px; font-weight: 600; color: var(--text-normal); }
+.mindos-express .express-style-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+/* length */
+.mindos-express .express-length-row { display: flex; gap: 10px; }
+.mindos-express .express-length-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mindos-express .express-length-btn:hover { border-color: var(--color-accent); }
+.mindos-express .express-length-btn.active {
+  border-color: var(--color-accent);
+  background: var(--background-modifier-hover);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+.mindos-express .express-length-label { font-size: 14px; font-weight: 600; color: var(--text-normal); }
+.mindos-express .express-length-desc { font-size: 11px; color: var(--text-muted); }
+
+/* outline */
+.mindos-express .express-outline-header { margin-bottom: 16px; }
+.mindos-express .express-outline-title { font-size: 20px; font-weight: 700; color: var(--text-normal); margin-bottom: 6px; }
+.mindos-express .express-outline-oneliner { font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 10px; }
+.mindos-express .express-outline-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); }
+
+.mindos-express .express-outline-sources {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.mindos-express .express-sources-label { color: var(--text-muted); font-weight: 500; }
+.mindos-express .express-source-tag {
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-accent);
+  font-size: 11px;
+  cursor: default;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mindos-express .express-source-more { color: var(--text-muted); font-size: 11px; }
+
+/* sections */
+.mindos-express .express-section-list-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+
+.mindos-express .express-outline-section-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+.mindos-express .express-outline-section-card:hover { border-color: var(--color-accent); }
+
+.mindos-express .express-outline-section-header { display: flex; align-items: center; gap: 10px; }
+
+.mindos-express .express-section-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mindos-express .express-section-title-edit {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-normal);
+  outline: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  min-width: 0;
+}
+.mindos-express .express-section-title-edit:focus {
+  background: var(--background-modifier-form-field);
+  outline: 1px solid var(--color-accent);
+}
+
+.mindos-express .express-section-words { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+.mindos-express .express-section-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.mindos-express .express-outline-section-card:hover .express-section-del { opacity: 1; }
+.mindos-express .express-section-del:hover { color: var(--text-error); background: var(--background-modifier-error); }
+
+.mindos-express .express-keypoints {
+  list-style: disc;
+  padding-left: 28px;
+  margin: 8px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.mindos-express .express-keypoints li { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+/* generating */
+.mindos-express .express-step-generating {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+}
+.mindos-express .express-gen-title { font-size: 18px; font-weight: 700; color: var(--text-normal); margin: 0; }
+.mindos-express .express-progress-wrap { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.mindos-express .express-progress-bar { width: 100%; height: 8px; background: var(--background-modifier-border); border-radius: 4px; overflow: hidden; }
+.mindos-express .express-progress-fill { height: 100%; background: var(--color-accent); border-radius: 4px; transition: width 0.4s ease; }
+.mindos-express .express-progress-label { font-size: 12px; color: var(--text-muted); text-align: right; }
+
+.mindos-express .express-gen-preview {
+  width: 100%;
+  min-height: 200px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 14px;
+  overflow: hidden;
+}
+.mindos-express .express-gen-preview-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-monospace);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mindos-express .express-loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  gap: 16px;
+}
+.mindos-express .express-gen-loading,
+.mindos-express .express-loading-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.mindos-express .express-loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: express-dot-bounce 1.2s infinite ease-in-out;
+}
+.mindos-express .express-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.mindos-express .express-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes express-dot-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%            { transform: scale(1.0); opacity: 1.0; }
+}
+
+/* editor */
+.mindos-express .express-step-editor {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  min-height: 500px;
+}
+.mindos-express .express-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mindos-express .express-editor-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mindos-express .express-toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mindos-express .express-word-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  background: var(--background-secondary);
+  border-radius: 10px;
+}
+.mindos-express .express-editor-body { display: flex; gap: 12px; flex: 1; overflow: hidden; min-height: 0; }
+.mindos-express .express-editor-left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.mindos-express .express-main-editor {
+  flex: 1;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: 13px;
+  font-family: var(--font-monospace);
+  line-height: 1.7;
+  resize: none;
+  transition: border-color 0.15s;
+}
+.mindos-express .express-main-editor:focus { outline: none; border-color: var(--color-accent); }
+
+.mindos-express .express-editor-right { width: 260px; flex-shrink: 0; overflow-y: auto; }
+
+.mindos-express .express-rewrite-panel {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mindos-express .express-rewrite-title { font-size: 13px; font-weight: 700; color: var(--text-normal); margin: 0; }
+.mindos-express .express-rewrite-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+
+.mindos-express .express-rewrite-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+.mindos-express .express-rewrite-preset-btn {
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.mindos-express .express-rewrite-preset-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--background-modifier-hover);
+}
+
+.mindos-express .express-rewrite-result {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 10px;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mindos-express .express-rewrite-streaming,
+.mindos-express .express-rewrite-result-text {
+  font-size: 12px;
+  color: var(--text-normal);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.mindos-express .express-rewrite-done { font-size: 12px; color: var(--color-green); margin: 0; }
+
+.mindos-express .express-editor-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid var(--background-modifier-border);
+  margin-top: 8px;
+}
+
+/* preview */
+.mindos-express .express-preview-wrap { max-width: 720px; margin: 0 auto; padding-bottom: 40px; }
+.mindos-express .express-preview-header { margin-bottom: 20px; }
+.mindos-express .express-preview-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.mindos-express .express-preview-oneliner {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.mindos-express .express-preview-meta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.mindos-express .express-preview-body { line-height: 1.8; font-size: 14px; }
+.mindos-express .express-preview-body h2 {
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.mindos-express .express-preview-body h3 { font-size: 15px; margin-top: 18px; margin-bottom: 8px; }
+.mindos-express .express-preview-body p { margin-bottom: 12px; }
+.mindos-express .express-preview-body ul,
+.mindos-express .express-preview-body ol { padding-left: 24px; margin-bottom: 12px; }
+.mindos-express .express-preview-body li { margin-bottom: 4px; }
+.mindos-express .express-preview-body code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--background-secondary);
+}
+.mindos-express .express-preview-body pre {
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+.mindos-express .express-preview-sources { padding: 12px 0; }
+.mindos-express .express-preview-sources h4 {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.mindos-express .express-preview-sources ul { list-style: disc; padding-left: 20px; }
+.mindos-express .express-preview-sources li { font-size: 12px; color: var(--text-accent); }
+.mindos-express .express-preview-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* entry */
+.mindos-express .express-entry-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  gap: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.mindos-express .express-entry-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  font-size: 28px;
+}
+.mindos-express .express-entry-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0;
+}
+.mindos-express .express-entry-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.mindos-express .express-entry-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+.mindos-express .express-entry-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-normal);
+}
+.mindos-express .express-entry-feature-icon { font-size: 16px; flex-shrink: 0; }

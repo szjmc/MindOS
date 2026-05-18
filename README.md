@@ -1,32 +1,77 @@
-# 🤖 AI Prompt Collector for Obsidian
+# MindOS (Obsidian Plugin) — Your Second Brain, OS-Level
 
-一键采集豆包/ChatGPT/Kimi等AI工具的对话内容，自动分类并整理成结构化知识文档保存到Obsidian。
+MindOS 是一个 **Obsidian 本地优先**的个人知识管理系统（PKM），将「采集 → 整理 → 检索问答 → 间隔复习」打通成闭环，并坚持：
 
-<div align="center">
-  
-![Badge](https://img.shields.io/badge/version-0.1.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Mac-lightgray)
+- **File First，Database Last**：所有数据均存储为 Markdown / JSON，插件挂了数据也可用
+- **AI 是助手，不是主宰**：支持审核模式，重要变更由人确认
+- **系统自我可读**：schema/ 规则层自解释，未来可迁移可演化
 
-</div>
+> 当前版本：**v0.6.5（稳定可用）**  
+> 开发中：**v0.7（Express 输出引擎）**
 
 ---
 
-## ✨ 核心功能
+## ✨ 核心能力一览
 
-### 📥 智能采集
-- ✅ 支持主流AI平台：豆包、ChatGPT、Kimi、通义千问、文心一言、Claude
-- ✅ 识别完整对话回合：以"用户提问 → AI回答"为一轮独立记录
-- ✅ 自由组合发送：单选某回合、多选多个回合、全选全部
+### ✅ 1) 采集与 Wiki 三层知识架构（raw/wiki/schema）
+- 浏览器扩展/协议唤起采集 AI 对话（obsidian://mindos）
+- 结构化存档到 `raw/conversations`
+- 四阶段 AI 流水线：聚类 → 草稿 → 比对 → 执行
+- 写入 `wiki/`（entities / concepts / topics / comparisons / overviews）
+- 自动维护 `wiki/INDEX.md`
+- 支持审核模式（Review Mode）
+- 支持旧结构迁移（Migrator）
 
-### 🧠 自动整理
-- ✅ 调用大模型API进行二次处理
-- ✅ 5大类自动分类：技术类、职场类、学习类、实操类、理论类
-- ✅ 按标准框架输出：每个类型对应专属知识卡片模板
-- ✅ 删除闲聊话术，只保留干货要点
+### ✅ 2) 检索 + 向量化 + RAG 问答（Retrieve）
+- 多 Provider embedding（OpenAI / 阿里云 / 智谱 / 自定义等）
+- 智能切片、余弦相似度搜索
+- Page / Chunk 聚合
+- 增量同步 + 自动向量化（文件变更触发）
+- Token 配额与成本预估
+- RAG 多轮对话（支持流式输出 + 引用）
 
-### 📁 自动化归档
-- ✅ 按「知识库根目录 / 类型 / 年 / 月」分层存储
-- ✅ 自动生成YAML元信息：标题、来源、时间、标签
-- ✅ 失败兜底机制：整理失败时保存原始对话备用
+### ✅ 3) Recall 智能复习系统（SRS）
+- 双算法：SM-2 / FSRS
+- 7 大复习场景（Wiki / 命令行 / 单词 / 概念 / 多语言 / 面试 / 自定义）
+- 卡片管理面板：搜索、过滤、批量操作、编辑器
+- 学习数据看板：热力图、趋势、场景对比、卡片库概览
+- 面试助手闭环：JD 解析 → 知识盘点 → 模拟面试 → 生成复习卡
 
+### 🧪 4) Express 输出引擎（v0.7 开发中）
+- 基于 Wiki 生成文章草稿（大纲优先 → 正文生成 → Markdown 导出）
+- 多风格模板：技术博客 / 知乎答题 / 公众号 / 摘要 / 教程等
+- 段落级 AI 重写
+- 导出到 Wiki 形成“知识变现输出”
+
+---
+
+## 🧱 目录结构（本地优先）
+
+> 所有数据默认位于 `baseFolder`（默认：`Knowledge Base/`）
+
+```text
+{baseFolder}/
+├── raw/
+│   └── conversations/        原始对话存档（不可改）
+├── wiki/
+│   ├── INDEX.md              自动索引
+│   ├── entities/
+│   ├── concepts/
+│   ├── topics/
+│   ├── comparisons/
+│   └── overviews/
+├── schema/
+│   ├── CLAUDE.md             AI 工作说明书（规则层）
+│   ├── conventions.md
+│   └── page-templates/
+└── _system/
+    ├── vectors.json          向量索引
+    ├── quota.json            Token 配额
+    ├── chat-sessions/        RAG 对话历史
+    └── recall/               Recall 数据
+        ├── cards/
+        ├── sessions/
+        ├── stats/
+        ├── wordlists/
+        ├── interview/
+        └── custom-scenarios.json

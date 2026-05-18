@@ -1,0 +1,168 @@
+/* =========================================================
+   MindOS Core Styles (shared)
+   ========================================================= */
+
+.mindos-root {
+  --mindos-primary: #7c3aed;
+  --mindos-primary-hover: #6d28d9;
+  --mindos-success: #10b981;
+  --mindos-warning: #f59e0b;
+  --mindos-danger: #ef4444;
+  --mindos-info: #3b82f6;
+  --mindos-radius: 10px;
+  --mindos-radius-sm: 6px;
+
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes mindos-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes mindos-expand { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Icon Button ── */
+.mindos-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mindos-icon-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+.mindos-icon-btn svg { width: 16px; height: 16px; }
+
+/* ── Buttons ── */
+.mindos-btn-large {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 4px;
+}
+.mindos-btn-large:hover { background: var(--background-modifier-hover); transform: translateY(-1px); }
+.mindos-btn-large svg { width: 14px; height: 14px; }
+.mindos-btn-large.is-primary {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+.mindos-btn-large.is-primary:hover { background: var(--mindos-primary-hover); }
+.mindos-btn-large.is-danger {
+  background: var(--mindos-danger);
+  color: #fff;
+  border-color: transparent;
+}
+.mindos-btn-large.is-danger:hover { background: #dc2626; }
+.mindos-btn-large.is-danger-text { color: var(--mindos-danger); }
+.mindos-btn-large.is-ghost {
+  background: transparent;
+  border-color: var(--background-modifier-border);
+}
+
+.mindos-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+  gap: 3px;
+}
+.mindos-btn:hover { background: var(--background-modifier-hover); }
+.mindos-btn svg { width: 13px; height: 13px; }
+.mindos-btn.is-danger-text { color: var(--mindos-danger); }
+
+.mindos-btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+
+.mindos-mini-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+.mindos-mini-btn:hover { background: var(--background-modifier-hover); color: var(--text-normal); }
+.mindos-mini-btn svg { width: 14px; height: 14px; }
+.mindos-mini-btn.is-success {
+  background: var(--mindos-success);
+  color: #fff;
+  border-color: transparent;
+}
+.mindos-mini-btn.is-success:hover { background: #059669; }
+.mindos-mini-btn.is-warning {
+  background: var(--mindos-warning);
+  color: #fff;
+  border-color: transparent;
+  width: auto;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.mindos-mini-btn.is-danger { color: var(--mindos-danger); }
+.mindos-mini-btn.is-danger:hover { background: rgba(239, 68, 68, 0.1); }
+
+/* ── Tags (generic) ── */
+.mindos-tag {
+  font-size: 10px;
+  padding: 2px 7px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+/* ── Empty ── */
+.mindos-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 20px 0;
+}
+
+/* ── Scrollbar ── */
+.mindos-task-center::-webkit-scrollbar,
+.mindos-log-box::-webkit-scrollbar,
+.mindos-action-preview::-webkit-scrollbar {
+  width: 8px;
+}
+.mindos-task-center::-webkit-scrollbar-thumb,
+.mindos-log-box::-webkit-scrollbar-thumb,
+.mindos-action-preview::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+}
+.mindos-task-center::-webkit-scrollbar-thumb:hover,
+.mindos-log-box::-webkit-scrollbar-thumb:hover,
+.mindos-action-preview::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}

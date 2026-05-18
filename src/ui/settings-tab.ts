@@ -515,8 +515,124 @@ export class MindOSSettingTab extends PluginSettingTab {
           })
       );
 
+    // ✅ v0.7 Express 导出目录（新增）
+    new Setting(containerEl)
+      .setName("Express 导出目录")
+      .setDesc("相对于 baseFolder 的路径，例如：wiki/articles、wiki/topics、wiki/overviews")
+      .addText((t) =>
+        t.setPlaceholder("wiki/articles")
+          .setValue(this.plugin.settings.expressExportFolder || "wiki/articles")
+          .onChange(async (v) => {
+            this.plugin.settings.expressExportFolder = v.trim() || "wiki/articles";
+            await this.plugin.saveSettings();
+          })
+      );
+
     // ── v0.6 Recall ──
     containerEl.createEl("h3", { text: "🧠 Recall 复习设置" });
+
+    // ── v0.7 TTS 听力模式 ──
+    containerEl.createEl("h4", { text: "🔊 TTS 听力模式（v0.7）" });
+
+        // ── v0.7 Vocab TTS 快捷键 ──
+    containerEl.createEl("h4", { text: "⌨️ 单词朗读快捷键（v0.7）" });
+
+    new Setting(containerEl)
+      .setName("朗读快捷键（主）")
+      .setDesc("仅在单词（vocab）场景生效。格式示例：Shift+Space / Alt+S / Ctrl+Enter / Cmd+K。留空=禁用。")
+      .addText((t) =>
+        t.setPlaceholder("Shift+Space")
+          .setValue(this.plugin.settings.recallVocabTTSHotkey ?? "Shift+Space")
+          .onChange(async (v) => {
+            this.plugin.settings.recallVocabTTSHotkey = v.trim();
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("朗读快捷键（备选）")
+      .setDesc("主快捷键不方便时的备用键位。留空=禁用。")
+      .addText((t) =>
+        t.setPlaceholder("Alt+S")
+          .setValue(this.plugin.settings.recallVocabTTSHotkeyAlt ?? "Alt+S")
+          .onChange(async (v) => {
+            this.plugin.settings.recallVocabTTSHotkeyAlt = v.trim();
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("启用 TTS")
+      .setDesc("在英语单词复习时可一键朗读（基于浏览器 Web Speech API）")
+      .addToggle((t) =>
+        t.setValue(this.plugin.settings.recallTTSEnabled ?? true).onChange(async (v) => {
+          this.plugin.settings.recallTTSEnabled = v;
+          await this.plugin.saveSettings();
+        })
+      );
+
+    new Setting(containerEl)
+      .setName("语言 (lang)")
+      .setDesc("如：en-US / en-GB / ja-JP / fr-FR")
+      .addText((t) =>
+        t.setPlaceholder("en-US")
+          .setValue(this.plugin.settings.recallTTSLang ?? "en-US")
+          .onChange(async (v) => {
+            this.plugin.settings.recallTTSLang = v.trim() || "en-US";
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("语速 (rate)")
+      .setDesc("0.5 - 2.0，建议 0.9~1.1")
+      .addSlider((s) =>
+        s.setLimits(0.5, 2, 0.05)
+          .setValue(this.plugin.settings.recallTTSRate ?? 1.0)
+          .setDynamicTooltip()
+          .onChange(async (v) => {
+            this.plugin.settings.recallTTSRate = v;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("音高 (pitch)")
+      .setDesc("0 - 2")
+      .addSlider((s) =>
+        s.setLimits(0, 2, 0.05)
+          .setValue(this.plugin.settings.recallTTSPitch ?? 1.0)
+          .setDynamicTooltip()
+          .onChange(async (v) => {
+            this.plugin.settings.recallTTSPitch = v;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("音量 (volume)")
+      .setDesc("0 - 1")
+      .addSlider((s) =>
+        s.setLimits(0, 1, 0.05)
+          .setValue(this.plugin.settings.recallTTSVolume ?? 1.0)
+          .setDynamicTooltip()
+          .onChange(async (v) => {
+            this.plugin.settings.recallTTSVolume = v;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("优先音色 (Voice Name，可选)")
+      .setDesc("填 SpeechSynthesisVoice.name；留空则自动选择匹配语言的默认音色")
+      .addText((t) =>
+        t.setPlaceholder("（留空自动选择）")
+          .setValue(this.plugin.settings.recallTTSPreferredVoice ?? "")
+          .onChange(async (v) => {
+            this.plugin.settings.recallTTSPreferredVoice = v.trim();
+            await this.plugin.saveSettings();
+          })
+      );
 
     new Setting(containerEl)
       .setName("SRS 算法")

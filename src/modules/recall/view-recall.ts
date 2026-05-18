@@ -122,11 +122,32 @@ export class RecallView {
 
       if (inInput) return; // 其他输入框中不处理
 
-      // 未翻转：空格翻转
+            // 未翻转
+      // 未翻转
       if (!state.isFlipped) {
-        if (e.key === " " || e.key === "Enter") {
+        // v0.7：vocab 场景自定义快捷键朗读（优先级高于翻转）
+        if (state.currentCard.scenario === "vocab") {
+          const hk1 = (this.plugin.settings.recallVocabTTSHotkey ?? "Shift+Space").trim();
+          const hk2 = (this.plugin.settings.recallVocabTTSHotkeyAlt ?? "Alt+S").trim();
+
+          if (
+            (hk1 && this.matchHotkey(e, hk1)) ||
+            (hk2 && this.matchHotkey(e, hk2))
+          ) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.speakCurrentVocab(state.currentCard);
+            return;
+          }
+        }
+
+        // ✅ 默认翻转：Space / Enter
+        // 用 code 更稳定；同时 stopPropagation 防止按钮把 Enter/Space 当 click 吞掉
+        if (e.code === "Space" || e.code === "Enter") {
           e.preventDefault();
+          e.stopPropagation();
           this.flipCard();
+          return;
         }
       } else {
         // 已翻转：1/2/3/4 评分
@@ -136,12 +157,12 @@ export class RecallView {
         else if (e.key === "4") { e.preventDefault(); this.submitRating(state.currentCard, 4); }
       }
     };
-    window.addEventListener("keydown", this.keyboardHandler);
+    window.addEventListener("keydown", this.keyboardHandler, true); // capture = true
   }
 
   private removeKeyboardListener() {
     if (this.keyboardHandler) {
-      window.removeEventListener("keydown", this.keyboardHandler);
+      window.removeEventListener("keydown", this.keyboardHandler, true);
       this.keyboardHandler = null;
     }
   }
@@ -766,17 +787,45 @@ export class RecallView {
       }
     }
 
+    // v0.7 TTS：vocab 场景朗读按钮（仅未翻转时展示）— 防重复
+    if (!isFlipped && card.scenario === "vocab") {
+      // ✅ 防重复：如果已经渲染过工具栏，就不再创建
+      if (!cardEl.querySelector(".mindos-recall-card-tools")) {
+        const tools = cardEl.createDiv({ cls: "mindos-recall-card-tools" });
+
+        const speakBtn = tools.createEl("button", { cls: "mindos-btn mindos-recall-tts-btn" });
+        setIcon(speakBtn.createSpan(), "volume-2");
+        speakBtn.createSpan({ text: " 朗读" });
+        speakBtn.onclick = () => this.speakCurrentVocab(card);
+
+        const hint = tools.createDiv({ cls: "mindos-recall-tts-hint" });
+        hint.setText(this.getVocabTTSHotkeyHint());
+      }
+    }
+
     const frontEl = cardEl.createDiv({ cls: "mindos-recall-card-front" });
-    try {
-      MarkdownRenderer.render(
-        this.plugin.app,
-        card.front,
-        frontEl,
-        "",
-        this.mdComponent,
-      );
-    } catch {
-      frontEl.setText(card.front);
+
+      // ✅ vocab 正面：隐藏单词本身，用 DOM 遮罩替代（稳定好看，不依赖 Markdown）
+    if (!isFlipped && card.scenario === "vocab") {
+      const mask = frontEl.createDiv({ cls: "mindos-vocab-mask" });
+      mask.createDiv({ cls: "mindos-vocab-mask-dots", text: "•••" });
+      mask.createDiv({ cls: "mindos-vocab-mask-sub", text: "单词已隐藏，回忆后再翻转" });
+
+      // 可选：如果你希望正面还显示“释义/题干”，可以在这里追加
+      // 但目前你的提示（词性/音标）已经在 hints 区域，所以这里先不加，保持干净。
+    } else {
+      // 非 vocab 或已翻转：正常渲染 front
+      try {
+        MarkdownRenderer.render(
+          this.plugin.app,
+          card.front,
+          frontEl,
+          "",
+          this.mdComponent,
+        );
+      } catch {
+        frontEl.setText(card.front);
+      }
     }
 
     if (!isFlipped && card.hints && card.hints.length > 0) {
@@ -1123,6 +1172,158 @@ export class RecallView {
   // ════════════════════════════════════════════════════════════
   // 工具
   // ════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════════
+  // v0.7 TTS：朗读当前 vocab 卡
+  // ════════════════════════════════════════════════════════════
+  private async speakCurrentVocab(card: RecallCard) {
+    try {
+      if (card.scenario !== "vocab") return;
+
+      const text = this.stripMarkdownForTTS(card.front);
+      if (!text) {
+        new Notice("没有可朗读的内容");
+        return;
+      }
+
+      // 复用 plugin 的 speakVocab（统一 settings）
+      // @ts-ignore
+      if (typeof (this.plugin as any).speakVocab === "function") {
+        // @ts-ignore
+        await (this.plugin as any).speakVocab(text);
+        return;
+      }
+
+      new Notice("TTS 未初始化：请先在 main.ts 中接入 TTSService + speakVocab()");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      new Notice(`TTS 朗读失败：${msg}`);
+    }
+  }
+
+  private stripMarkdownForTTS(md: string): string {
+    let s = String(md ?? "").trim();
+    if (!s) return "";
+
+    // 去代码块
+    s = s.replace(/```[\s\S]*?```/g, " ");
+
+    // 去行内代码
+    s = s.replace(/`([^`]+)`/g, "$1");
+
+    // 去链接/图片
+    s = s.replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1");
+    s = s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+
+    // 去粗斜体
+    s = s.replace(/\*\*([^*]+)\*\*/g, "$1");
+    s = s.replace(/\*([^*]+)\*/g, "$1");
+    s = s.replace(/__([^_]+)__/g, "$1");
+    s = s.replace(/_([^_]+)_/g, "$1");
+
+    // 去标题/引用
+    s = s.replace(/^\s{0,3}#+\s+/gm, "");
+    s = s.replace(/^\s{0,3}>\s+/gm, "");
+
+    // 合并空白
+    s = s.replace(/\s+/g, " ").trim();
+
+    // vocab 朗读：优先只读第一段（避免把释义全读了）
+    // 如果你的 front 是 "word\n释义" 这种，这里会只读 word
+     const firstLine = String(md ?? "").split("\n").map(x => x.trim()).filter(Boolean)[0];
+    if (firstLine) {
+      const t = firstLine
+        .replace(/`([^`]+)`/g, "$1")
+        .replace(/\*\*([^*]+)\*\*/g, "$1")
+        .replace(/\*([^*]+)\*/g, "$1")
+        .trim();
+
+      // 如果还是像英文单词/短语，则直接返回
+      if (/^[a-zA-Z][a-zA-Z\s'’-]*$/.test(t) && t.length <= 40) return t;
+    }
+
+    if (s.length > 80) s = s.slice(0, 80);
+    return s;
+  }
+
+  private getVocabTTSHotkeyHint(): string {
+    const hk1 = (this.plugin.settings.recallVocabTTSHotkey ?? "Shift+Space").trim();
+    const hk2 = (this.plugin.settings.recallVocabTTSHotkeyAlt ?? "Alt+S").trim();
+    if (hk1 && hk2) return `快捷键：${hk1} / ${hk2}`;
+    if (hk1) return `快捷键：${hk1}`;
+    if (hk2) return `快捷键：${hk2}`;
+    return "快捷键：未设置";
+  }
+
+  /**
+   * 判断事件是否匹配类似 "Shift+Space" / "Alt+S" / "Ctrl+Enter" / "Cmd+K"
+   */
+  private matchHotkey(e: KeyboardEvent, hotkey: string): boolean {
+    const want = hotkey
+      .split("+")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    if (want.length === 0) return false;
+
+    // 修饰键期望
+    const needShift = want.some(x => x.toLowerCase() === "shift");
+    const needAlt   = want.some(x => x.toLowerCase() === "alt" || x.toLowerCase() === "option");
+    const needCtrl  = want.some(x => x.toLowerCase() === "ctrl" || x.toLowerCase() === "control");
+    const needMeta  = want.some(x => x.toLowerCase() === "cmd" || x.toLowerCase() === "meta" || x.toLowerCase() === "command");
+
+    if (!!e.shiftKey !== needShift) return false;
+    if (!!e.altKey   !== needAlt)   return false;
+    if (!!e.ctrlKey  !== needCtrl)  return false;
+    if (!!e.metaKey  !== needMeta)  return false;
+
+    // 主键：取最后一个非修饰键 token
+    const main = want
+      .filter(x => !["shift", "alt", "option", "ctrl", "control", "cmd", "meta", "command"].includes(x.toLowerCase()))
+      .slice(-1)[0];
+
+    if (!main) return false;
+
+    // 标准化比较：Space / Enter / 字母
+    const m = main.toLowerCase();
+    if (m === "space") return e.key === " ";
+    if (m === "enter" || m === "return") return e.key === "Enter";
+
+    // 其它：字母/数字/符号
+    return e.key.toLowerCase() === m;
+  }
+
+  /**
+   * vocab 正面遮罩：
+   * - 默认隐藏第一行（通常是单词本身）
+   * - 如果第一行太像英文单词/短语，则用占位符替换
+   * - 保留后续提示（词性/音标/释义等）
+   */
+  private maskVocabFront(front: string): string {
+    const raw = String(front ?? "").trim();
+    if (!raw) return raw;
+
+    const lines = raw.split("\n");
+    if (lines.length === 0) return raw;
+
+    const first = (lines[0] ?? "").trim();
+
+    // 判断第一行是否“像一个英文词/短语”
+    // 允许：字母/空格/连字符/撇号
+    const looksLikeWord = /^[a-zA-Z][a-zA-Z\s'’-]*$/.test(first) && first.length <= 40;
+
+    if (looksLikeWord) {
+      lines[0] = `::: mindos-vocab-mask
+      •••
+      :::
+      `;
+    } else {
+      // 如果第一行不是纯单词（可能 front 里有标题），也尽量不破坏结构：
+      // 但仍然尝试隐藏其中的粗体单词：**ability**
+      lines[0] = lines[0].replace(/\*\*([a-zA-Z][a-zA-Z\s'’-]{0,40})\*\*/g, "▢▢▢");
+    }
+
+    return lines.join("\n").trim();
+  }
 
     // ════════════════════════════════════════════════════════════
   // 词库管理（单词场景）

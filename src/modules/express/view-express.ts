@@ -1041,8 +1041,9 @@ private async handleGenerateArticle(): Promise<void> {
 
     try {
       const settings        = (this.plugin as any).settings;
-      const baseFolder      = (settings?.baseFolder as string) || '';
-      const wikiArticlesDir = `${baseFolder}/wiki/articles`;
+      const baseFolder = (settings?.baseFolder as string) || '';
+      const exportRel  = (settings?.expressExportFolder as string) || 'wiki/articles';
+      const wikiArticlesDir = `${baseFolder}/${exportRel}`.replace(/\/+/g, '/');
 
       const adapter = this.plugin.app.vault.adapter;
       if (!(await adapter.exists(wikiArticlesDir))) {

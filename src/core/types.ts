@@ -326,6 +326,20 @@ export interface MindOSSettings {
   recallNewCardsPerDay: number;
   recallReviewLimit: number;
   recallAutoGenerate: boolean;
+
+    // v0.7 Express
+  expressExportFolder?: string; 
+
+    // v0.7 Recall TTS
+  recallTTSEnabled?: boolean;
+  recallTTSLang?: string;            // e.g. "en-US"
+  recallTTSRate?: number;            // 0.5-2
+  recallTTSPitch?: number;           // 0-2
+  recallTTSVolume?: number;          // 0-1
+  recallTTSPreferredVoice?: string;  // SpeechSynthesisVoice.name
+    // v0.7 Recall Vocab TTS Hotkey（自定义快捷键）
+  recallVocabTTSHotkey?: string;     // e.g. "Shift+Space"
+  recallVocabTTSHotkeyAlt?: string;  // e.g. "Alt+S"
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -830,7 +844,7 @@ export type ArticleStatus =
   | 'draft'          // 草稿完成
   | 'exported';      // 已导出到 Wiki
 
-export type SearchMode = 'vector' | 'keyword' | 'none';
+export type SearchMode = "page" | "chunk";
 
 export interface OutlineSection {
   id: string;
