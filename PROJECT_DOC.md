@@ -1,4 +1,4 @@
-# MindOS 项目文档
+# MindOS 技术文档
 
 ---
 
@@ -10,25 +10,43 @@
 
 | 属性 | 值 |
 |------|-----|
-| 项目名称 | MindOS |
+| 项目名称 | MindOS - Your Second Brain, OS-Level |
 | 版本 | v0.6.5 |
 | 类型 | Obsidian 插件 |
 | 开发语言 | TypeScript |
+| 代码总量 | ~12,000 行 TypeScript + ~5,500 行 CSS |
+| 核心文件数 | ~45 个 |
 | 核心理念 | 采集 → 整理 → 检索 → 复习 |
 
-### 1.2 核心功能
+### 1.2 核心功能矩阵
 
-| 模块 | 功能描述 | 版本 |
-|------|---------|------|
-| **智能采集** | 从剪贴板/browser协议采集AI对话，自动分类整理 | v0.1 |
-| **知识管理** | Wiki三层架构：raw → wiki → schema | v0.1 |
-| **语义检索** | 基于向量的全文检索 | v0.5 |
-| **RAG问答** | 基于知识库的对话式问答 | v0.5 |
-| **智能复习** | SRS间隔重复算法（SM-2/FSRS） | v0.6 |
-| **面试助手** | JD解析、知识盘点、模拟面试 | v0.6 |
-| **单词记忆** | 内置主流词库，支持多模式复习 | v0.6 |
-| **多语言短语** | 日语/韩语/西班牙语等短语记忆 | v0.6 |
-| **自定义场景** | 用户自定义复习卡片模板 | v0.6 |
+| 模块 | 功能描述 | 版本 | 状态 |
+|------|---------|------|------|
+| **智能采集** | 从剪贴板/browser协议采集AI对话，自动分类整理 | v0.1 | ✅ |
+| **知识管理** | Wiki三层架构：raw → wiki → schema | v0.1 | ✅ |
+| **语义检索** | 基于向量的全文检索 | v0.5 | ✅ |
+| **RAG问答** | 基于知识库的对话式问答 | v0.5 | ✅ |
+| **智能复习** | SRS间隔重复算法（SM-2/FSRS） | v0.6 | ✅ |
+| **面试助手** | JD解析、知识盘点、模拟面试 | v0.6 | ✅ |
+| **单词记忆** | 内置主流词库，支持多模式复习 | v0.6 | ✅ |
+| **多语言短语** | 日语/韩语/西班牙语等短语记忆 | v0.6 | ✅ |
+| **自定义场景** | 用户自定义复习卡片模板 | v0.6 | ✅ |
+
+### 1.3 设计哲学
+
+```
+1. 文件 First，数据库 Last
+   所有数据都是 Markdown 或 JSON 文件
+   即使插件死了，数据也能用任何编辑器打开
+
+2. AI 是助手，不是主宰
+   AI 的任何输出都可被人类否决
+   重要决策始终由人确认（审核模式）
+
+3. 系统要自我可读
+   schema/ 文件自解释
+   未来想换工具时，整套知识能完整迁移
+```
 
 ---
 
@@ -42,10 +60,9 @@
 │                         (main.ts)                              │
 ├─────────────────────────────────────────────────────────────────┤
 │                      UI Layer                                  │
-│   ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐       │
-│   │ MindOSView   │ │ SettingTab   │ │ DashboardView    │       │
-│   │  (采集/检索) │ │   (设置)     │ │   (数据看板)     │       │
-│   └──────────────┘ └──────────────┘ └──────────────────┘       │
+│   ┌──────────┬──────────┬──────────┬──────────┐               │
+│   │  采集     │  检索     │  问答     │  复习     │               │
+│   └──────────┴──────────┴──────────┴──────────┘               │
 ├─────────────────────────────────────────────────────────────────┤
 │                      Store Layer                               │
 │   ┌──────────┐ ┌──────────────┐ ┌──────────────┐              │
@@ -74,14 +91,19 @@
 │  │ Recall Module (v0.6)                                  │    │
 │  │  SRSEngine → RecallCardStore → AICardGenerator       │    │
 │  │  + 场景生成器: Wiki/Command/Vocab/Interview/Concept  │    │
-│  │  + 面试助手: JDAnalyzer → GapAnalyzer → MockInterviewer│  │
+│  │  + 面试助手: JDAnalyzer → GapAnalyzer → MockInterviewer│ │
 │  └───────────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────────────┤
-│                      Data Layer                               │
-│  ┌─────────┐ ┌──────────┐ ┌──────────────────┐               │
-│  │  raw/   │ │  wiki/   │ │   _system/       │               │
-│  │(原始对话)│ │(知识层)  │ │(向量/会话/卡片)  │               │
-│  └─────────┘ └──────────┘ └──────────────────┘               │
+│  Karpathy LLM Wiki 三层知识架构                                │
+│  ├── raw/      原始素材层（不可改）                            │
+│  ├── wiki/     知识层（AI 全权维护）                          │
+│  └── schema/   规则层（人类编写）                            │
+├─────────────────────────────────────────────────────────────────┤
+│  系统数据层 _system/                                           │
+│  ├── vectors.json        向量索引                              │
+│  ├── quota.json          配额                                  │
+│  ├── chat-sessions/      对话历史                              │
+│  └── recall/             复习模块数据                           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -90,8 +112,8 @@
 ```
 src/
 ├── core/                    # 核心模块
-│   ├── types.ts             # 类型定义（700+行）
-│   ├── constants.ts         # 常量配置
+│   ├── types.ts             # 类型定义（~600 行）
+│   ├── constants.ts         # 常量配置（~250 行）
 │   ├── store.ts             # 状态管理（Task/Retrieve/Recall）
 │   └── utils.ts             # 工具函数
 ├── modules/
@@ -113,7 +135,8 @@ src/
 │   │   ├── token-estimator.ts # Token估算
 │   │   ├── quota-manager.ts   # 配额管理
 │   │   ├── chunker.ts         # 文本切片
-│   │   └── chat-session-store.ts # 会话存储
+│   │   ├── chat-session-store.ts # 会话存储
+│   │   └── view-retrieve.ts    # 检索视图
 │   └── recall/              # 复习模块 (v0.6)
 │       ├── srs-engine.ts      # SRS算法引擎
 │       ├── recall-card-store.ts # 卡片存储
@@ -185,13 +208,20 @@ src/
 
 #### 3.2.1 workflow-engine.ts - 智能合并流水线
 
-**核心流程**：
+**完整流程**：
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-│  Cluster │ → │  Draft   │ → │   Diff   │ → │ Execute  │
-│  回合聚类 │    │  整理草稿 │    │  差异比对 │    │  生成动作 │
-└──────────┘    └──────────┘    └──────────┘    └──────────┘
+浏览器扩展 → 协议唤起 → 解析回合
+      ↓
+    四阶段 AI 流水线
+      ├── 阶段1：聚类     → 把回合按主题分组
+      ├── 阶段2：草稿     → AI 生成结构化草稿
+      ├── 阶段3：比对     → 与现有 Wiki 对比，决定 merge/create/discard
+      └── 阶段4：执行     → 生成 actions
+      ↓
+   用户审核（可选）→ 写入 wiki/
+      ↓
+   自动向量化（积累 5 个变更触发）
 ```
 
 **Pipeline 阶段说明**：
@@ -202,6 +232,11 @@ src/
 | `draft` | 整理草稿 | 将同主题回合整理成结构化草稿 | 是 |
 | `diff` | 差异比对 | 对比草稿与现有Wiki，决定 merge/create/discard | 是 |
 | `execute` | 生成动作 | 将决策转换为可执行的 WikiAction | 否 |
+
+**v0.6 优化亮点**：
+- 来源链接智能合并（同来源 block 共享一个链接）
+- 显示名格式化：`日期—来源—主题`
+- 笔记 frontmatter 美化
 
 #### 3.2.2 ai-client.ts - AI API 客户端
 
@@ -238,6 +273,12 @@ src/
 
 实现基于知识库的问答，支持流式输出和引用标注。
 
+#### 3.3.5 quota-manager.ts - 配额管理
+
+- 每日 Token 限额控制
+- 历史使用记录
+- 成本预估
+
 ---
 
 ### 3.4 Recall 模块 (v0.6)
@@ -250,6 +291,14 @@ src/
 |------|------|------|
 | **SM-2** | 经典算法，简单可靠 | `easeFactor`, `interval`, `repetitions` |
 | **FSRS-4.5** | 现代算法，更精准 | `stability`, `difficulty` |
+
+**评分系统**：
+```
+1 = Again（完全不会）→ 重置间隔
+2 = Hard（困难）     → 短间隔
+3 = Good（正确）     → 标准间隔
+4 = Easy（很简单）   → 长间隔（×1.3 bonus）
+```
 
 **核心方法**：
 - `review(card, rating)` - 处理复习评分
@@ -265,65 +314,90 @@ _system/recall/
 │   ├── wiki/*.json
 │   ├── vocab/*.json
 │   ├── interview/*.json
-│   └── ...
+│   ├── concept/*.json
+│   ├── phrase/*.json
+│   ├── command/*.json
+│   └── custom/*.json
 ├── sessions/*.json    # 复习会话记录
-└── stats/
-    ├── 2024-01-01.json
-    ├── 2024-01-02.json
-    └── ...
+├── stats/
+│   ├── 2024-01-01.json
+│   └── ...
+├── wordlists/
+│   ├── lists.json
+│   ├── cet4.json
+│   ├── cet6.json
+│   └── ...
+├── interview/
+│   └── jd_*.json
+└── custom-scenarios.json
 ```
 
 #### 3.4.3 场景生成器
 
-| 场景 | 生成器 | 用途 |
-|------|-------|------|
-| Wiki | `recall-wiki-generator.ts` | 从Wiki页面生成卡片 |
-| 命令 | `recall-command-generator.ts` | Linux/Git/Docker命令 |
-| 单词 | `recall-vocab-generator.ts` | 英语单词记忆 |
-| 概念 | `recall-concept-generator.ts` | 核心概念定义 |
-| 短语 | `recall-phrase-generator.ts` | 多语言短语 |
-| 自定义 | `custom-scenario-store.ts` | 用户自定义场景 |
+| 场景 | 生成器 | 数据来源 | 特色 |
+|------|-------|----------|------|
+| Wiki | `recall-wiki-generator.ts` | 用户知识库 | AI 自动提取知识点 |
+| 命令 | `recall-command-generator.ts` | 50+ 内置库 | Linux/Git/Docker 命令 |
+| 单词 | `recall-vocab-generator.ts` | 6 大词库 | 4 种复习模式 |
+| 概念 | `recall-concept-generator.ts` | Wiki concept 页面 | AI 一键生成概念卡 |
+| 短语 | `recall-phrase-generator.ts` | 11 种语言 | 罗马音/拼音标注 |
+| 面试 | JD + GapAnalyzer | JD 解析 | 知识盘点 + 模拟面试 |
+| 自定义 | `custom-scenario-store.ts` | 用户模板 | 4 个预设模板 |
 
-#### 3.4.4 面试助手
-
-**JD 分析流程**：
+#### 3.4.4 面试助手完整闭环
 
 ```
-JD文本 → JDAnalyzer → GapAnalyzer → MockInterviewer
-  │         │              │               │
-  └────→ 技能提取 ──→ 知识盘点 ──→ 模拟面试
+1. 粘贴 JD
+   ↓
+2. AI 解析（公司/职位/技能/职责）
+   ↓
+3. 知识盘点（两种模式）
+   ├── 本地盘点：对照 Wiki，给出准备度报告
+   └── AI 增强：调用 AI 生成缺失知识 → 走采集流程 → 保存到 Wiki → 重新盘点
+   ↓
+4. 模拟面试
+   ├── AI 智能出题（70% 技术 + 30% 行为，重点出薄弱项）
+   ├── 答题评估（0-100 分 + 优点/不足/改进建议/模范答案）
+   └── 一键保存为复习卡
 ```
+
+#### 3.4.5 Dashboard 数据看板
+
+- **6 大核心指标**：复习数 / 正确率 / 用时 / 新卡片 / 连续天数 / 待复习
+- **学习热力图**：GitHub 风格，最近 90 天
+- **趋势柱状图**：最近 30 天，颜色区分正确率
+- **场景对比**：按复习数排序
+- **卡片库总览**：状态分布 + 场景分布
+- **周期切换**：今日 / 本周 / 本月 / 全部
 
 ---
 
 ## 4. 数据结构
 
-### 4.1 文件目录结构
+### 4.1 Wiki 三层架构
 
 ```
-Knowledge Base/              # 基础文件夹（可配置）
+{vault}/
 ├── raw/                     # 原始数据层（只读）
 │   └── conversations/       # 对话存档
 │       └── 20240101123000-对话名.md
 ├── wiki/                    # 知识层（AI维护）
 │   ├── INDEX.md             # 自动生成的索引
-│   ├── entities/            # 实体页
-│   ├── concepts/            # 概念页
-│   ├── topics/              # 主题页
-│   ├── comparisons/         # 对比页
-│   └── overviews/           # 概述页
+│   ├── entities/            # 实体页（人物/工具/产品）
+│   ├── concepts/            # 概念页（思想/方法）
+│   ├── topics/             # 主题页（综合知识）
+│   ├── comparisons/        # 对比页（A vs B）
+│   └── overviews/          # 概述页（领域全景）
 ├── schema/                  # 规则层（人类定义）
-│   ├── CLAUDE.md            # AI 行为规则
-│   ├── conventions.md       # 命名规范
-│   └── page-templates/      # 页面模板
-└── _system/                 # 系统数据（v0.5+）
+│   ├── CLAUDE.md           # AI 工作说明书
+│   ├── conventions.md      # 命名规范
+│   ├── page-templates/     # 5 种页面模板
+│   └── workflows/          # 工作流定义
+└── _system/                 # 系统数据
     ├── vectors.json         # 向量索引
     ├── quota.json           # 配额记录
     ├── chat-sessions/       # 聊天会话
-    └── recall/              # 复习数据（v0.6）
-        ├── cards/           # 卡片存储
-        ├── sessions/        # 复习会话
-        └── stats/           # 每日统计
+    └── recall/              # 复习数据
 ```
 
 ### 4.2 核心数据模型
@@ -446,11 +520,20 @@ mindos://?mode=clipboard&source=browser&title=xxx&content=xxx
 
 ## 8. 版本演进
 
-| 版本 | 主要特性 | 时间 |
-|------|---------|------|
-| v0.1 | 基础采集与整理 | 2024 Q1 |
-| v0.5 | 语义检索 + RAG 问答 | 2024 Q2 |
-| v0.6 | 智能复习系统（SRS）+ 面试助手 + 单词记忆 | 2024 Q3 |
+| 版本 | 主要特性 | 时间 | 关键交付 |
+|------|---------|------|---------|
+| **v0.1** | 基础采集 | 2024 Q1 | 浏览器扩展采集 AI 对话 |
+| **v0.2** | 单回合整理 | - | 一对一 AI 整理 |
+| **v0.3** | 任务中心 + 流水线 | - | 多回合并行处理 |
+| **v0.4** | LLM Wiki 三层架构 | - | raw/wiki/schema |
+| **v0.4.5** | MindOS 品牌化 | - | 改名 + 模块化重构 |
+| **v0.5** | 语义检索 + RAG | 2024 Q2 | 向量化+语义搜索+RAG |
+| **v0.6.0** | Recall 复习核心 | 2024 Q3 | SRS + 7 大场景 |
+| **v0.6.1** | UI 修复 | - | 输入框失焦/历史折叠 |
+| **v0.6.2** | 来源链接优化 | - | 日期—来源—主题 |
+| **v0.6.3** | 来源链接智能分组 | - | 同来源 block 共享 |
+| **v0.6.4** | AI 回答修复 | - | 流式输出修复 |
+| **v0.6.5** | 死循环修复 | - | 面试助手返回按钮 |
 
 ---
 
@@ -487,38 +570,85 @@ const DEFAULT_SETTINGS = {
 
 ---
 
-## 10. 架构设计原则
+## 10. 核心功能完整清单
 
-### 10.1 三层架构
+### 已实现（共 100+ 个功能点）
 
-MindOS 遵循 Karpathy 的 LLM Wiki 三层架构：
+#### 采集与 Wiki
+- [x] 浏览器扩展采集 AI 对话（ChatGPT/Claude/Kimi/豆包/通义/文心）
+- [x] 协议唤起（`obsidian://mindos`）
+- [x] 四阶段流水线（聚类/草稿/比对/执行）
+- [x] 智能合并（merge/create/discard）
+- [x] 用户审核模式
+- [x] 自动 INDEX.md 维护
+- [x] 缺失 brief 一键补全
+- [x] 旧版本迁移
+- [x] 来源链接智能合并 + 命名美化
+- [x] frontmatter 富化
 
-| 层级 | 目录 | 职责 | 权限 |
-|------|------|------|------|
-| **raw** | `raw/` | 事实基准，原始数据 | 只读 |
-| **wiki** | `wiki/` | AI 维护的知识层 | AI 读写 |
-| **schema** | `schema/` | 人类定义的规则 | 人类写，AI 读 |
+#### 检索与问答
+- [x] 多 Provider Embedding 支持
+- [x] 智能切片（章节为主）
+- [x] 全量/增量/自动向量化
+- [x] 余弦相似度搜索
+- [x] Page/Chunk 双模式
+- [x] Token 配额 + 成本预估
+- [x] 多轮 RAG 对话
+- [x] 流式输出 + 中止机制
+- [x] 引用展示
+- [x] 对话历史折叠
+- [x] 对话导出为 Wiki 笔记
 
-### 10.2 状态管理原则
-
-- 使用响应式 Store 管理状态
-- Store 内部维护 listeners，状态变更自动通知订阅者
-- UI 组件通过 subscribe 订阅状态变化
-
-### 10.3 错误处理
-
-- AI 调用支持重试机制
-- 关键操作有错误日志记录
-- 用户操作有友好的错误提示
+#### Recall 复习系统
+- [x] SM-2 + FSRS 双算法
+- [x] 翻转卡片 + 答题输入
+- [x] 4 档评分（1/2/3/4 快捷键）
+- [x] 复习会话总结
+- [x] 每日统计
+- [x] 7 大场景全覆盖
+- [x] 卡片管理面板（搜索/过滤/批量）
+- [x] 卡片编辑器
+- [x] 卡片预览弹窗
+- [x] 面试助手完整闭环
+- [x] 模拟面试 + AI 评估
+- [x] 自定义场景（字段+模板+AI）
+- [x] 4 个预设模板
+- [x] Dashboard 数据看板
+- [x] AI 增强知识盘点
 
 ---
 
-## 11. 安全注意事项
+## 11. 项目统计
 
-1. **API Key 保护**：敏感配置存储在 Obsidian 加密数据中
-2. **配额管理**：每日 Token 限制，避免超额费用
-3. **数据隔离**：不同场景的卡片独立存储
-4. **错误兜底**：AI 解析失败时有降级策略
+| 维度 | 数值 |
+|------|------|
+| TypeScript 代码 | ~12,000 行 |
+| CSS 样式 | ~5,500 行 |
+| 核心文件数 | ~45 个 |
+| 复习场景数 | 7 个 |
+| 预设模板 | 4 个 |
+| 内置词库 | 6 个（CET4/6/考研/IELTS/TOEFL/GRE） |
+| 种子词条 | 200+ |
+| 内置命令 | 50+ |
+| 支持语言 | 11 种 |
+| 核心功能点 | 100+ |
+| 状态管理 Store | 3 个 |
+| AI 集成场景 | 8 个 |
+
+---
+
+## 12. 下一步路线
+
+### v0.7 可选功能
+- **Express 输出**：基于 Wiki 生成文章/PPT/简历
+- **复习强化**：TTS 听力模式 / 卡片自动关联 / 学习计划生成器
+- **采集优化**：图片采集 / 网页全文采集
+- **协作**：卡片包导出/导入（Anki 兼容）
+
+### v0.8 - v1.0 中长期
+- **Connect 关联**：图谱 / 反向链接 / 矛盾检测
+- **Evolve 演化**：版本历史 / 衰减 / 自动重构
+- **Agent 智能体**：主动 AI / 对话式 PKM
 
 ---
 
@@ -533,5 +663,10 @@ MindOS 遵循 Karpathy 的 LLM Wiki 三层架构：
 | 工作流引擎 | workflow-engine.ts | `/workspace/src/modules/pipeline/workflow-engine.ts` |
 | AI 客户端 | ai-client.ts | `/workspace/src/modules/pipeline/ai-client.ts` |
 | 向量存储 | vector-store.ts | `/workspace/src/modules/retrieve/vector-store.ts` |
+| RAG 对话 | rag-chat.ts | `/workspace/src/modules/retrieve/rag-chat.ts` |
 | SRS 引擎 | srs-engine.ts | `/workspace/src/modules/recall/srs-engine.ts` |
 | 卡片存储 | recall-card-store.ts | `/workspace/src/modules/recall/recall-card-store.ts` |
+| 复习视图 | view-recall.ts | `/workspace/src/modules/recall/view-recall.ts` |
+| 数据看板 | dashboard-view.ts | `/workspace/src/modules/recall/dashboard-view.ts` |
+| JD 解析 | jd-analyzer.ts | `/workspace/src/modules/recall/jd-analyzer.ts` |
+| 模拟面试 | mock-interviewer.ts | `/workspace/src/modules/recall/mock-interviewer.ts` |
