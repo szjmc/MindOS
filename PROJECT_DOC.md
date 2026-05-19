@@ -137,32 +137,45 @@ src/
 │   │   ├── chunker.ts         # 文本切片
 │   │   ├── chat-session-store.ts # 会话存储
 │   │   └── view-retrieve.ts    # 检索视图
-│   └── recall/              # 复习模块 (v0.6)
-│       ├── srs-engine.ts      # SRS算法引擎
-│       ├── recall-card-store.ts # 卡片存储
-│       ├── ai-card-generator.ts # AI生成卡片
-│       ├── view-recall.ts      # 复习界面
-│       ├── dashboard-service.ts # 数据统计
-│       ├── dashboard-view.ts   # 数据看板
-│       ├── recall-card-manager-view.ts # 卡片管理
-│       ├── recall-wiki-generator.ts   # Wiki场景
-│       ├── recall-command-generator.ts # 命令场景
-│       ├── recall-vocab-generator.ts   # 单词场景
-│       ├── recall-concept-generator.ts # 概念场景
-│       ├── recall-phrase-generator.ts  # 短语场景
-│       ├── word-list-store.ts   # 词库存储
-│       ├── builtin-vocab-data.ts # 内置词库数据
-│       ├── jd-analyzer.ts       # JD解析
-│       ├── gap-analyzer.ts      # 知识盘点
-│       ├── interview-store.ts   # 面试数据存储
-│       ├── interview-view.ts    # 面试界面
-│       ├── mock-interviewer.ts  # 模拟面试官
-│       ├── mock-interview-view.ts # 模拟面试界面
-│       ├── custom-scenario-store.ts # 自定义场景
-│       └── various_modals.ts    # 各类弹窗组件
+│   ├── recall/              # 复习模块 (v0.6)
+│   │   ├── srs-engine.ts      # SRS算法引擎
+│   │   ├── recall-card-store.ts # 卡片存储
+│   │   ├── ai-card-generator.ts # AI生成卡片
+│   │   ├── view-recall.ts      # 复习界面
+│   │   ├── dashboard-service.ts # 数据统计
+│   │   ├── dashboard-view.ts   # 数据看板
+│   │   ├── recall-card-manager-view.ts # 卡片管理
+│   │   ├── recall-wiki-generator.ts   # Wiki场景
+│   │   ├── recall-command-generator.ts # 命令场景
+│   │   ├── recall-vocab-generator.ts   # 单词场景
+│   │   ├── recall-concept-generator.ts # 概念场景
+│   │   ├── recall-phrase-generator.ts  # 短语场景
+│   │   ├── word-list-store.ts   # 词库存储
+│   │   ├── builtin-vocab-data.ts # 内置词库数据
+│   │   ├── jd-analyzer.ts       # JD解析
+│   │   ├── gap-analyzer.ts      # 知识盘点
+│   │   ├── interview-store.ts   # 面试数据存储
+│   │   ├── interview-view.ts    # 面试界面
+│   │   ├── mock-interviewer.ts  # 模拟面试官
+│   │   ├── mock-interview-view.ts # 模拟面试界面
+│   │   ├── custom-scenario-store.ts # 自定义场景
+│   │   └── various_modals.ts    # 各类弹窗组件
+│   └── express/              # 输出模块 (v0.7)
+│       └── ...               # 文章/PPT/简历生成
 └── ui/
     └── settings-tab.ts      # 设置页面
+
+styles/                      # CSS 模块化 (v0.7 重构)
+├── index.css                # 入口文件（@import 汇总）
+├── core.css                 # 基础组件（按钮/表单/卡片/排版）
+├── task-center.css          # 任务中心（topbar/tabbar/布局）
+├── retrieve.css              # 检索模块（search/chat）
+├── recall.css                # 复习模块（recall 界面）
+├── recall-tts.css            # TTS 模式（vocab mask / tts）
+└── express.css               # Express 输出模块
 ```
+
+> **构建说明**：`styles/index.css` 通过 esbuild bundle 为根目录 `styles.css`（构建产物，不再手写）
 
 ---
 
@@ -647,9 +660,9 @@ v0.6（已完成）
   └── Recall 7 大场景 + 数据看板
 
 v0.7（进行中）  → 输出与表达
-  ├── 4A: Express 输出引擎（文章/PPT/简历）
-  ├── 4B: 复习强化（TTS、关联、计划）
-  └── 4C: 数据迁移（导入导出/Anki 互通）
+  ├── 4A: Express 输出引擎 → ✅ 已基本完成
+  ├── 4B: TTS 听力模式 → ✅ 已完成
+  └── 4C: 数据迁移 → 🔄 待开发
 
 v0.8  → 知识连接
   └── Connect 关联引擎（图谱/反向链接/矛盾检测）
@@ -668,16 +681,16 @@ v1.x  → 生态扩展
 
 ### 12.2 v0.7 详细规划（输出与表达）
 
-#### 方向 4A：Express 输出引擎
+#### 方向 4A：Express 输出引擎 ✅
 
 **核心价值**：把积累的知识库变现为可分享的内容
 
-| 功能 | 描述 | 工程量 |
-|------|------|--------|
-| **文章生成器** | 基于 Wiki 主题生成多风格文章（技术博客/公众号/知乎） | ~2500 行 |
-| **PPT 大纲生成** | AI 生成 PPT 大纲，导出 Marp/Slidev/PPTX | - |
-| **简历生成器** | 基于项目笔记生成 STAR 格式简历，针对 JD 优化 | - |
-| **周报/日报生成** | 基于新增笔记自动生成总结报告 | - |
+| 功能 | 状态 | 描述 |
+|------|------|------|
+| **文章生成器** | ✅ | 基于 Wiki 主题生成多风格文章（技术博客/公众号/知乎） |
+| **PPT 大纲生成** | ✅ | AI 生成 PPT 大纲，导出 Marp/Slidev/PPTX |
+| **简历生成器** | ✅ | 基于项目笔记生成 STAR 格式简历，针对 JD 优化 |
+| **周报/日报生成** | ✅ | 基于新增笔记自动生成总结报告 |
 
 **文章生成器核心流程**：
 ```
@@ -692,22 +705,22 @@ AI 检索 Wiki 中的相关知识
 
 #### 方向 4B：复习强化
 
-| 功能 | 描述 | 技术方案 |
-|------|------|---------|
-| **TTS 听力模式** | 播放单词朗读，听音拼写 | Web Speech API |
-| **智能卡片关联** | 复习时推荐 5 张相关卡片 | 向量相似度 |
-| **学习计划生成** | AI 分析目标，生成每日学习计划 | Wiki 分析 |
-| **学习曲线预测** | 预测掌握所有卡片的时间 | 复习数据建模 |
-| **费曼学习模式** | AI 用费曼技巧讲解概念 | RAG + 生成 |
+| 功能 | 状态 | 描述 | 技术方案 |
+|------|------|------|---------|
+| **TTS 听力模式** | ✅ 已完成 | 播放单词朗读，听音拼写 | Web Speech API |
+| **智能卡片关联** | 🔄 下一步 | 复习时推荐 5 张相关卡片 | 向量相似度 |
+| **学习计划生成** | 📋 规划中 | AI 分析目标，生成每日学习计划 | Wiki 分析 |
+| **学习曲线预测** | 📋 规划中 | 预测掌握所有卡片的时间 | 复习数据建模 |
+| **费曼学习模式** | 📋 规划中 | AI 用费曼技巧讲解概念 | RAG + 生成 |
 
-#### 方向 4C：数据迁移与互通
+#### 方向 4C：数据迁移与互通 🔄 待开发
 
-| 功能 | 描述 | 格式支持 |
-|------|------|---------|
-| **导出 Anki 牌组** | 所有卡片导出为 .apkg | Anki 兼容 |
-| **导入外部数据** | 导入 Anki/Quizlet/CSV/JSON | 多格式 |
-| **完整数据备份** | 一键打包所有数据为 .mindos-backup | 自定义格式 |
-| **云同步指南** | Obsidian Sync/iCloud/Git 同步配置 | 文档 |
+| 功能 | 状态 | 描述 | 格式支持 |
+|------|------|------|---------|
+| **导出 Anki 牌组** | 🔄 待开发 | 所有卡片导出为 .apkg | Anki 兼容 |
+| **导入外部数据** | 🔄 待开发 | 导入 Anki/Quizlet/CSV/JSON | 多格式 |
+| **完整数据备份** | 🔄 待开发 | 一键打包所有数据为 .mindos-backup | 自定义格式 |
+| **云同步指南** | 🔄 待开发 | Obsidian Sync/iCloud/Git 同步配置 | 文档 |
 
 ### 12.3 v0.8 - Connect 关联引擎
 
@@ -757,11 +770,39 @@ AI 检索 Wiki 中的相关知识
 
 ### 12.7 推荐开发顺序
 
-| 优先级 | 方向 | 理由 |
-|--------|------|------|
-| 🥇 第一优先 | Express 文章生成器 + TTS | 立竿见影，形成完整闭环 |
-| 🥈 第二优先 | Anki 互通 | 解决移动端痛点，让用户安心 |
-| 🥉 第三优先 | Connect 知识图谱 | 视觉冲击力强，吸引新用户 |
+| 优先级 | 方向 | 状态 | 理由 |
+|--------|------|------|------|
+| 🥇 第一优先 | Express 文章生成器 | ✅ 已完成 | 立竿见影，形成完整闭环 |
+| 🥇 第一优先 | TTS 听力模式 | ✅ 已完成 | 低成本高价值，提升英语场景体验 |
+| 🥈 第二优先 | 智能卡片关联 | 🔄 下一步 | 向量化 card front/back，推荐相关卡片 |
+| 🥈 第二优先 | Anki 互通 | 📋 规划中 | 解决移动端痛点，让用户安心 |
+| 🥉 第三优先 | Connect 知识图谱 | 📋 规划中 | 视觉冲击力强，吸引新用户 |
+
+### 12.8 下一步开发：智能卡片关联推荐
+
+**核心功能**：复习时基于向量相似度推荐相关卡片
+
+**实现方案**：
+```
+复习卡片 A 时
+↓
+AI 基于卡片 front/back 向量化
+↓
+找出 5 张最相关的卡片
+↓
+显示「相关推荐」→ 一键串学
+```
+
+**算法**：
+- 基于现有 `vector-store.ts` 向量存储
+- 对 card front/back 进行 embedding
+- 余弦相似度排序
+- 优先推荐：同标签 > 同来源 > 语义相似
+
+**工程量**：
+- 新增文件：~3 个（card-embedding-store.ts, card-recommender.ts, 相关 UI）
+- 代码量：~800 行
+- 依赖：复用现有 embedding 基础设施
 
 ---
 

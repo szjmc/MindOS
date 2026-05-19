@@ -163,7 +163,16 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 
 ## 更新日志
 
-### v0.6.5 (当前版本)
+### v0.7 (进行中) → 输出与表达
+
+#### 已完成
+- **4A: Express 输出引擎** - 文章/PPT/简历生成
+- **4B: TTS 听力模式** - Web Speech API 单词朗读
+
+#### 待开发
+- **4C: 数据迁移** - Anki 互通 / 导入导出
+
+### v0.6.5 (基线版本)
 
 - 死循环修复
 - AI 增强知识盘点
@@ -211,6 +220,21 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 | 核心功能点 | 100+ |
 | 状态管理 Store | 3 个 |
 | AI 集成场景 | 8 个 |
+
+### CSS 模块化结构
+
+```
+styles/
+├── index.css          # 入口文件（@import 汇总）
+├── core.css           # 基础组件（按钮/表单/卡片/排版）
+├── task-center.css    # 任务中心（topbar/tabbar/布局）
+├── retrieve.css       # 检索模块（search/chat）
+├── recall.css         # 复习模块（recall 界面）
+├── recall-tts.css     # TTS 模式（vocab mask / tts）
+└── express.css        # Express 输出模块
+```
+
+> **构建说明**：`styles/index.css` 通过 esbuild bundle 为 `styles.css`，根目录 `styles.css` 为构建产物。
 
 ---
 
