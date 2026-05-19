@@ -1,0 +1,998 @@
+/* =========================================================
+   MindOS Retrieve (Search + RAG Chat)
+   ========================================================= */
+
+/* ── Tab 栏 ── */
+.mindos-tab-bar {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  flex-shrink: 0;
+}
+
+.mindos-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.mindos-tab-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+.mindos-tab-btn.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.3);
+}
+.mindos-tab-btn.is-active .mindos-tab-btn-icon { color: #fff; }
+
+.mindos-tab-btn-icon { display: flex; }
+.mindos-tab-btn-icon svg { width: 14px; height: 14px; }
+.mindos-tab-btn-label { font-weight: 600; }
+
+/* ── 索引状态卡 ── */
+.mindos-index-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.mindos-index-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mindos-index-card-icon { display: flex; color: var(--mindos-primary); }
+.mindos-index-card-icon svg { width: 16px; height: 16px; }
+.mindos-index-card-title { font-size: 13px; font-weight: 700; color: var(--text-normal); }
+
+.mindos-index-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-index-empty {
+  font-size: 12px;
+  color: var(--mindos-warning);
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: var(--mindos-radius-sm);
+}
+
+.mindos-index-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mindos-index-stat {
+  font-size: 11.5px;
+  padding: 3px 9px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-normal);
+  font-variant-numeric: tabular-nums;
+}
+.mindos-index-stat.is-pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--mindos-warning);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.mindos-vectorize-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+}
+.mindos-vp-bar {
+  height: 4px;
+  background: var(--background-modifier-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.mindos-vp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mindos-info), var(--mindos-primary));
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+.mindos-vp-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.mindos-vp-tokens {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.mindos-index-ops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ── 配额卡 ── */
+.mindos-quota-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.mindos-quota-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mindos-quota-icon { display: flex; color: var(--mindos-info); }
+.mindos-quota-icon svg { width: 14px; height: 14px; }
+.mindos-quota-title { font-size: 12px; font-weight: 600; color: var(--text-muted); flex: 1; }
+
+.mindos-quota-bar {
+  height: 5px;
+  background: var(--background-modifier-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.mindos-quota-bar-fill {
+  height: 100%;
+  background: var(--mindos-success);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+.mindos-quota-bar-fill.is-warning { background: var(--mindos-warning); }
+.mindos-quota-bar-fill.is-danger { background: var(--mindos-danger); }
+
+.mindos-quota-text {
+  display: flex;
+  align-items: center;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-quota-used { color: var(--text-normal); font-weight: 600; }
+.mindos-quota-cost { color: var(--text-muted); }
+
+/* ── 搜索框 ── */
+.mindos-search-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.mindos-search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 6px 12px;
+  background: var(--background-secondary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  transition: border-color 0.15s;
+}
+.mindos-search-input-row:focus-within {
+  border-color: var(--mindos-primary);
+}
+
+.mindos-search-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-search-icon svg { width: 16px; height: 16px; }
+
+.mindos-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-normal);
+  padding: 8px 0;
+}
+.mindos-search-input::placeholder { color: var(--text-faint); }
+
+.mindos-search-go-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mindos-primary);
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mindos-search-go-btn:hover { background: var(--mindos-primary-hover); }
+.mindos-search-go-btn svg { width: 14px; height: 14px; }
+
+/* ── 搜索选项 ── */
+.mindos-search-options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.mindos-search-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mindos-mode-label { font-size: 11px; color: var(--text-muted); }
+.mindos-mode-btn {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-mode-btn:hover { background: var(--background-modifier-hover); }
+.mindos-mode-btn.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mindos-search-tip {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 搜索状态 ── */
+.mindos-search-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.mindos-search-loading-icon { display: flex; }
+.mindos-search-loading-icon svg {
+  width: 14px;
+  height: 14px;
+  animation: mindos-spin 1.2s linear infinite;
+}
+
+.mindos-search-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--mindos-radius);
+  font-size: 12px;
+  color: var(--text-error);
+}
+.mindos-search-error-icon { display: flex; }
+.mindos-search-error-icon svg { width: 14px; height: 14px; }
+
+/* ── 搜索结果 ── */
+.mindos-search-results-header {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+.mindos-search-results-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mindos-search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mindos-search-result-item {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.mindos-search-result-item:hover {
+  border-color: var(--mindos-primary);
+  background: var(--background-modifier-hover);
+}
+
+.mindos-search-result-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-search-result-type-icon {
+  display: flex;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mindos-search-result-type-icon svg { width: 16px; height: 16px; }
+
+.mindos-search-result-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.mindos-search-result-title:hover { color: var(--mindos-primary); }
+
+.mindos-search-result-type {
+  font-size: 10px;
+  padding: 2px 7px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+.mindos-search-result-score {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-search-result-score.is-excellent {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--mindos-success);
+}
+.mindos-search-result-score.is-good {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--mindos-info);
+}
+.mindos-search-result-score.is-medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--mindos-warning);
+}
+.mindos-search-result-score.is-low {
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.mindos-search-result-path {
+  font-family: var(--font-monospace);
+  font-size: 10.5px;
+  color: var(--text-faint);
+  cursor: pointer;
+  word-break: break-all;
+}
+.mindos-search-result-path:hover { color: var(--text-accent); text-decoration: underline; }
+
+.mindos-search-result-preview {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 8px 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  border-left: 2px solid var(--mindos-primary);
+}
+.mindos-search-result-preview.chunk-mode {
+  font-family: var(--font-monospace);
+  font-size: 11.5px;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mindos-search-result-section-info,
+.mindos-search-result-sections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+.mindos-search-sections-icon { display: flex; color: var(--text-muted); }
+.mindos-search-sections-icon svg { width: 11px; height: 11px; }
+.mindos-search-sections-label { font-size: 11px; color: var(--text-muted); }
+.mindos-search-section-tag {
+  font-size: 10.5px;
+  padding: 2px 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  color: var(--text-normal);
+  cursor: pointer;
+  font-weight: 500;
+}
+.mindos-search-section-tag:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mindos-search-result-ops {
+  display: flex;
+  gap: 6px;
+}
+.mindos-mini-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.mindos-mini-action-btn:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.mindos-mini-action-btn svg { width: 12px; height: 12px; }
+
+/* ── 搜索提示 ── */
+.mindos-search-hints {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--mindos-radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mindos-search-hints-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.mindos-search-hints-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mindos-search-hint-tag {
+  padding: 5px 11px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 99px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-search-hint-tag:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+/* ── 空状态扩展 ── */
+.mindos-empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+  color: var(--text-faint);
+}
+.mindos-empty-icon svg { width: 28px; height: 28px; }
+
+/* =========================================================
+   RAG Chat
+   ========================================================= */
+
+.mindos-session-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  flex-shrink: 0;
+}
+
+/* v0.6.5 - 折叠按钮优化（保留按钮，不要隐藏 mini item） */
+.mindos-session-toggle {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.mindos-session-toggle:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.mindos-session-toggle svg { width: 14px; height: 14px; }
+
+.mindos-session-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.mindos-session-title-icon { display: flex; color: var(--mindos-primary); }
+.mindos-session-title-icon svg { width: 14px; height: 14px; }
+.mindos-session-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.mindos-session-title:hover { color: var(--mindos-primary); }
+.mindos-session-meta {
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.mindos-session-ops {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mindos-chat-main {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mindos-session-list {
+  width: 180px;
+  flex-shrink: 0;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mindos-session-list-title {
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-session-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mindos-session-item {
+  padding: 8px 10px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mindos-session-item:hover { background: var(--background-modifier-hover); }
+.mindos-session-item.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+}
+.mindos-session-item.is-active .mindos-session-item-meta { color: rgba(255,255,255,0.7); }
+
+.mindos-session-item-title {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mindos-session-item-meta {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 折叠态 mini 列表（你原本 v0.6.1） */
+.mindos-session-list.is-collapsed {
+  width: 44px;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+.mindos-session-list.is-collapsed .mindos-session-list-scroll {
+  padding: 4px;
+}
+
+.mindos-session-item-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: all 0.15s;
+  color: var(--text-muted);
+}
+.mindos-session-item-mini:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+.mindos-session-item-mini.is-active {
+  background: var(--mindos-primary);
+  color: #fff;
+}
+.mindos-session-item-mini svg { width: 16px; height: 16px; }
+
+.mindos-chat-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  overflow: hidden;
+}
+
+.mindos-chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 空对话引导 */
+.mindos-chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 12px;
+}
+.mindos-chat-empty-icon {
+  display: flex;
+  color: var(--mindos-primary);
+  opacity: 0.7;
+}
+.mindos-chat-empty-icon svg { width: 48px; height: 48px; }
+.mindos-chat-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-chat-empty-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.mindos-chat-empty-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+.mindos-chat-empty-example {
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 12px;
+  color: var(--text-normal);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.mindos-chat-empty-example:hover {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+/* 消息气泡 */
+.mindos-chat-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-chat-msg.role-user {
+  align-items: flex-end;
+}
+
+.mindos-chat-msg-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.mindos-chat-msg-icon { display: flex; }
+.mindos-chat-msg-icon svg { width: 12px; height: 12px; }
+.mindos-chat-msg-role { font-weight: 600; }
+.mindos-chat-msg-tokens {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.mindos-chat-msg-body {
+  padding: 10px 14px;
+  border-radius: var(--mindos-radius);
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 92%;
+  word-wrap: break-word;
+}
+
+.mindos-chat-msg.role-user .mindos-chat-msg-body {
+  background: var(--mindos-primary);
+  color: #fff;
+  border-bottom-right-radius: var(--mindos-radius-sm);
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body * { color: #fff; }
+
+.mindos-chat-msg.role-assistant .mindos-chat-msg-body {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+  border-bottom-left-radius: var(--mindos-radius-sm);
+}
+
+.mindos-chat-msg-body p { margin: 0 0 8px 0; }
+.mindos-chat-msg-body p:last-child { margin-bottom: 0; }
+.mindos-chat-msg-body pre {
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 10px;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body pre {
+  background: rgba(0, 0, 0, 0.2);
+}
+.mindos-chat-msg-body code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+}
+.mindos-chat-msg.role-user .mindos-chat-msg-body code {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* 引用 */
+.mindos-chat-citations {
+  margin-top: 4px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 92%;
+}
+
+.mindos-chat-citations-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mindos-chat-citations-icon { display: flex; color: var(--mindos-primary); }
+.mindos-chat-citations-icon svg { width: 12px; height: 12px; }
+.mindos-chat-citations-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mindos-chat-citations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mindos-citation-item {
+  background: var(--background-primary);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mindos-citation-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.mindos-citation-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mindos-primary);
+  cursor: pointer;
+}
+.mindos-citation-title:hover { text-decoration: underline; }
+.mindos-citation-section {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+}
+.mindos-citation-score {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
+}
+.mindos-citation-score.is-excellent { background: rgba(16, 185, 129, 0.15); color: var(--mindos-success); }
+.mindos-citation-score.is-good { background: rgba(59, 130, 246, 0.15); color: var(--mindos-info); }
+.mindos-citation-score.is-medium { background: rgba(245, 158, 11, 0.15); color: var(--mindos-warning); }
+.mindos-citation-score.is-low { background: var(--background-modifier-border); color: var(--text-muted); }
+
+.mindos-citation-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* 错误信息 */
+.mindos-chat-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--mindos-radius-sm);
+  font-size: 12px;
+  color: var(--text-error);
+}
+.mindos-chat-error-icon { display: flex; }
+.mindos-chat-error-icon svg { width: 14px; height: 14px; }
+
+/* 输入区 */
+.mindos-chat-input-wrap {
+  padding: 10px 0 0 0;
+  flex-shrink: 0;
+}
+
+.mindos-chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--background-secondary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius);
+  padding: 6px 6px 6px 12px;
+  transition: border-color 0.15s;
+}
+.mindos-chat-input-row:focus-within {
+  border-color: var(--mindos-primary);
+}
+
+.mindos-chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--text-normal);
+  resize: none;
+  min-height: 36px;
+  max-height: 160px;
+  padding: 8px 0;
+  line-height: 1.5;
+  font-family: inherit;
+}
+.mindos-chat-input::placeholder { color: var(--text-faint); }
+.mindos-chat-input:disabled { opacity: 0.6; }
+
+.mindos-chat-input-btns {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  padding-bottom: 2px;
+}
+
+.mindos-chat-send-btn,
+.mindos-chat-stop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: var(--mindos-radius-sm);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mindos-chat-send-btn {
+  background: var(--mindos-primary);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+}
+.mindos-chat-send-btn:hover { background: var(--mindos-primary-hover); }
+.mindos-chat-send-btn svg { width: 16px; height: 16px; }
+
+.mindos-chat-stop-btn {
+  background: var(--mindos-danger);
+  color: #fff;
+}
+.mindos-chat-stop-btn:hover { background: #dc2626; }
+.mindos-chat-stop-btn svg { width: 12px; height: 12px; }
+
+/* 响应式：宽度小时隐藏会话列表 */
+@media (max-width: 600px) {
+  .mindos-session-list { display: none; }
+}

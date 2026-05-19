@@ -87,6 +87,14 @@ import { DashboardService } from "./src/modules/recall/dashboard-service";
 import { MindOSRetrieveView } from "./src/modules/retrieve/view-retrieve";
 import { MindOSSettingTab } from "./src/ui/settings-tab";
 
+// ── v0.7 Express ──────────────────────────────────────────────────
+import { ExpressView, EXPRESS_VIEW_TYPE } from "./src/modules/express/view-express";
+import { ArticleStore } from "./src/modules/express/article-store";
+import { OutlineBuilder } from "./src/modules/express/outline-builder";
+import { ArticleGenerator } from "./src/modules/express/article-generator";
+import { TTSService } from "./src/modules/recall/tts-service";
+// ================================================================
+
 const DEFAULT_UI_COLLAPSED: UICollapsedState = {
   quickStart: false,
   wikiStatus: false,
@@ -152,6 +160,21 @@ const DEFAULT_SETTINGS: MindOSSettings = {
   recallNewCardsPerDay: 20,
   recallReviewLimit: 100,
   recallAutoGenerate: false,
+
+    // v0.7 Express
+  expressExportFolder: "wiki/articles",
+
+    // v0.7 Recall TTS
+  recallTTSEnabled: true,
+  recallTTSLang: "en-US",
+  recallTTSRate: 1.0,
+  recallTTSPitch: 1.0,
+  recallTTSVolume: 1.0,
+  recallTTSPreferredVoice: "",
+
+    // v0.7 Recall Vocab TTS Hotkey
+  recallVocabTTSHotkey: "Shift+Space",
+  recallVocabTTSHotkeyAlt: "Alt+S",
 };
 
 export default class MindOSPlugin extends Plugin {
@@ -208,6 +231,12 @@ export default class MindOSPlugin extends Plugin {
 
   // Dashboard
   dashboardService!: DashboardService;
+
+  // v0.7 Express ──────────────────────────────────────────────────
+  articleStore!: ArticleStore;
+  outlineBuilder!: OutlineBuilder;
+  articleGenerator!: ArticleGenerator;
+  ttsService = new TTSService();
 
   private stopRequested = false;
   private currentRounds: ConversationRound[] | null = null;
@@ -381,7 +410,44 @@ export default class MindOSPlugin extends Plugin {
       this.recallCardStore,
     );
 
-    // ── 8. View 实例（必须在所有依赖之后）──
+    // ── 8. Express 模块 (v0.7) ──────────────────────────────────
+    this.articleStore = new ArticleStore(
+      this.app,
+      this.settings.baseFolder,
+    );
+
+    const aiAdapter = this.buildAIClientAdapter();
+
+    // 将真实 SemanticSearch 包装为 SemanticSearchLike
+    // 真实签名: search(query, options?) => Promise<PageSearchResult[]>
+    // 目标签名: search(query, topK)     => Promise<{content,filePath,score}[]>
+    const semanticSearchAdapter = this.semanticSearch
+      ? {
+          search: async (
+            query: string,
+            topK: number
+          ): Promise<Array<{ content: string; filePath: string; score: number }>> => {
+            const results = await this.semanticSearch!.search(query, { topK });
+            return results.map((r: any) => ({
+              content:  r.content  ?? r.chunk   ?? r.text   ?? '',
+              filePath: r.filePath ?? r.path    ?? r.file   ?? '',
+              score:    typeof r.score === 'number' ? r.score : 0,
+            }));
+          }
+        }
+      : null;
+
+    this.outlineBuilder = new OutlineBuilder(
+      this.app,
+      aiAdapter,
+      this.settings.baseFolder,
+      semanticSearchAdapter,   // ← 传适配器，不传原始 semanticSearch
+    );
+
+    this.articleGenerator = new ArticleGenerator(aiAdapter);
+    // ────────────────────────────────────────────────────────────
+
+    // ── 9. View 实例（必须在所有依赖之后）──
     this.recallView = new RecallView(this);
     this.cardManagerView = new RecallCardManagerView(this);
     this.interviewView = new InterviewView(this);
@@ -391,15 +457,19 @@ export default class MindOSPlugin extends Plugin {
     const todayStats = await this.recallCardStore.getTodayStats();
     this.recallStore.setTodayStats(todayStats);
 
-    // ── 9. 注册 View ──
+    // ── 10. 注册 View ──
     this.registerView(VIEW_TYPE_MINDOS, (leaf) => new MindOSRetrieveView(leaf, this));
+    this.registerView(EXPRESS_VIEW_TYPE, (leaf) => new ExpressView(leaf, this)); // v0.7
 
-    // ── 10. Ribbon & Commands ──
+    // ── 11. Ribbon & Commands ──
     this.addRibbonIcon("brain-circuit", "MindOS - 采集对话", async () => {
       await this.collectFromClipboard({});
     });
     this.addRibbonIcon("blocks", "MindOS - 任务中心", async () => {
       await this.activateTaskCenter();
+    });
+    this.addRibbonIcon("file-text", "MindOS - Express 输出", async () => { // v0.7
+      await this.activateExpressView();
     });
 
     // 基础命令
@@ -446,15 +516,23 @@ export default class MindOSPlugin extends Plugin {
       },
     });
 
-    // ── 11. Protocol Handler ──
+    // v0.7 命令 ──────────────────────────────────────────────────
+    this.addCommand({
+      id: "mindos-open-express",
+      name: "打开 Express 输出",
+      callback: async () => await this.activateExpressView(),
+    });
+    // ────────────────────────────────────────────────────────────
+
+    // ── 12. Protocol Handler ──
     this.registerObsidianProtocolHandler(PROTOCOL_NAME, async (params) => {
       await this.handleProtocol(params as Record<string, ProtocolValue>);
     });
 
-    // ── 12. Settings ──
+    // ── 13. Settings ──
     this.addSettingTab(new MindOSSettingTab(this.app, this));
 
-    // ── 13. 自动向量化监听 ──
+    // ── 14. 自动向量化监听 ──
     this.registerEvent(
       this.app.vault.on("modify", (file) => {
         if (file instanceof TFile && file.extension === "md" && this.settings.autoVectorize) {
@@ -476,9 +554,105 @@ export default class MindOSPlugin extends Plugin {
 
   async onunload() {
     this.app.workspace.detachLeavesOfType(VIEW_TYPE_MINDOS);
+    this.app.workspace.detachLeavesOfType(EXPRESS_VIEW_TYPE); // v0.7
     this.recallView?.unload();
     this.interviewView?.unload();
     this.mockInterviewView?.unload();
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // v0.7 Express 核心方法
+  // ════════════════════════════════════════════════════════════
+
+  /**
+   * 激活 Express 输出视图（右侧面板）
+   */
+  async activateExpressView(): Promise<void> {
+    let leaf = this.app.workspace.getLeavesOfType(EXPRESS_VIEW_TYPE)[0];
+    if (!leaf) {
+      const right = this.app.workspace.getRightLeaf(false);
+      if (!right) { new Notice("无法创建 Express 视图"); return; }
+      leaf = right;
+      await leaf.setViewState({ type: EXPRESS_VIEW_TYPE, active: true });
+    }
+    await this.app.workspace.revealLeaf(leaf);
+  }
+
+  /**
+   * 将现有 aiClient 适配为 StreamAIClientLike 接口
+   *
+   * - 若 aiClient 已实现 chatStream → 直接透传
+   * - 若只有 chat（非流式）         → 包装为模拟流式（分段回调）
+   * - 若未配置 AI                   → 返回占位对象（调用时抛出友好错误）
+   */
+  buildAIClientAdapter(): {
+    chat: (system: string, user: string, signal?: AbortSignal) => Promise<string>;
+    chatStream: (system: string, user: string, onToken: (t: string) => void, signal?: AbortSignal) => Promise<string>;
+  } {
+    const ai = this.aiClient;
+
+    // 未配置 AI
+    if (!ai) {
+      return {
+        async chat(): Promise<string> {
+          throw new Error("请先在 MindOS 设置中配置 AI Provider（apiKey + model）");
+        },
+        async chatStream(): Promise<string> {
+          throw new Error("请先在 MindOS 设置中配置 AI Provider（apiKey + model）");
+        },
+      };
+    }
+
+    // aiClient 已原生支持 chatStream → 直接透传
+    if (typeof (ai as any).chatStream === "function") {
+      return {
+        chat: (ai as any).chat.bind(ai),
+        chatStream: (ai as any).chatStream.bind(ai),
+      };
+    }
+
+    // 用普通 chat 模拟流式（分段回调，视觉上有流式感）
+    return {
+      chat: async (
+        systemPrompt: string,
+        userMessage: string,
+        signal?: AbortSignal,
+      ): Promise<string> => {
+        return await (ai as any).chat(systemPrompt, userMessage, signal);
+      },
+      chatStream: async (
+        systemPrompt: string,
+        userMessage: string,
+        onToken: (token: string) => void,
+        signal?: AbortSignal,
+      ): Promise<string> => {
+        const result: string = await (ai as any).chat(systemPrompt, userMessage, signal);
+        // 每 20 字回调一次，模拟流式效果
+        const chunkSize = 20;
+        for (let i = 0; i < result.length; i += chunkSize) {
+          if (signal?.aborted) break;
+          onToken(result.slice(i, i + chunkSize));
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        return result;
+      },
+    };
+  }
+
+  async speakVocab(text: string) {
+    try {
+      await this.ttsService.speak(text, {
+        enabled: this.settings.recallTTSEnabled ?? true,
+        lang: this.settings.recallTTSLang ?? "en-US",
+        rate: this.settings.recallTTSRate ?? 1.0,
+        pitch: this.settings.recallTTSPitch ?? 1.0,
+        volume: this.settings.recallTTSVolume ?? 1.0,
+        preferredVoice: (this.settings.recallTTSPreferredVoice || undefined) as any,
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      new Notice(`TTS 失败：${msg}`);
+    }
   }
 
   // ════════════════════════════════════════════════════════════
@@ -528,10 +702,7 @@ export default class MindOSPlugin extends Plugin {
   }
 
   // ════════════════════════════════════════════════════════════
-  // 以下方法保持 v0.6.4 不变（initializeStructure, processConversation,
-  // askChat, renderCaptureTab 等），由于篇幅限制此处省略。
-  // 如果你的 main.ts 是基于 v0.6.4 的，请保留下面的所有方法不动，
-  // 只把上面的 import / 属性声明 / onload / onunload 替换即可。
+  // Wiki / Pipeline 业务方法
   // ════════════════════════════════════════════════════════════
 
   async initializeStructure() {

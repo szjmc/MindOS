@@ -3,7 +3,7 @@ import process from 'node:process';
 
 const isProd = process.argv.includes('--prod');
 
-const opts = {
+const jsOpts = {
   entryPoints: ['main.ts'],
   bundle: true,
   external: ['obsidian'],
@@ -15,11 +15,38 @@ const opts = {
   sourcemap: !isProd,
 };
 
+const cssOpts = {
+  entryPoints: ['styles/index.css'],
+  bundle: true,
+  outfile: 'styles.css',
+  loader: {
+    '.css': 'css',
+  },
+};
+
+async function build() {
+  try {
+    await esbuild.build(jsOpts);
+    await esbuild.build(cssOpts);
+    console.log('Build complete!');
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+}
+
+async function watch() {
+  const [jsCtx, cssCtx] = await Promise.all([
+    esbuild.context(jsOpts),
+    esbuild.context(cssOpts),
+  ]);
+
+  await Promise.all([jsCtx.watch(), cssCtx.watch()]);
+  console.log('Watching...');
+}
+
 if (isProd) {
-  esbuild.build(opts).catch(() => process.exit(1));
+  build();
 } else {
-  esbuild.context(opts).then((ctx) => {
-    ctx.watch();
-    console.log('Watching...');
-  }).catch(() => process.exit(1));
+  watch();
 }

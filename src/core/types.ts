@@ -14,7 +14,7 @@ export type StageStatus = "pending" | "running" | "done" | "failed";
 
 export type EmbeddingProvider = "openai" | "zhipu" | "aliyun" | "custom";
 export type RetrieveTab = "capture" | "search" | "chat" | "recall"; // v0.6 新增 recall
-export type SearchMode = "page" | "chunk";
+export type ExpressSearchMode = 'vector' | 'keyword' | 'none';
 export type VectorizeStatus = "idle" | "running" | "done" | "error";
 
 export interface ChunkMeta {
@@ -326,6 +326,20 @@ export interface MindOSSettings {
   recallNewCardsPerDay: number;
   recallReviewLimit: number;
   recallAutoGenerate: boolean;
+
+    // v0.7 Express
+  expressExportFolder?: string; 
+
+    // v0.7 Recall TTS
+  recallTTSEnabled?: boolean;
+  recallTTSLang?: string;            // e.g. "en-US"
+  recallTTSRate?: number;            // 0.5-2
+  recallTTSPitch?: number;           // 0-2
+  recallTTSVolume?: number;          // 0-1
+  recallTTSPreferredVoice?: string;  // SpeechSynthesisVoice.name
+    // v0.7 Recall Vocab TTS Hotkey（自定义快捷键）
+  recallVocabTTSHotkey?: string;     // e.g. "Shift+Space"
+  recallVocabTTSHotkeyAlt?: string;  // e.g. "Alt+S"
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -806,4 +820,80 @@ export interface DashboardOverview {
     masteredCount: number;
     accuracy: number;
   }>;
+}
+
+// ================================================================
+// Express 输出引擎 (v0.7)
+// ================================================================
+
+export type ArticleStyle =
+  | 'tech-blog'      // 技术博客
+  | 'wechat'         // 公众号软文
+  | 'zhihu'          // 知乎答题
+  | 'abstract'       // 论文摘要
+  | 'tutorial'       // 教程手册
+  | 'newsletter'     // 邮件周报
+  | 'linkedin'       // LinkedIn 文章
+  | 'documentation'  // 技术文档
+  | 'casual'         // 轻松随笔
+  | 'summary';       // 内容总结
+
+export type ArticleStatus =
+  | 'outline'        // 大纲阶段（等待用户确认）
+  | 'generating'     // 正文生成中
+  | 'draft'          // 草稿完成
+  | 'exported';      // 已导出到 Wiki
+
+export type SearchMode = "page" | "chunk";
+
+export interface OutlineSection {
+  id: string;
+  level: number;          // 1 = H2, 2 = H3
+  title: string;
+  keyPoints: string[];    // 该节核心要点
+  estimatedWords: number; // 预期字数
+}
+
+export interface ArticleOutline {
+  title: string;
+  oneLiner: string;            // 一句话摘要
+  style: ArticleStyle;
+  targetAudience: string;      // 目标读者
+  sections: OutlineSection[];
+  totalEstimatedWords: number;
+  sourcePages: string[];       // 引用的 Wiki 页面路径
+  searchMode: ExpressSearchMode;      // 本次检索使用的模式
+}
+
+export interface ArticleDraft {
+  id: string;
+  topic: string;
+  style: ArticleStyle;
+  outline: ArticleOutline | null;
+  content: string;             // 生成的正文 Markdown
+  status: ArticleStatus;
+  createdAt: number;
+  updatedAt: number;
+  exportedPath?: string;       // 导出后的 Wiki 路径
+  sourcePages: string[];       // 引用来源
+  tags: string[];
+  wordCount: number;           // 实际字数
+}
+
+export interface ExpressGenerateOptions {
+  topic: string;
+  style: ArticleStyle;
+  lengthHint: 'short' | 'medium' | 'long'; // 短文/<1000 / 中文/1000-2000 / 长文/>2000
+  extraInstruction?: string;               // 补充说明
+  useWikiContext: boolean;                  // 是否检索 Wiki 作为上下文
+}
+
+export interface ExpressState {
+  drafts: ArticleDraft[];
+  currentDraftId: string | null;
+  isGeneratingOutline: boolean;
+  isGeneratingContent: boolean;
+  outlineAbortController: AbortController | null;
+  contentAbortController: AbortController | null;
+  error: string | null;
 }

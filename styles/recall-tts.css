@@ -1,0 +1,53 @@
+/* =========================================================
+   Recall TTS / Vocab Mask (v0.7+)
+   ========================================================= */
+
+.mindos-recall-card-tools{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 12px;
+}
+
+.mindos-recall-tts-btn{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  border-radius: 10px;
+}
+
+.mindos-recall-tts-hint{
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+/* 你的 DOM 遮罩块（vocab 正面隐藏） */
+.mindos-vocab-mask{
+  border: 1px dashed color-mix(in srgb, var(--color-accent) 35%, var(--background-modifier-border));
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--background-secondary));
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin: 10px 0 14px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.mindos-vocab-mask-dots{
+  font-size: 26px;
+  letter-spacing: 6px;
+  font-weight: 800;
+  color: var(--text-normal);
+  opacity: 0.75;
+  line-height: 1;
+}
+
+.mindos-vocab-mask-sub{
+  font-size: 12px;
+  color: var(--text-muted);
+}

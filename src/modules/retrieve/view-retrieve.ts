@@ -7,7 +7,7 @@ import {
   TAB_LABELS,
   PAGE_TYPE_LABELS,
 } from "../../core/constants";
-import {
+import type {
   RetrieveTab,
   SearchMode,
   PageSearchResult,
@@ -113,6 +113,8 @@ export class MindOSRetrieveView extends ItemView {
       this.renderChatTab(wrap);
     } else if (tab === "recall") {
       this.renderRecallTab(wrap);
+    } else if (tab === "express") {
+      this.renderExpressTab(wrap);
     }
 
     // ── 恢复焦点 ──
@@ -180,6 +182,51 @@ export class MindOSRetrieveView extends ItemView {
         this.plugin.saveCurrentTab(key as RetrieveTab);
       };
     }
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // Express 输出 Tab（v0.7）
+  // ════════════════════════════════════════════════════════════
+  private renderExpressTab(parent: HTMLElement) {
+    // 入口页：复用 Express 的样式（express-entry-* 在 styles.css 已添加）
+    const wrap = parent.createDiv({ cls: "express-entry-wrap" });
+
+    const iconWrap = wrap.createDiv({ cls: "express-entry-icon" });
+    setIcon(iconWrap, "file-text");
+
+    wrap.createEl("h3", { cls: "express-entry-title", text: "Express 输出引擎" });
+    wrap.createEl("p", {
+      cls: "express-entry-desc",
+      text: "基于你的 Wiki 知识库，一键生成文章/知乎回答/公众号内容，并导出到 Wiki。",
+    });
+
+    const list = wrap.createEl("ul", { cls: "express-entry-features" });
+    const features = [
+      { icon: "🧠", text: "优先检索 Wiki 作为素材（向量检索 → 关键词降级）" },
+      { icon: "🧩", text: "大纲优先：先出结构再生成正文，减少跑偏" },
+      { icon: "✨", text: "逐节生成 + 可中止，生成结果自动保存为草稿" },
+      { icon: "✍️", text: "段落级重写，一键调整风格/长度/专业度" },
+      { icon: "📤", text: "导出 Markdown 到 Wiki，形成可分享内容" },
+    ];
+    for (const f of features) {
+      const li = list.createEl("li", { cls: "express-entry-feature" });
+      li.createEl("span", { cls: "express-entry-feature-icon", text: f.icon });
+      li.createEl("span", { text: f.text });
+    }
+
+    const btnRow = wrap.createDiv({ cls: "express-entry-actions" });
+    const openBtn = btnRow.createEl("button", {
+      cls: "express-btn express-btn-primary express-btn-lg",
+      text: "🚀 打开 Express 输出",
+    });
+    openBtn.onclick = async () => {
+      // main.ts 里你已经加了 activateExpressView()
+      // @ts-ignore
+      await this.plugin.activateExpressView?.();
+    };
+
+    const hint = wrap.createDiv({ cls: "express-entry-hint" });
+    hint.setText("提示：如果你还没有向量索引，也能使用 Express（会自动降级为关键词检索）。");
   }
 
   // ════════════════════════════════════════════════════════════
@@ -600,7 +647,7 @@ export class MindOSRetrieveView extends ItemView {
   }
 
   // ════════════════════════════════════════════════════════════
-  // 问答 Tab
+  // 问答 Tab（后续内容保持你原样）
   // ════════════════════════════════════════════════════════════
   private renderChatTab(parent: HTMLElement) {
     const state = this.plugin.retrieveStore.getState();
