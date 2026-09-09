@@ -1,5 +1,5 @@
 import { Modal, Notice, TFile, parseYaml } from "obsidian";
-import type MindOSPlugin from "../../main";
+import type MindOSPlugin from "../../../main";
 import { PageVersion } from "../../core/types";
 
 export class FilePreviewModal extends Modal {
@@ -427,7 +427,7 @@ export class FilePreviewModal extends Modal {
     const newZoom = Math.max(0.5, Math.min(2, this.zoomLevel + delta));
     if (newZoom !== this.zoomLevel) {
       this.zoomLevel = newZoom;
-      const contentArea = document.querySelector(".mindos-preview-content");
+      const contentArea = document.querySelector<HTMLElement>(".mindos-preview-content");
       if (contentArea) {
         contentArea.style.zoom = `${this.zoomLevel}`;
       }

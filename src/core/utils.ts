@@ -220,3 +220,23 @@ export function isWikiContentFile(file: TFile, baseFolder: string): boolean {
   if (!(file.path.includes('知识库') || file.path.includes('wiki') || file.path.startsWith(baseFolder))) return false;
   return !isSystemFile(file);
 }
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/** 创建带类型的 SVG 元素并挂到父节点（Obsidian createEl 不支持 SVG 标签） */
+export function createSvgEl<K extends keyof SVGElementTagNameMap>(
+  parent: Element,
+  tag: K,
+  opts?: { attr?: Record<string, string | number>; text?: string },
+): SVGElementTagNameMap[K] {
+  const el = document.createElementNS(SVG_NS, tag);
+  if (opts?.attr) {
+    for (const [k, v] of Object.entries(opts.attr)) {
+      el.setAttribute(k, String(v));
+    }
+  }
+  if (opts?.text !== undefined) {
+    el.textContent = opts.text;
+  }
+  parent.appendChild(el);
+  return el;
+}

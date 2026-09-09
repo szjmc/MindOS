@@ -453,6 +453,11 @@ export class RecallStore {
 
   getState(): RecallState { return this.state; }
 
+  /** 重新广播当前状态（外部数据变更后触发 UI 重渲染） */
+  refresh() {
+    this.emit();
+  }
+
   reset() {
     this.state = this.defaultState();
     this.emit();

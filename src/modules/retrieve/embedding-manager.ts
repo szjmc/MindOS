@@ -252,7 +252,8 @@ export class EmbeddingManager {
         this.logger("🚨 向量化被用户紧急停止");
         this.retrieveStore.finishVectorize("stopped");
         await this.vectorStore.save();
-        await this.quotaManager.consume(totalActualTokens);
+        const stoppedCost = TokenEstimator.estimateCost(totalActualTokens, s.costPerMillionTokensEmbedding);
+        await this.quotaManager.consume(totalActualTokens, stoppedCost);
         return {
           success: false,
           message: `已紧急停止，已处理 ${processedFiles} 个文件，消耗 ${totalActualTokens} tokens`,

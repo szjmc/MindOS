@@ -220,7 +220,7 @@ export class RecallCardStore {
     };
   }
 
-  async getAllCards(): Promise<RecallCard[]> {
+  async getAllCards(scenario?: RecallScenario): Promise<RecallCard[]> {
     const base = `${this.getBaseFolder()}/${DIR_RECALL_CARDS}`;
     const result: RecallCard[] = [];
 
@@ -235,7 +235,9 @@ export class RecallCardStore {
           try {
             const content = await this.app.vault.read(child);
             const card = JSON.parse(content);
-            if (card?.id) result.push(card);
+            if (!card?.id) continue;
+            if (scenario && card.scenario !== scenario) continue;
+            result.push(card);
           } catch {}
         }
       }

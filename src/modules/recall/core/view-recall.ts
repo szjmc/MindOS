@@ -1003,7 +1003,7 @@ export class RecallView {
     textarea.style.maxHeight = "200px";
     textarea.spellcheck = false;
     textarea.autocomplete = "off";
-    textarea.autocorrect = "off";
+    textarea.setAttribute("autocorrect", "off");
     textarea.autocapitalize = "off";
 
     wrap.style.overflowY = "auto";
@@ -1316,10 +1316,10 @@ export class RecallView {
         const srs = card.srs;
         if (srs) {
           const row = metaWrap.createDiv({ cls: "mindos-vocab-meta-row" });
-          const due = srs.dueDate ? new Date(srs.dueDate).toLocaleDateString("zh-CN") : "未安排";
+          const due = srs.nextReview ? new Date(srs.nextReview).toLocaleDateString("zh-CN") : "未安排";
           row.createSpan({ cls: "mindos-vocab-meta-item", text: `下次复习: ${due}` });
-          if (srs.intervalDays) {
-            row.createSpan({ cls: "mindos-vocab-meta-item", text: `间隔 ${srs.intervalDays} 天` });
+          if (srs.interval) {
+            row.createSpan({ cls: "mindos-vocab-meta-item", text: `间隔 ${srs.interval} 天` });
           }
         }
 
@@ -1404,10 +1404,10 @@ export class RecallView {
         const srs = card.srs;
         if (srs) {
           const srsWrap = metaWrap.createDiv({ cls: "mindos-card-detail-srs" });
-          const due = srs.dueDate ? new Date(srs.dueDate).toLocaleDateString("zh-CN") : "未安排";
+          const due = srs.nextReview ? new Date(srs.nextReview).toLocaleDateString("zh-CN") : "未安排";
           srsWrap.createDiv({ cls: "mindos-card-detail-srs-item", text: `下次复习: ${due}` });
-          if (srs.intervalDays) {
-            srsWrap.createDiv({ cls: "mindos-card-detail-srs-item", text: `间隔: ${srs.intervalDays} 天` });
+          if (srs.interval) {
+            srsWrap.createDiv({ cls: "mindos-card-detail-srs-item", text: `间隔: ${srs.interval} 天` });
           }
         }
       }

@@ -69,7 +69,7 @@ export class SmartExtractView extends ItemView {
   }
 
   private async render() {
-    const container = this.containerEl.children[1];
+    const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
 
     // 统一 MindOS 品牌顶栏

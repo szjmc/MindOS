@@ -1,6 +1,7 @@
 import { setIcon, Notice } from "obsidian";
 import type MindOSPlugin from "../../../main";
 import { ContextAwarenessService, Recommendation } from "./context-awareness";
+import { createSvgEl } from "../../core/utils";
 
 export class ContextAwarenessRenderer {
   private plugin: MindOSPlugin;
@@ -45,52 +46,52 @@ export class ContextAwarenessRenderer {
     const emptyWrap = parent.createDiv({ cls: "mindos-context-empty" });
     
     const illustration = emptyWrap.createDiv({ cls: "mindos-context-illustration" });
-    const svg = illustration.createEl("svg", {
+    const svg = createSvgEl(illustration, "svg", {
       attr: { viewBox: "0 0 200 150", width: "120", height: "90" }
     });
     
-    const bookGroup = svg.createEl("g");
-    bookGroup.createEl("rect", {
+    const bookGroup = createSvgEl(svg, "g");
+    createSvgEl(bookGroup, "rect", {
       attr: { x: "30", y: "50", width: "60", height: "70", rx: "3", fill: "#f1f1f1", stroke: "#ddd", "stroke-width": "1.5" }
     });
-    bookGroup.createEl("rect", {
+    createSvgEl(bookGroup, "rect", {
       attr: { x: "35", y: "55", width: "50", height: "12", rx: "2", fill: "#e8e8e8" }
     });
-    bookGroup.createEl("rect", {
+    createSvgEl(bookGroup, "rect", {
       attr: { x: "35", y: "72", width: "45", height: "8", rx: "1", fill: "#f8f8f8" }
     });
-    bookGroup.createEl("rect", {
+    createSvgEl(bookGroup, "rect", {
       attr: { x: "35", y: "85", width: "40", height: "8", rx: "1", fill: "#f8f8f8" }
     });
-    bookGroup.createEl("rect", {
+    createSvgEl(bookGroup, "rect", {
       attr: { x: "35", y: "98", width: "35", height: "8", rx: "1", fill: "#f8f8f8" }
     });
 
-    const bookGroup2 = svg.createEl("g");
-    bookGroup2.createEl("rect", {
+    const bookGroup2 = createSvgEl(svg, "g");
+    createSvgEl(bookGroup2, "rect", {
       attr: { x: "110", y: "60", width: "50", height: "60", rx: "3", fill: "#fafafa", stroke: "#ddd", "stroke-width": "1.5" }
     });
-    bookGroup2.createEl("rect", {
+    createSvgEl(bookGroup2, "rect", {
       attr: { x: "115", y: "65", width: "40", height: "10", rx: "2", fill: "#f0f0f0" }
     });
-    bookGroup2.createEl("rect", {
+    createSvgEl(bookGroup2, "rect", {
       attr: { x: "115", y: "80", width: "35", height: "6", rx: "1", fill: "#fafafa" }
     });
-    bookGroup2.createEl("rect", {
+    createSvgEl(bookGroup2, "rect", {
       attr: { x: "115", y: "91", width: "30", height: "6", rx: "1", fill: "#fafafa" }
     });
 
-    const linesGroup = svg.createEl("g", { attr: { stroke: "#b4a7d6", "stroke-width": "2", fill: "none" } });
-    linesGroup.createEl("path", {
+    const linesGroup = createSvgEl(svg, "g", { attr: { stroke: "#b4a7d6", "stroke-width": "2", fill: "none" } });
+    createSvgEl(linesGroup, "path", {
       attr: { d: "M 90 75 Q 100 65 110 70", "stroke-dasharray": "4 2" }
     });
-    linesGroup.createEl("path", {
+    createSvgEl(linesGroup, "path", {
       attr: { d: "M 90 90 Q 105 85 110 95", "stroke-dasharray": "4 2" }
     });
 
-    const arrowGroup = svg.createEl("g", { attr: { fill: "#b4a7d6" } });
-    arrowGroup.createEl("path", { attr: { d: "M 105 68 L 112 72 L 105 76 Z" } });
-    arrowGroup.createEl("path", { attr: { d: "M 105 88 L 112 92 L 105 96 Z" } });
+    const arrowGroup = createSvgEl(svg, "g", { attr: { fill: "#b4a7d6" } });
+    createSvgEl(arrowGroup, "path", { attr: { d: "M 105 68 L 112 72 L 105 76 Z" } });
+    createSvgEl(arrowGroup, "path", { attr: { d: "M 105 88 L 112 92 L 105 96 Z" } });
 
     emptyWrap.createDiv({ cls: "mindos-context-empty-title", text: "打开一篇Wiki笔记" });
     emptyWrap.createDiv({ cls: "mindos-context-empty-desc", text: "系统将基于上下文为你推荐关联内容" });

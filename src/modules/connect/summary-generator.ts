@@ -1,17 +1,17 @@
 import { App, TFile } from 'obsidian';
-import type MindOSPlugin from '../../../main';
+import { PluginLike } from '../../core/plugin-like';
 import { MindOSSettings, PageSummary } from '../../core/types';
 import { UnifiedDocumentParser } from './unified-parser';
 import { isWikiContentFile } from '../../core/utils';
 
 export class SummaryGenerator {
-  private plugin: MindOSPlugin;
+  private plugin: PluginLike;
   private app: App;
   private getSettings: () => MindOSSettings;
   private unifiedParser: UnifiedDocumentParser;
   private cachedSummaries: Map<string, PageSummary> = new Map();
 
-  constructor(plugin: MindOSPlugin, unifiedParser: UnifiedDocumentParser) {
+  constructor(plugin: PluginLike, unifiedParser: UnifiedDocumentParser) {
     this.plugin = plugin;
     this.app = plugin.app;
     this.getSettings = () => plugin.settings;
@@ -20,6 +20,11 @@ export class SummaryGenerator {
 
   async initialize() {
     await this.loadSummaries();
+  }
+
+  /** 插件卸载时释放内存缓存 */
+  destroy(): void {
+    this.cachedSummaries.clear();
   }
 
   async loadSummaries() {

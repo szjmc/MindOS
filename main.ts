@@ -1,4 +1,4 @@
-import { Notice, Plugin, TFile, normalizePath, setIcon, Menu, Editor, MarkdownView } from "obsidian";
+import { Notice, Plugin, TFile, normalizePath, setIcon, Menu, Editor, MarkdownView, MarkdownFileInfo } from "obsidian";
 import {
   VIEW_TYPE_MINDOS,
   VIEW_TYPE_WIKI_EVOLUTION,
@@ -548,7 +548,7 @@ export default class MindOSPlugin extends Plugin {
     this.addCommand({ id: "mindos-open-smart-extract", name: "打开智能萃取面板",
       callback: async () => await this.activateSmartExtractView() });
     this.addCommand({ id: "mindos-version-history", name: "查看当前页面版本历史",
-      editorCallback: async (editor: Editor, view: MarkdownView) => {
+      editorCallback: async (_editor: Editor, view: MarkdownView | MarkdownFileInfo) => {
         const file = view?.file ?? this.app.workspace.getActiveFile();
         if (!file) { new Notice("请先打开一个页面"); return; }
         await this.activateWikiEvolutionView();

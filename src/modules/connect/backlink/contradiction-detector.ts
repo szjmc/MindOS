@@ -1,16 +1,16 @@
 import { App, TFile } from 'obsidian';
-import type MindOSPlugin from '../../../../main';
+import { PluginLike } from '../../../core/plugin-like';
 import { MindOSSettings, ContradictionReport, ContradictionPair, ContradictionEvidence } from '../../../core/types';
 import { isWikiContentFile } from '../../../core/utils';
 
 export class ContradictionDetector {
-  private plugin: MindOSPlugin;
+  private plugin: PluginLike;
   private app: App;
   private getSettings: () => MindOSSettings;
   private scanInterval: ReturnType<typeof setInterval> | null = null;
   private cachedReport: ContradictionReport | null = null;
 
-  constructor(plugin: MindOSPlugin) {
+  constructor(plugin: PluginLike) {
     this.plugin = plugin;
     this.app = plugin.app;
     this.getSettings = () => plugin.settings;

@@ -5,7 +5,7 @@ import { diffVersions, DiffResult } from "./version-differ";
 import { PageVersion } from "../../core/types";
 import { FilePreviewModal } from "./file-preview-modal";
 import { QualityAnalyzer } from "./quality-analyzer";
-import { isWikiContentFile } from "../../core/utils";
+import { isWikiContentFile, createSvgEl } from "../../core/utils";
 
 export type EvolutionTab = "versions" | "health";
 export type VersionFilter = "all" | "latest" | "added" | "modified";
@@ -67,8 +67,8 @@ class VersionDiffModal extends Modal {
 
     for (const line of diff.lines) {
       const tr = table.createEl("tr", { cls: `diff-${line.type}` });
-      tr.createEl("td", { cls: "diff-lineno", text: line.lineNumber.old || "" });
-      tr.createEl("td", { cls: "diff-lineno", text: line.lineNumber.new || "" });
+      tr.createEl("td", { cls: "diff-lineno", text: line.lineNumber.old != null ? String(line.lineNumber.old) : "" });
+      tr.createEl("td", { cls: "diff-lineno", text: line.lineNumber.new != null ? String(line.lineNumber.new) : "" });
       tr.createEl("td", { cls: "diff-content", text: line.content });
     }
   }
@@ -669,15 +669,15 @@ export class WikiEvolutionRenderer {
     const circumference = 2 * Math.PI * 36;
     const strokeDash = circumference * score / 100;
 
-    const svg = circleWrap.createEl("svg", {
+    const svg = createSvgEl(circleWrap, "svg", {
       attr: { width: "88", height: "88", viewBox: "0 0 88 88" }
     });
     // 底圆
-    svg.createEl("circle", {
+    createSvgEl(svg, "circle", {
       attr: { cx: "44", cy: "44", r: "36", fill: "none", stroke: "var(--mindos-bg-tertiary)", "stroke-width": "7" }
     });
     // 进度圆
-    svg.createEl("circle", {
+    createSvgEl(svg, "circle", {
       attr: {
         cx: "44", cy: "44", r: "36",
         fill: "none",

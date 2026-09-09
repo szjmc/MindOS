@@ -1,5 +1,5 @@
 import { App, TFile } from 'obsidian';
-import type MindOSPlugin from '../../../main';
+import { PluginLike } from '../../core/plugin-like';
 import { MindOSSettings, PageSummary, GeneratedQuestion } from '../../core/types';
 
 export interface UnifiedParseResult {
@@ -17,12 +17,12 @@ export interface UnifiedParseResult {
 }
 
 export class UnifiedDocumentParser {
-  private plugin: MindOSPlugin;
+  private plugin: PluginLike;
   private app: App;
   private getSettings: () => MindOSSettings;
   private cache: Map<string, UnifiedParseResult> = new Map();
 
-  constructor(plugin: MindOSPlugin) {
+  constructor(plugin: PluginLike) {
     this.plugin = plugin;
     this.app = plugin.app;
     this.getSettings = () => plugin.settings;
@@ -30,6 +30,11 @@ export class UnifiedDocumentParser {
 
   async initialize() {
     await this.loadCache();
+  }
+
+  /** 插件卸载时释放内存缓存 */
+  destroy(): void {
+    this.cache.clear();
   }
 
   async loadCache() {

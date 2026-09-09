@@ -12,6 +12,19 @@ export interface Recommendation {
   category: string;
 }
 
+export interface RelatedPage {
+  file: TFile;
+  matchType: 'semantic' | 'tag' | 'link' | 'history';
+  matchReason: string;
+  preview: string;
+}
+
+export interface SuggestionResult {
+  orphanPages: TFile[];
+  outdatedPages: TFile[];
+  relatedReading: RelatedPage[];
+}
+
 export interface ContextAnalysis {
   title: string;
   content: string;
@@ -140,18 +153,18 @@ export class ContextAwarenessService {
 
     if (this.semanticSearch && analysis.summary) {
       try {
-        const semanticResults = await this.semanticSearch.search(analysis.summary, maxResults * 2);
+        const semanticResults = await this.semanticSearch.search(analysis.summary, { topK: maxResults * 2 });
         for (const result of semanticResults) {
           const file = this.app.vault.getAbstractFileByPath(result.path);
           if (file instanceof TFile && !seenFiles.has(file.path) && !isSystemFile(file)) {
             seenFiles.add(file.path);
-            const resultScore = Number.isFinite(result.score) ? result.score : 0.5;
+            const resultScore = Number.isFinite(result.topScore) ? result.topScore : 0.5;
             recommendations.push({
               file,
               score: Math.min(Math.max(resultScore * 0.8 + 0.1, 0), 0.95),
               matchType: 'semantic',
               matchReason: '语义相似度匹配',
-              preview: result.excerpt,
+              preview: result.bestPreview,
               category: this.getCategory(file.path),
             });
           }
@@ -163,6 +176,72 @@ export class ContextAwarenessService {
 
     recommendations.sort((a, b) => b.score - a.score);
     return recommendations.slice(0, maxResults);
+  }
+
+  /**
+   * 生成情境感知建议（View 层入口）：
+   * 相关阅读 + 孤岛页面 + 久未更新页面
+   */
+  async generateSuggestions(): Promise<SuggestionResult> {
+    const [orphanPages, outdatedPages, recommendations] = await Promise.all([
+      this.findOrphanPages(10),
+      this.findOutdatedPages(10),
+      this.generateRecommendations(6),
+    ]);
+    return {
+      orphanPages,
+      outdatedPages,
+      relatedReading: recommendations.map((r) => ({
+        file: r.file,
+        matchType: r.matchType,
+        matchReason: r.matchReason,
+        preview: r.preview,
+      })),
+    };
+  }
+
+  /** 孤岛页面：没有被任何其他笔记链接的知识库页面 */
+  private async findOrphanPages(limit: number): Promise<TFile[]> {
+    const settings = this.getSettings();
+    const wikiFiles = this.app.vault.getMarkdownFiles()
+      .filter((f) => isWikiContentFile(f, settings.baseFolder) && !isSystemFile(f));
+    if (wikiFiles.length === 0) return [];
+
+    // 一次性收集所有文件内容用于链接匹配（限制规模，避免大库卡顿）
+    const candidates = wikiFiles.slice(0, 500);
+    const contents = new Map<string, string>();
+    for (const f of candidates) {
+      try {
+        contents.set(f.path, await this.app.vault.cachedRead(f));
+      } catch { /* ignore */ }
+    }
+
+    const orphans: TFile[] = [];
+    for (const file of candidates) {
+      const name = file.basename;
+      const linked = candidates.some((other) => {
+        if (other.path === file.path) return false;
+        const content = contents.get(other.path) || "";
+        return content.includes(`[[${name}`) || content.includes(`[[${file.path.replace(/\.md$/, "")}`);
+      });
+      if (!linked) {
+        orphans.push(file);
+        if (orphans.length >= limit) break;
+      }
+    }
+    return orphans;
+  }
+
+  /** 久未更新：超过 6 个月未修改的知识库页面 */
+  private findOutdatedPages(limit: number): TFile[] {
+    const settings = this.getSettings();
+    const sixMonthsAgo = Date.now() - 180 * 24 * 60 * 60 * 1000;
+    return this.app.vault.getMarkdownFiles()
+      .filter((f) => isWikiContentFile(f, settings.baseFolder)
+        && !isSystemFile(f)
+        && f.stat.mtime < sixMonthsAgo)
+      .sort((a, b) => a.stat.mtime - b.stat.mtime)
+      .slice(0, limit);
   }
 
   private getCategory(path: string): string {

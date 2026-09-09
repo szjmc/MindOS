@@ -559,7 +559,7 @@ async function extractPDFText(
           const existingFile = app.vault.getAbstractFileByPath(imagePath);
           if (existingFile) await app.vault.delete(existingFile);
         }
-        await app.vault.createBinary(imagePath, new Uint8Array(arrayBuf));
+        await app.vault.createBinary(imagePath, arrayBuf);
         savedImages.push(imageName);
       }
 
@@ -632,7 +632,7 @@ async function extractPDFViaVision(
   const apiKey = settings.apiKey || settings.embeddingApiKey;
   if (!apiKey) throw new Error("未配置 API Key");
 
-  const apiBase = (settings.apiBase || "https://api.openai.com").replace(/\/$/, "");
+  const apiBase = (settings.apiBaseUrl || "https://api.openai.com").replace(/\/$/, "");
   const url = `${apiBase}/v1/chat/completions`;
 
   // 用 Obsidian 内置 PDF.js 将每页渲染为图片
@@ -716,7 +716,7 @@ async function transcribeAudioFile(file: File, settings: MindOSSettings): Promis
   const apiKey = settings.apiKey || settings.embeddingApiKey;
   if (!apiKey) throw new Error("未配置 API Key");
 
-  const apiBase = (settings.apiBase || "https://api.openai.com").replace(/\/$/, "");
+  const apiBase = (settings.apiBaseUrl || "https://api.openai.com").replace(/\/$/, "");
   const url = `${apiBase}/v1/audio/transcriptions`;
 
   const formData = new FormData();
@@ -751,7 +751,7 @@ async function ocrImageSource(source: ImageSource, settings: MindOSSettings): Pr
   const apiKey = settings.apiKey || settings.embeddingApiKey;
   if (!apiKey) throw new Error("未配置 API Key");
 
-  const apiBase = (settings.apiBase || "https://api.openai.com").replace(/\/$/, "");
+  const apiBase = (settings.apiBaseUrl || "https://api.openai.com").replace(/\/$/, "");
   const url = `${apiBase}/v1/chat/completions`;
 
   let dataUrl: string;
@@ -825,7 +825,7 @@ function readClipboardImage(): string | null {
 // ════════════════════════════════════════════════════════════════
 
 class ClipboardModal extends Modal {
-  private textarea: HTMLTextAreaElement;
+  private textarea!: HTMLTextAreaElement;
 
   constructor(
     app: App,
@@ -923,8 +923,8 @@ class ClipboardModal extends Modal {
 // ════════════════════════════════════════════════════════════════
 
 class FileUploadModal extends Modal {
-  private fileInput: HTMLInputElement;
-  private selectedFilesEl: HTMLElement;
+  private fileInput!: HTMLInputElement;
+  private selectedFilesEl!: HTMLElement;
 
   constructor(
     app: App,
@@ -947,7 +947,7 @@ class FileUploadModal extends Modal {
 
     this.fileInput = uploadArea.createEl("input", {
       type: "file",
-      accept: ".pdf,.txt,.md",
+      attr: { accept: ".pdf,.txt,.md" },
     });
     this.fileInput.style.display = "none";
 
@@ -1045,7 +1045,7 @@ class AudioTranscribeModal extends Modal {
     // 文件选择区域
     const fileInput = contentEl.createEl("input", {
       type: "file",
-      accept: ".mp3,.mp4,.m4a,.wav,.ogg,.webm",
+      attr: { accept: ".mp3,.mp4,.m4a,.wav,.ogg,.webm" },
     });
     fileInput.style.display = "none";
 
@@ -1164,7 +1164,7 @@ class ScreenOCRModal extends Modal {
 
     const fileInput = contentEl.createEl("input", {
       type: "file",
-      accept: "image/*",
+      attr: { accept: "image/*" },
     });
     fileInput.style.display = "none";
 
