@@ -1,0 +1,839 @@
+/* ================================================================
+   Express 输出引擎
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ================================================================ */
+
+.mindos-express {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--background-primary);
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-express .express-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mindos-space-xs) var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border-bottom: 1px solid color-mix(in srgb, var(--background-modifier-border) 60%, transparent);
+  flex-shrink: 0;
+  min-height: 36px;
+  box-sizing: border-box;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-express .express-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-express .express-header-logo {
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+}
+
+.mindos-express .express-header-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-express .express-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+
+/* steps */
+.mindos-express .express-steps {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  flex-wrap: wrap;
+}
+
+.mindos-express .express-step {
+  padding: var(--mindos-space-xs) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-full);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  transition: all var(--mindos-transition-fast);
+  white-space: nowrap;
+}
+
+.mindos-express .express-step.active {
+  background: var(--color-accent);
+  color: var(--mindos-text-on-primary);
+  border-color: var(--color-accent);
+  font-weight: 600;
+}
+
+.mindos-express .express-step.reachable {
+  cursor: pointer;
+  color: var(--text-normal);
+}
+
+.mindos-express .express-step.reachable:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* content */
+.mindos-express .express-content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--mindos-space-xl);
+}
+
+/* buttons */
+.mindos-express .express-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-base);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--mindos-transition-fast);
+  white-space: nowrap;
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+.mindos-express .express-btn:hover { background: var(--background-modifier-hover); }
+.mindos-express .express-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.mindos-express .express-btn-primary {
+  background: linear-gradient(135deg, var(--mindos-primary), var(--mindos-info));
+  color: var(--mindos-text-on-primary);
+  border-color: transparent;
+  box-shadow: var(--mindos-shadow-sm);
+  font-weight: 600;
+}
+.mindos-express .express-btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--mindos-shadow-md);
+}
+.mindos-express .express-btn-primary:active {
+  box-shadow: var(--mindos-shadow-xs);
+}
+.mindos-express .express-btn-primary svg {
+  color: var(--mindos-text-on-primary) !important;
+}
+
+.mindos-express .express-btn-ghost {
+  background: transparent;
+  border-color: var(--background-modifier-border);
+}
+.mindos-express .express-btn-ghost:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(--text-muted);
+}
+
+.mindos-express .express-btn-danger {
+  background: var(--mindos-danger-bg);
+  color: var(--mindos-danger);
+  border-color: var(--mindos-danger-border);
+  border-radius: var(--mindos-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mindos-express .express-btn-danger:hover {
+  background: color-mix(in srgb, var(--mindos-danger) 25%, transparent);
+  border-color: color-mix(in srgb, var(--mindos-danger) 50%, transparent);
+  transform: scale(1.05);
+}
+.mindos-express .express-btn-danger svg {
+  color: var(--mindos-danger) !important;
+}
+
+.mindos-express .express-btn-sm {
+  padding: 6px var(--mindos-space-md);
+  font-size: var(--mindos-text-sm);
+  min-width: var(--mindos-space-3xl);
+  min-height: 28px;
+}
+.mindos-express .express-btn-lg { padding: 10px var(--mindos-space-2xl); font-size: var(--mindos-text-md); border-radius: var(--mindos-radius-md); }
+.mindos-express .express-btn-full { width: 100%; justify-content: center; }
+
+/* form */
+.mindos-express .express-form-group {
+  margin-bottom: var(--mindos-space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+.mindos-express .express-form-group-row { flex-direction: row; align-items: center; }
+
+.mindos-express .express-label { font-size: var(--mindos-text-base); font-weight: 600; color: var(--text-normal); }
+.mindos-express .express-label-sm { font-size: var(--mindos-text-sm); color: var(--text-muted); margin-bottom: var(--mindos-space-xs); }
+
+.mindos-express .express-input {
+  width: 100%;
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: var(--mindos-text-md);
+  transition: all var(--mindos-transition);
+}
+.mindos-express .express-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 15%, transparent);
+}
+.mindos-express .express-input:hover:not(:focus) {
+  border-color: var(--text-muted);
+}
+
+.mindos-express .express-textarea {
+  width: 100%;
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: var(--mindos-text-base);
+  resize: vertical;
+  font-family: inherit;
+  transition: all var(--mindos-transition);
+}
+.mindos-express .express-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 15%, transparent);
+}
+.mindos-express .express-textarea:hover:not(:focus) {
+  border-color: var(--text-muted);
+}
+.mindos-express .express-textarea-sm { font-size: var(--mindos-text-sm); }
+
+.mindos-express .express-divider {
+  border: none;
+  border-top: 1px solid var(--background-modifier-border);
+  margin: var(--mindos-space-lg) 0;
+}
+
+.mindos-express .express-section-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--mindos-space-md);
+}
+
+/* home */
+.mindos-express .express-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px var(--mindos-space-xl);
+  text-align: center;
+  gap: var(--mindos-space-md);
+}
+.mindos-express .express-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--mindos-text-xl);
+}
+.mindos-express .express-empty-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0;
+}
+.mindos-express .express-empty-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  max-width: 280px;
+  margin: 0;
+  line-height: var(--mindos-leading-normal);
+}
+
+.mindos-express .express-draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mindos-express .express-draft-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  cursor: pointer;
+  transition: all var(--mindos-transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-express .express-draft-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-express .express-draft-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mindos-express .express-draft-style {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  background: var(--background-primary);
+  padding: 2px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-md);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-express .express-draft-status {
+  font-size: var(--mindos-text-xs);
+  padding: 2px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-md);
+  font-weight: 600;
+}
+
+/* 状态标签（使用语义色） */
+.mindos-express .status-outline    { background: var(--mindos-warning-bg); color: var(--mindos-warning); }
+.mindos-express .status-generating { background: var(--mindos-info-bg); color: var(--mindos-info); }
+.mindos-express .status-draft      { background: var(--mindos-success-bg); color: var(--mindos-success); }
+.mindos-express .status-exported   { background: color-mix(in srgb, var(--mindos-primary) 12%, transparent); color: var(--mindos-primary); }
+
+.mindos-express .express-draft-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: 1.4;
+}
+.mindos-express .express-draft-topic { font-size: var(--mindos-text-sm); color: var(--text-muted); }
+.mindos-express .express-draft-meta { display: flex; gap: var(--mindos-space-md); font-size: var(--mindos-text-sm); color: var(--text-muted); }
+.mindos-express .express-draft-actions { display: flex; gap: var(--mindos-space-sm); margin-top: var(--mindos-space-xs); }
+
+/* compose */
+.mindos-express .express-compose-body {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.mindos-express .express-step-title {
+  font-size: var(--mindos-text-xl);
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-express .express-step-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--mindos-space-2xl);
+}
+
+.mindos-express .express-step-footer {
+  display: flex;
+  gap: var(--mindos-space-md);
+  justify-content: flex-end;
+  margin-top: 28px;
+  padding-top: var(--mindos-space-lg);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* style grid */
+.mindos-express .express-style-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--mindos-space-md);
+}
+
+.mindos-express .express-style-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xs);
+  padding: var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+.mindos-express .express-style-card:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--mindos-primary) 6%, transparent);
+  box-shadow: var(--mindos-shadow-sm);
+}
+.mindos-express .express-style-card.active {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--mindos-primary) 10%, transparent), color-mix(in srgb, var(--mindos-info) 6%, transparent));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+}
+.mindos-express .express-style-card.active .express-style-name {
+  color: var(--color-accent);
+}
+.mindos-express .express-style-icon { font-size: var(--mindos-text-xl); line-height: 1; }
+.mindos-express .express-style-name { font-size: var(--mindos-text-base); font-weight: 600; color: var(--text-normal); }
+.mindos-express .express-style-desc { font-size: var(--mindos-text-xs); color: var(--text-muted); line-height: 1.4; }
+
+/* length */
+.mindos-express .express-length-row { display: flex; gap: var(--mindos-space-sm); }
+.mindos-express .express-length-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: var(--mindos-space-lg) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  border: 1.5px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: all var(--mindos-transition-fast);
+}
+.mindos-express .express-length-btn:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--mindos-primary) 6%, transparent);
+}
+.mindos-express .express-length-btn.active {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--mindos-primary) 12%, transparent), color-mix(in srgb, var(--mindos-info) 8%, transparent));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+}
+.mindos-express .express-length-label {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.mindos-express .express-length-btn.active .express-length-label {
+  color: var(--color-accent);
+}
+.mindos-express .express-length-desc {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+}
+
+/* outline */
+.mindos-express .express-outline-header { margin-bottom: var(--mindos-space-lg); }
+.mindos-express .express-outline-title { font-size: var(--mindos-text-xl); font-weight: 700; color: var(--text-normal); margin-bottom: var(--mindos-space-sm); }
+.mindos-express .express-outline-oneliner { font-size: var(--mindos-text-md); color: var(--text-muted); font-style: italic; margin-bottom: var(--mindos-space-md); }
+.mindos-express .express-outline-meta { display: flex; gap: var(--mindos-space-lg); flex-wrap: wrap; font-size: var(--mindos-text-sm); color: var(--text-muted); }
+
+.mindos-express .express-outline-sources {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mindos-space-sm);
+  margin-top: var(--mindos-space-md);
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+}
+.mindos-express .express-sources-label { color: var(--text-muted); font-weight: 500; }
+.mindos-express .express-source-tag {
+  padding: 2px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-accent);
+  font-size: var(--mindos-text-xs);
+  cursor: default;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mindos-express .express-source-more { color: var(--text-muted); font-size: var(--mindos-text-xs); }
+
+/* sections */
+.mindos-express .express-section-list-title { font-size: var(--mindos-text-md); font-weight: 600; color: var(--text-muted); margin-bottom: var(--mindos-space-md); }
+
+.mindos-express .express-outline-section-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  margin-bottom: var(--mindos-space-sm);
+  transition: border-color var(--mindos-transition-fast);
+}
+.mindos-express .express-outline-section-card:hover { border-color: var(--color-accent); }
+
+.mindos-express .express-outline-section-header { display: flex; align-items: center; gap: var(--mindos-space-md); }
+
+.mindos-express .express-section-num {
+  width: var(--mindos-space-2xl);
+  height: var(--mindos-space-2xl);
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--mindos-text-on-primary);
+  font-size: var(--mindos-text-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mindos-express .express-section-title-edit {
+  flex: 1;
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  outline: none;
+  border-radius: var(--mindos-radius-xs);
+  padding: 2px var(--mindos-space-xs);
+  min-width: 0;
+}
+.mindos-express .express-section-title-edit:focus {
+  background: var(--background-modifier-form-field);
+  outline: 1px solid var(--color-accent);
+}
+
+.mindos-express .express-section-words { font-size: var(--mindos-text-xs); color: var(--text-muted); white-space: nowrap; }
+
+.mindos-express .express-section-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px;
+  border-radius: var(--mindos-radius-xs);
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity var(--mindos-transition-fast);
+}
+.mindos-express .express-outline-section-card:hover .express-section-del { opacity: 1; }
+.mindos-express .express-section-del:hover { color: var(--text-error); background: var(--background-modifier-error); }
+
+.mindos-express .express-keypoints {
+  list-style: disc;
+  padding-left: var(--mindos-space-2xl);
+  margin: var(--mindos-space-sm) 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xs);
+}
+.mindos-express .express-keypoints li { font-size: var(--mindos-text-sm); color: var(--text-muted); line-height: 1.5; }
+
+/* generating */
+.mindos-express .express-step-generating {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xl);
+  align-items: center;
+  padding: var(--mindos-space-xl) 0;
+}
+.mindos-express .express-gen-title { font-size: var(--mindos-text-xl); font-weight: 700; color: var(--text-normal); margin: 0; }
+.mindos-express .express-progress-wrap { width: 100%; display: flex; flex-direction: column; gap: var(--mindos-space-sm); }
+.mindos-express .express-progress-bar { width: 100%; height: 8px; background: var(--background-modifier-border); border-radius: var(--mindos-radius-xs); overflow: hidden; }
+.mindos-express .express-progress-fill { height: 100%; background: var(--color-accent); border-radius: var(--mindos-radius-xs); transition: width var(--mindos-transition-slow); }
+.mindos-express .express-progress-label { font-size: var(--mindos-text-sm); color: var(--text-muted); text-align: right; }
+
+.mindos-express .express-gen-preview {
+  width: 100%;
+  min-height: 200px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  overflow: hidden;
+}
+.mindos-express .express-gen-preview-text {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-monospace);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mindos-express .express-loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px var(--mindos-space-xl);
+  gap: var(--mindos-space-lg);
+}
+.mindos-express .express-gen-loading,
+.mindos-express .express-loading-dots {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  align-items: center;
+  justify-content: center;
+}
+.mindos-express .express-loading-dot {
+  width: var(--mindos-space-sm);
+  height: var(--mindos-space-sm);
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: express-dot-bounce 1.2s infinite ease-in-out;
+}
+.mindos-express .express-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.mindos-express .express-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes express-dot-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%            { transform: scale(1.0); opacity: 1.0; }
+}
+
+/* editor */
+.mindos-express .express-step-editor {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  min-height: 500px;
+}
+.mindos-express .express-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mindos-space-md) 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: var(--mindos-space-md);
+  flex-wrap: wrap;
+  gap: var(--mindos-space-sm);
+}
+.mindos-express .express-editor-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mindos-express .express-toolbar-right { display: flex; align-items: center; gap: var(--mindos-space-sm); flex-wrap: wrap; }
+.mindos-express .express-word-count {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  padding: var(--mindos-space-xs) var(--mindos-space-sm);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+}
+.mindos-express .express-editor-body { display: flex; gap: var(--mindos-space-md); flex: 1; overflow: hidden; min-height: 0; }
+.mindos-express .express-editor-left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.mindos-express .express-main-editor {
+  flex: 1;
+  width: 100%;
+  padding: var(--mindos-space-lg);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  font-size: var(--mindos-text-base);
+  font-family: var(--font-monospace);
+  line-height: 1.7;
+  resize: none;
+  transition: border-color var(--mindos-transition-fast);
+}
+.mindos-express .express-main-editor:focus { outline: none; border-color: var(--color-accent); }
+
+.mindos-express .express-editor-right { width: 260px; flex-shrink: 0; overflow-y: auto; }
+
+.mindos-express .express-rewrite-panel {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+}
+.mindos-express .express-rewrite-title { font-size: var(--mindos-text-base); font-weight: 700; color: var(--text-normal); margin: 0; }
+.mindos-express .express-rewrite-desc { font-size: var(--mindos-text-xs); color: var(--text-muted); line-height: 1.5; margin: 0; }
+
+.mindos-express .express-rewrite-presets { display: grid; grid-template-columns: 1fr 1fr; gap: var(--mindos-space-sm); }
+
+.mindos-express .express-rewrite-preset-btn {
+  padding: var(--mindos-space-xs) var(--mindos-space-sm);
+  font-size: var(--mindos-text-sm);
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--mindos-transition-fast);
+}
+.mindos-express .express-rewrite-preset-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--background-modifier-hover);
+}
+
+.mindos-express .express-rewrite-result {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: var(--mindos-space-md);
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+.mindos-express .express-rewrite-streaming,
+.mindos-express .express-rewrite-result-text {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-normal);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.mindos-express .express-rewrite-done { font-size: var(--mindos-text-sm); color: var(--mindos-success); margin: 0; }
+
+.mindos-express .express-editor-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--mindos-space-md);
+  border-top: 1px solid var(--background-modifier-border);
+  margin-top: var(--mindos-space-sm);
+}
+
+/* preview */
+.mindos-express .express-preview-wrap { max-width: 720px; margin: 0 auto; padding-bottom: var(--mindos-space-4xl); }
+.mindos-express .express-preview-header { margin-bottom: var(--mindos-space-xl); }
+.mindos-express .express-preview-title {
+  font-size: var(--mindos-text-2xl);
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-sm);
+  line-height: var(--mindos-leading-tight);
+}
+.mindos-express .express-preview-oneliner {
+  font-size: var(--mindos-text-md);
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: var(--mindos-space-md);
+}
+.mindos-express .express-preview-meta {
+  display: flex;
+  gap: var(--mindos-space-lg);
+  flex-wrap: wrap;
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+.mindos-express .express-preview-body { line-height: 1.8; font-size: var(--mindos-text-md); }
+.mindos-express .express-preview-body h2 {
+  font-size: var(--mindos-text-xl);
+  margin-top: var(--mindos-space-2xl);
+  margin-bottom: var(--mindos-space-md);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.mindos-express .express-preview-body h3 { font-size: var(--mindos-text-md); margin-top: var(--mindos-text-xl); margin-bottom: var(--mindos-space-sm); }
+.mindos-express .express-preview-body p { margin-bottom: var(--mindos-space-md); }
+.mindos-express .express-preview-body ul,
+.mindos-express .express-preview-body ol { padding-left: var(--mindos-space-2xl); margin-bottom: var(--mindos-space-md); }
+.mindos-express .express-preview-body li { margin-bottom: var(--mindos-space-xs); }
+.mindos-express .express-preview-body code {
+  font-size: var(--mindos-text-sm);
+  padding: 1px 5px;
+  border-radius: var(--mindos-radius-xs);
+  background: var(--background-secondary);
+}
+.mindos-express .express-preview-body pre {
+  border-radius: var(--mindos-radius-sm);
+  overflow-x: auto;
+  margin-bottom: var(--mindos-space-lg);
+}
+.mindos-express .express-preview-sources { padding: var(--mindos-space-md) 0; }
+.mindos-express .express-preview-sources h4 {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin-bottom: var(--mindos-space-sm);
+}
+.mindos-express .express-preview-sources ul { list-style: disc; padding-left: var(--mindos-space-xl); }
+.mindos-express .express-preview-sources li { font-size: var(--mindos-text-sm); color: var(--text-accent); }
+.mindos-express .express-preview-footer {
+  display: flex;
+  gap: var(--mindos-space-md);
+  justify-content: flex-end;
+  margin-top: var(--mindos-space-2xl);
+  padding-top: var(--mindos-space-lg);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* entry */
+.mindos-express .express-entry-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px var(--mindos-space-2xl);
+  text-align: center;
+  gap: var(--mindos-space-lg);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.mindos-express .express-entry-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--mindos-radius-lg);
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  font-size: var(--mindos-text-2xl);
+}
+.mindos-express .express-entry-title {
+  font-size: var(--mindos-text-xl);
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0;
+}
+.mindos-express .express-entry-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.mindos-express .express-entry-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+  text-align: left;
+}
+.mindos-express .express-entry-feature {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-md);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-base);
+  color: var(--text-normal);
+}
+.mindos-express .express-entry-feature-icon { font-size: var(--mindos-text-lg); flex-shrink: 0; }

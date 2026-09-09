@@ -1,0 +1,498 @@
+/* =========================================================
+   Capture Methods Grid
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-capture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--mindos-space-md);
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-analysis-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  padding: var(--mindos-space-lg) var(--mindos-space-lg) var(--mindos-space-sm);
+}
+
+.mindos-capture-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-lg);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.mindos-capture-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-capture-card.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mindos-capture-card.is-disabled:hover {
+  transform: none;
+  border-color: var(--background-modifier-border);
+  box-shadow: none;
+}
+
+.mindos-capture-card-featured {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--mindos-primary) 8%, transparent) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1.5px solid var(--color-accent);
+  position: relative;
+  overflow: hidden;
+}
+
+.mindos-capture-card-featured::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mindos-primary), #06b6d4, var(--mindos-primary));
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.mindos-capture-card-featured:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-capture-icon-featured {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--mindos-radius-lg);
+}
+
+.mindos-capture-icon-featured svg {
+  width: var(--mindos-space-2xl);
+  height: var(--mindos-space-2xl);
+}
+
+.mindos-capture-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mindos-radius-md);
+  flex-shrink: 0;
+}
+
+.mindos-capture-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-capture-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xs);
+}
+
+.mindos-capture-header {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-capture-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: var(--mindos-leading-tight);
+}
+
+.mindos-capture-badge {
+  font-size: var(--mindos-text-xs);
+  font-weight: 600;
+  padding: 2px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-full);
+  background: color-mix(in srgb, var(--mindos-primary) 15%, transparent);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.mindos-capture-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* 采集方式标题 */
+.mindos-capture-section {
+  padding: var(--mindos-space-lg) var(--mindos-space-lg) 0 var(--mindos-space-lg);
+}
+
+.mindos-capture-section-title {
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* 上传模态框 */
+.mindos-upload-modal {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-upload-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin: 0 0 var(--mindos-space-lg) 0;
+}
+
+.mindos-upload-area {
+  width: 100%;
+}
+
+.mindos-upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mindos-space-4xl) var(--mindos-space-xl);
+  border: 2px dashed var(--background-modifier-border);
+  border-radius: var(--mindos-radius-lg);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  gap: var(--mindos-space-md);
+}
+
+.mindos-upload-dropzone:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--mindos-primary) 5%, transparent);
+}
+
+.mindos-upload-dropzone.is-dragging {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+}
+
+.mindos-upload-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.mindos-upload-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.mindos-upload-text {
+  font-size: var(--mindos-text-md);
+  font-weight: 500;
+  color: var(--text-normal);
+  margin: 0;
+}
+
+.mindos-upload-subtext {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mindos-upload-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: var(--mindos-space-lg);
+  padding-top: var(--mindos-space-md);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* 信息模态框 */
+.mindos-info-modal {
+  padding: var(--mindos-space-xl);
+}
+
+.mindos-info-modal p {
+  margin: 0 0 var(--mindos-space-md) 0;
+  font-size: var(--mindos-text-base);
+  line-height: 1.6;
+  color: var(--text-normal);
+}
+
+.mindos-info-modal ul {
+  padding-left: var(--mindos-space-xl);
+  margin: var(--mindos-space-md) 0;
+}
+
+.mindos-info-modal li {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* 剪贴板粘贴模态框 */
+.mindos-clipboard-modal {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-clipboard-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin: 0 0 var(--mindos-space-lg) 0;
+}
+
+.mindos-clipboard-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-clipboard-quick-actions {
+  display: flex;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-clipboard-quick-btn {
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-clipboard-quick-btn:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(--color-accent);
+}
+
+.mindos-clipboard-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: var(--mindos-space-md) 14px;
+  font-size: var(--mindos-text-base);
+  font-family: var(--font-text);
+  background: var(--background-modifier-form-field);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  color: var(--text-normal);
+  resize: vertical;
+  transition: all var(--mindos-transition);
+  box-sizing: border-box;
+}
+
+.mindos-clipboard-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+}
+
+.mindos-clipboard-tips {
+  background: var(--background-secondary);
+  padding: 14px var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+}
+
+.mindos-clipboard-tips h4 {
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0 0 var(--mindos-space-sm) 0;
+}
+
+.mindos-clipboard-tips ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.mindos-clipboard-tips li {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--mindos-space-xs);
+}
+
+.mindos-clipboard-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: var(--mindos-space-lg);
+  padding-top: var(--mindos-space-lg);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* ── 文件上传：选中文件展示 ── */
+.mindos-upload-selected {
+  margin-top: var(--mindos-space-md);
+  padding: var(--mindos-space-md);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-upload-file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-upload-file-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent);
+}
+
+.mindos-upload-file-name {
+  font-size: var(--mindos-text-base);
+  font-weight: 500;
+  color: var(--text-normal);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-upload-file-size {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── 音频转录 Modal ── */
+.mindos-audio-modal {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-audio-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin: 0 0 var(--mindos-space-lg) 0;
+  line-height: 1.5;
+}
+
+.mindos-audio-format-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mindos-space-xs);
+  margin-bottom: var(--mindos-space-lg);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+
+.mindos-audio-format-tag {
+  padding: 2px 8px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-family: var(--font-monospace);
+  font-size: var(--mindos-text-xs);
+  color: var(--text-normal);
+}
+
+.mindos-audio-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  margin-top: var(--mindos-space-lg);
+  padding: var(--mindos-space-md);
+  background: color-mix(in srgb, var(--mindos-primary) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.mindos-audio-note-icon svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+  margin-top: 1px;
+}
+
+/* ── 截图 OCR Modal ── */
+.mindos-ocr-modal {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-ocr-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin: 0 0 var(--mindos-space-lg) 0;
+  line-height: 1.5;
+}
+
+.mindos-ocr-section {
+  margin-bottom: var(--mindos-space-lg);
+}
+
+.mindos-ocr-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-ocr-section-label svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+}
+
+.mindos-ocr-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.mindos-ocr-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--mindos-space-lg) 0;
+  color: var(--text-muted);
+  font-size: var(--mindos-text-sm);
+}
+
+.mindos-ocr-divider::before,
+.mindos-ocr-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--background-modifier-border);
+}
+
+.mindos-ocr-divider span {
+  padding: 0 var(--mindos-space-md);
+}
+
+.mindos-ocr-dropzone {
+  padding: var(--mindos-space-2xl) var(--mindos-space-xl);
+}

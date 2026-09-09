@@ -1,0 +1,463 @@
+/* =========================================================
+   Context Awareness Panel
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-context-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-primary);
+}
+
+.mindos-context-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mindos-space-xl);
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+}
+
+.mindos-context-panel-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--background-primary);
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--mindos-transition-fast);
+}
+
+.mindos-context-panel-close:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.mindos-context-panel-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-xs);
+}
+
+.mindos-context-panel-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+
+.mindos-context-panel-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 情境感知视图 */
+.mindos-context-view {
+  padding: var(--mindos-space-lg);
+  height: 100%;
+  overflow-y: auto;
+  background: var(--background-secondary);
+}
+
+/* 加载状态 */
+.mindos-context-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mindos-space-4xl) var(--mindos-space-xl);
+  color: var(--text-muted);
+  gap: var(--mindos-space-md);
+}
+
+.mindos-context-spinner {
+  width: var(--mindos-space-2xl);
+  height: var(--mindos-space-2xl);
+  border: 3px solid var(--background-modifier-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: mindos-spin 1s linear infinite;
+}
+
+@keyframes mindos-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 空状态 */
+.mindos-context-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px var(--mindos-space-xl);
+  text-align: center;
+}
+
+.mindos-context-empty-icon {
+  font-size: 3em; /* 装饰性大图标 */
+  margin-bottom: var(--mindos-space-lg);
+  opacity: 0.5;
+}
+
+.mindos-context-empty p {
+  font-size: var(--mindos-text-md);
+  font-weight: 500;
+  color: var(--text-normal);
+  margin: 0 0 var(--mindos-space-xs) 0;
+}
+
+.mindos-context-empty small {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+
+/* 区块 */
+.mindos-context-section {
+  margin-bottom: var(--mindos-space-xl);
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-md);
+  padding: 14px;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-context-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--mindos-space-md);
+}
+
+.mindos-context-title {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-context-icon {
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-context-count {
+  font-size: var(--mindos-text-xs);
+  font-weight: 600;
+  padding: 2px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-full);
+  background: color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+  color: var(--color-accent);
+}
+
+.mindos-context-count-warning {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+}
+
+.mindos-context-desc {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+/* 列表 */
+.mindos-context-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 项目 */
+.mindos-context-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--mindos-radius-md);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  background: var(--background-secondary);
+}
+
+.mindos-context-item:hover,
+.mindos-context-item.is-hover {
+  background: var(--background-modifier-hover);
+  transform: translateX(2px);
+}
+
+.mindos-context-item-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.mindos-context-item-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mindos-context-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mindos-context-item-title {
+  font-size: var(--mindos-text-base);
+  font-weight: 500;
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mindos-context-item-reason {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mindos-context-item-preview {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 动画 */
+@keyframes mindos-fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; }
+}
+
+.mindos-context-section {
+  animation: mindos-fadeIn var(--mindos-transition-slow);
+}
+
+.mindos-context-section:nth-child(2) { animation-delay: 0.1s; }
+.mindos-context-section:nth-child(3) { animation-delay: 0.2s; }
+
+/* 渲染器补充样式 */
+.mindos-context-empty-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-context-empty-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.mindos-context-header-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 700;
+  color: var(--text-normal);
+  background: linear-gradient(135deg, var(--mindos-primary), var(--mindos-info));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mindos-context-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--mindos-space-md);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-context-refresh-btn:hover {
+  border-color: var(--mindos-primary);
+  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+}
+
+.mindos-refresh-icon {
+  font-size: var(--mindos-text-sm);
+}
+
+.mindos-context-loading-text {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+}
+
+.mindos-context-no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px var(--mindos-space-xl);
+  text-align: center;
+}
+
+.mindos-context-no-results-icon {
+  font-size: 3em; /* 装饰性大图标 */
+  margin-bottom: var(--mindos-space-lg);
+  opacity: 0.5;
+}
+
+.mindos-context-no-results-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-context-no-results-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.mindos-context-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-context-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-context-card-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.mindos-context-card-title:hover {
+  color: var(--mindos-primary);
+}
+
+.mindos-context-card-reason {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  margin-top: var(--mindos-space-xs);
+  line-height: 1.5;
+}
+
+.mindos-context-card-preview {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-faint);
+  line-height: 1.6;
+  padding: var(--mindos-space-sm);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-sm);
+  margin-top: var(--mindos-space-sm);
+}
+
+.mindos-context-card-actions {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  margin-top: 10px;
+}
+
+.mindos-context-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: 6px var(--mindos-space-md);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-context-action-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.mindos-context-action-open:hover {
+  border-color: var(--mindos-primary);
+  color: var(--mindos-primary);
+}
+
+.mindos-context-action-link:hover {
+  border-color: var(--mindos-success);
+  color: var(--mindos-success);
+}
+
+.mindos-context-action-ignore:hover {
+  border-color: var(--mindos-danger);
+  color: var(--mindos-danger);
+}
+
+.mindos-action-icon {
+  font-size: var(--mindos-text-sm);
+}
+
+.mindos-action-tooltip {
+  font-size: var(--mindos-text-xs);
+}
+
+.mindos-context-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md);
+  background: var(--mindos-danger-bg);
+  border: 1px solid var(--mindos-danger-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-error);
+}
+
+.mindos-context-error-icon {
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-context-error-text {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.mindos-context-card {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: 14px;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-context-card:hover {
+  border-color: color-mix(in srgb, var(--mindos-primary) 40%, transparent);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-context-illustration {
+  font-size: 3em; /* 装饰性大图标 */
+  margin-bottom: var(--mindos-space-lg);
+}

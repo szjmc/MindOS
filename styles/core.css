@@ -1,0 +1,1328 @@
+/* =========================================================
+   MindOS Core Design System v2.0
+   ── 设计令牌 · 按钮体系 · 表单规范 · 状态模式 · 通用组件
+   ========================================================= */
+
+/* ═══════════════════════════════════════════════════════════
+   1. DESIGN TOKENS — 设计令牌
+   ── 定义在 body 而非 :root：Obsidian 的主题变量（--text-normal
+      等）定义在 body.theme-light/body.theme-dark 上。若用 :root
+      （<html>，body 的父级），var(--text-normal) 向上查找永远
+      找不到 body 层的主题变量。用 body 则与 Obsidian 主题变量
+      同层，所有子元素（含 Modal 弹窗）均可正常继承令牌。
+   ═══════════════════════════════════════════════════════════ */
+
+body {
+  /* ── 品牌主色：跟随 Obsidian 主题 accent ── */
+  --mindos-primary: var(--color-accent);
+  --mindos-primary-hover: var(--color-accent-1, var(--color-accent));
+  --mindos-primary-active: var(--color-accent-2, var(--color-accent));
+  --mindos-primary-text: var(--text-on-accent);
+
+  /* ── 语义状态色（辅助色：仅用于状态提示）── */
+  --mindos-success: var(--color-green);
+  --mindos-success-bg: rgba(var(--color-green-rgb, 22 163 74), 0.08);
+  --mindos-success-border: rgba(var(--color-green-rgb, 22 163 74), 0.2);
+  --mindos-warning: var(--color-yellow);
+  --mindos-warning-bg: rgba(var(--color-yellow-rgb, 234 179 8), 0.08);
+  --mindos-warning-border: rgba(var(--color-yellow-rgb, 234 179 8), 0.2);
+  --mindos-danger: var(--color-red);
+  --mindos-danger-bg: rgba(var(--color-red-rgb, 239 68 68), 0.08);
+  --mindos-danger-border: rgba(var(--color-red-rgb, 239 68 68), 0.2);
+  --mindos-info: var(--color-blue);
+  --mindos-info-bg: rgba(var(--color-blue-rgb, 59 130 246), 0.08);
+  --mindos-info-border: rgba(var(--color-blue-rgb, 59 130 246), 0.2);
+
+  /* ── 中性色梯度（文本 / 背景 / 边框分层）── */
+  --mindos-text-primary: var(--text-normal);
+  --mindos-text-secondary: var(--text-muted);
+  --mindos-text-tertiary: var(--text-faint);
+  --mindos-text-disabled: var(--text-faint);
+  --mindos-text-on-primary: var(--text-on-accent);
+  --mindos-surface: var(--background-primary);
+  --mindos-surface-secondary: var(--background-secondary);
+  --mindos-surface-hover: var(--background-modifier-hover);
+  --mindos-border: var(--background-modifier-border);
+  --mindos-border-light: var(--background-modifier-border-hover, var(--background-modifier-border));
+
+  /* ── 间距系统：8px 基础栅格 ── */
+  --mindos-space-xs: 4px;   /* 最小间距 / 紧凑型 */
+  --mindos-space-sm: 8px;   /* 基础间隙 / 图标与文字间距 */
+  --mindos-space-md: 12px;  /* 中等间距 / 表单项间距 */
+  --mindos-space-lg: 16px;  /* 标准内边距 / 组件间距 */
+  --mindos-space-xl: 20px;  /* 区域间距 */
+  --mindos-space-2xl: 24px; /* 大区块间距 */
+  --mindos-space-3xl: 32px; /* 页面级间距 */
+  --mindos-space-4xl: 40px; /* 超大留白 */
+
+  /* ── 圆角 ── */
+  --mindos-radius-xs: var(--radius-s, 4px);
+  --mindos-radius-sm: var(--radius-s, 6px);
+  --mindos-radius-md: var(--radius-m, 8px);
+  --mindos-radius-lg: var(--radius-l, 12px);
+  --mindos-radius-xl: 16px;
+  --mindos-radius-full: 999px;
+
+  /* ── 阴影层级 ── */
+  --mindos-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --mindos-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --mindos-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --mindos-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+  --mindos-shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
+
+  /* ── 过渡 ── */
+  --mindos-transition-fast: 120ms ease;
+  --mindos-transition: 180ms ease;
+  --mindos-transition-slow: 280ms ease;
+
+  /* ── 字号分层：7 级，全页面统一 ── */
+  --mindos-text-xs: 11px;    /* 辅助提示 / 标签 */
+  --mindos-text-sm: 12px;    /* 次要文字 / 占位符 */
+  --mindos-text-base: 13px;  /* 正文 */
+  --mindos-text-md: 14px;    /* 小标题 / 强调正文 */
+  --mindos-text-lg: 16px;    /* 区域标题 */
+  --mindos-text-xl: 18px;    /* 页面标题 */
+  --mindos-text-2xl: 22px;   /* 大标题 */
+
+  /* ── 行高 ── */
+  --mindos-leading-tight: 1.3;   /* 标题 */
+  --mindos-leading-normal: 1.55; /* 正文 */
+  --mindos-leading-relaxed: 1.7; /* 长文本 */
+}
+
+/* .mindos-root：View 容器布局规则（令牌已移至 body 层） */
+.mindos-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. TYPOGRAPHY — 字体体系
+   ═══════════════════════════════════════════════════════════ */
+
+/* 标题样式 (可直接用于 span/div) */
+.mindos-page-title {
+  font-size: var(--mindos-text-xl);
+  font-weight: 700;
+  line-height: var(--mindos-leading-tight);
+  color: var(--mindos-text-primary);
+}
+
+.mindos-section-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  line-height: var(--mindos-leading-tight);
+  color: var(--mindos-text-primary);
+}
+
+.mindos-section-subtitle {
+  font-size: var(--mindos-text-sm);
+  font-weight: 400;
+  color: var(--mindos-text-secondary);
+  line-height: var(--mindos-leading-normal);
+}
+
+.mindos-body-text {
+  font-size: var(--mindos-text-base);
+  line-height: var(--mindos-leading-normal);
+  color: var(--mindos-text-primary);
+}
+
+.mindos-caption {
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-text-tertiary);
+  line-height: var(--mindos-leading-tight);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   3. BUTTON SYSTEM — 4级层次 + 3 种尺寸
+   ── Primary / Secondary / Text / Icon
+   ── sm(紧凑) / md(默认) / lg(大型)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 3.1 按钮基类 ── */
+.mindos-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 16px;
+  min-height: 32px;
+  font-size: var(--mindos-text-sm);
+  border: 1px solid transparent;
+  border-radius: var(--mindos-radius-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--mindos-transition);
+  white-space: nowrap;
+  line-height: 1;
+  font-family: inherit;
+}
+.mindos-btn:focus-visible {
+  outline: 2px solid var(--mindos-primary);
+  outline-offset: 2px;
+}
+.mindos-btn:disabled,
+.mindos-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── 3.2 尺寸变体 ── */
+.mindos-btn-sm {
+  padding: 4px 10px;
+  font-size: var(--mindos-text-xs);
+  min-height: 26px;
+  border-radius: var(--mindos-radius-xs);
+  gap: 4px;
+}
+.mindos-btn-sm svg { width: 13px; height: 13px; }
+
+.mindos-btn-md {
+  padding: 7px 16px;
+  font-size: var(--mindos-text-sm);
+  min-height: 34px;
+  gap: 6px;
+}
+.mindos-btn-md svg { width: 15px; height: 15px; }
+
+.mindos-btn-lg {
+  padding: 10px 22px;
+  font-size: var(--mindos-text-md);
+  min-height: 40px;
+  font-weight: 700;
+  gap: 8px;
+}
+.mindos-btn-lg svg { width: 17px; height: 17px; }
+
+/* ── 3.3 主按钮 Primary（核心操作：保存、提交、新增）── */
+.mindos-btn-primary {
+  background: var(--mindos-primary);
+  color: var(--mindos-primary-text);
+  border-color: var(--mindos-primary);
+  box-shadow: var(--mindos-shadow-sm);
+}
+.mindos-btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: var(--mindos-shadow-md);
+}
+.mindos-btn-primary:active {
+  filter: brightness(0.95);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+/* ── 3.4 次按钮 Secondary（取消、返回、一般操作）── */
+.mindos-btn-secondary {
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-primary);
+  border-color: var(--mindos-border);
+}
+.mindos-btn-secondary:hover {
+  background: var(--mindos-surface-hover);
+  border-color: var(--mindos-border-light);
+  box-shadow: var(--mindos-shadow-xs);
+}
+.mindos-btn-secondary:active {
+  background: var(--mindos-border);
+}
+
+/* ── 3.5 文字按钮 Text（轻量操作 / 链接型）── */
+.mindos-btn-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--mindos-text-secondary);
+  padding-left: 6px;
+  padding-right: 6px;
+  min-width: 0;
+}
+.mindos-btn-text:hover {
+  color: var(--mindos-text-primary);
+  background: var(--mindos-surface-hover);
+}
+.mindos-btn-text.is-primary-link {
+  color: var(--mindos-primary);
+}
+.mindos-btn-text.is-primary-link:hover {
+  background: rgba(var(--color-accent-rgb, 124 58 237), 0.08);
+}
+
+/* ── 3.6 危险按钮 Danger（删除、重置等不可逆操作须二次确认）── */
+.mindos-btn-danger {
+  background: var(--mindos-danger);
+  color: var(--text-on-accent, #fff);
+  border-color: var(--mindos-danger);
+}
+.mindos-btn-danger:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-btn-danger-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--mindos-danger);
+}
+.mindos-btn-danger-text:hover {
+  background: var(--mindos-danger-bg);
+}
+
+/* ── 3.7 幽灵按钮 Ghost（透明底 + 边框）── */
+.mindos-btn-ghost {
+  background: transparent;
+  border-color: var(--mindos-border);
+  color: var(--mindos-text-primary);
+}
+.mindos-btn-ghost:hover {
+  background: var(--mindos-surface-hover);
+}
+
+/* ── 3.8 图标按钮 Icon（纯图标操作）── */
+.mindos-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  background: transparent;
+  color: var(--mindos-text-secondary);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  flex-shrink: 0;
+  padding: 0;
+}
+.mindos-icon-btn:hover {
+  background: var(--mindos-surface-hover);
+  color: var(--mindos-text-primary);
+}
+.mindos-icon-btn:active {
+  background: var(--mindos-border);
+}
+.mindos-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.mindos-icon-btn-sm { width: 28px; height: 28px; }
+.mindos-icon-btn-sm svg { width: 14px; height: 14px; }
+
+.mindos-icon-btn-md { width: 34px; height: 34px; }
+.mindos-icon-btn-md svg { width: 16px; height: 16px; }
+
+.mindos-icon-btn-lg { width: 40px; height: 40px; }
+.mindos-icon-btn-lg svg { width: 20px; height: 20px; }
+
+/* Icon button 语义变体 */
+.mindos-icon-btn.is-danger { color: var(--mindos-danger); }
+.mindos-icon-btn.is-danger:hover { background: var(--mindos-danger-bg); }
+.mindos-icon-btn.is-primary { color: var(--mindos-primary); }
+.mindos-icon-btn.is-primary:hover { background: rgba(var(--color-accent-rgb, 124 58 237), 0.1); }
+
+/* ── 3.9 按钮组（多个按钮横向排列）── */
+.mindos-btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.mindos-btn-group.is-end {
+  justify-content: flex-end;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   4. FORM ELEMENTS — 统一表单规范
+   ── 标签/输入框对齐 · 尺寸统一 · 验证状态 · 禁用样式
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 4.1 表单布局 ── */
+.mindos-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xs);
+  margin-bottom: var(--mindos-space-lg);
+}
+.mindos-form-label {
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--mindos-text-primary);
+  line-height: var(--mindos-leading-tight);
+}
+.mindos-form-label .is-required::after {
+  content: " *";
+  color: var(--mindos-danger);
+  font-weight: 400;
+}
+.mindos-form-hint {
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-text-tertiary);
+  line-height: var(--mindos-leading-normal);
+}
+
+/* ── 4.2 文本输入框 ── */
+.mindos-input {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: var(--mindos-text-base);
+  font-family: inherit;
+  line-height: var(--mindos-leading-normal);
+  color: var(--mindos-text-primary);
+  background: var(--mindos-surface);
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-sm);
+  transition: border-color var(--mindos-transition), box-shadow var(--mindos-transition);
+  outline: none;
+  box-sizing: border-box;
+}
+.mindos-input:hover {
+  border-color: var(--mindos-border-light);
+}
+.mindos-input:focus {
+  border-color: var(--mindos-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+}
+.mindos-input::placeholder {
+  color: var(--mindos-text-tertiary);
+  font-size: var(--mindos-text-sm);
+}
+.mindos-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--mindos-surface-secondary);
+}
+
+/* 小尺寸输入框 */
+.mindos-input-sm {
+  padding: 4px 8px;
+  font-size: var(--mindos-text-xs);
+  min-height: 26px;
+}
+
+/* ── 4.3 文本域 ── */
+.mindos-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: var(--mindos-text-base);
+  font-family: inherit;
+  line-height: var(--mindos-leading-normal);
+  color: var(--mindos-text-primary);
+  background: var(--mindos-surface);
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-sm);
+  transition: border-color var(--mindos-transition), box-shadow var(--mindos-transition);
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+  box-sizing: border-box;
+}
+.mindos-textarea:focus {
+  border-color: var(--mindos-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+}
+.mindos-textarea::placeholder {
+  color: var(--mindos-text-tertiary);
+}
+.mindos-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--mindos-surface-secondary);
+}
+
+/* ── 4.4 下拉选择框 ── */
+.mindos-select {
+  width: 100%;
+  padding: 7px 28px 7px 10px;
+  font-size: var(--mindos-text-base);
+  font-family: inherit;
+  color: var(--mindos-text-primary);
+  background: var(--mindos-surface);
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--mindos-transition), box-shadow var(--mindos-transition);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  box-sizing: border-box;
+}
+.mindos-select:focus {
+  border-color: var(--mindos-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+}
+.mindos-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--mindos-surface-secondary);
+}
+
+/* ── 4.5 搜索框（带图标）── */
+.mindos-search-input {
+  position: relative;
+}
+.mindos-search-input .mindos-input {
+  padding-left: 32px;
+}
+.mindos-search-input .mindos-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mindos-text-tertiary);
+  pointer-events: none;
+  display: flex;
+}
+
+/* ── 4.6 表单验证状态 ── */
+.mindos-input.is-error,
+.mindos-textarea.is-error,
+.mindos-select.is-error {
+  border-color: var(--mindos-danger);
+  box-shadow: 0 0 0 3px var(--mindos-danger-bg);
+}
+.mindos-input.is-error:focus,
+.mindos-textarea.is-error:focus,
+.mindos-select.is-error:focus {
+  box-shadow: 0 0 0 3px var(--mindos-danger-border);
+}
+
+.mindos-input.is-success,
+.mindos-textarea.is-success {
+  border-color: var(--mindos-success);
+}
+.mindos-input.is-success:focus,
+.mindos-textarea.is-success:focus {
+  box-shadow: 0 0 0 3px var(--mindos-success-bg);
+}
+
+.mindos-form-error {
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-danger);
+  line-height: var(--mindos-leading-tight);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mindos-form-error svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   5. CONTAINERS — 卡片 · 分区 · 分割线
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 5.1 卡片 ── */
+.mindos-card {
+  background: var(--mindos-surface);
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  transition: box-shadow var(--mindos-transition);
+}
+.mindos-card.is-hoverable:hover {
+  box-shadow: var(--mindos-shadow-md);
+  border-color: var(--mindos-border-light);
+}
+.mindos-card.is-flat {
+  border: none;
+  box-shadow: none;
+  background: var(--mindos-surface-secondary);
+}
+
+/* ── 5.2 分区容器 ── */
+.mindos-section {
+  padding: var(--mindos-space-lg) 0;
+}
+.mindos-section + .mindos-section {
+  border-top: 1px solid var(--mindos-border);
+}
+.mindos-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--mindos-space-md);
+}
+
+/* ── 5.3 分割线 ── */
+.mindos-divider {
+  border: none;
+  border-top: 1px solid var(--mindos-border);
+  margin: var(--mindos-space-md) 0;
+}
+.mindos-divider.is-light {
+  border-color: var(--mindos-border-light);
+}
+.mindos-divider.is-spaced {
+  margin: var(--mindos-space-xl) 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   6. STATE PATTERNS — 空状态 · 加载态 · 错误态 · 成功态
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 6.1 空状态 Empty State ── */
+.mindos-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mindos-space-sm);
+  text-align: center;
+  padding: var(--mindos-space-3xl) var(--mindos-space-lg);
+  color: var(--mindos-text-secondary);
+}
+.mindos-empty-icon {
+  display: flex;
+  color: var(--mindos-text-tertiary);
+  margin-bottom: var(--mindos-space-sm);
+  opacity: 0.5;
+}
+.mindos-empty-icon svg { width: 40px; height: 40px; }
+.mindos-empty-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--mindos-text-primary);
+}
+.mindos-empty-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-text-secondary);
+  line-height: var(--mindos-leading-normal);
+  max-width: 280px;
+}
+.mindos-empty-action {
+  margin-top: var(--mindos-space-md);
+}
+
+/* ── 6.2 加载态 Loading State ── */
+.mindos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mindos-space-md);
+  padding: var(--mindos-space-3xl);
+  color: var(--mindos-text-secondary);
+  font-size: var(--mindos-text-sm);
+}
+.mindos-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid var(--mindos-border);
+  border-top-color: var(--mindos-primary);
+  border-radius: 50%;
+  animation: mindos-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+.mindos-spinner-sm {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+}
+.mindos-spinner-lg {
+  width: 44px;
+  height: 44px;
+  border-width: 3px;
+}
+
+/* ── 6.3 错误态 Error State ── */
+.mindos-error-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  background: var(--mindos-danger-bg);
+  border: 1px solid var(--mindos-danger-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-danger);
+  line-height: var(--mindos-leading-normal);
+}
+.mindos-error-box svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── 6.4 成功态 Success Banner ── */
+.mindos-success-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  background: var(--mindos-success-bg);
+  border: 1px solid var(--mindos-success-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-success);
+  line-height: var(--mindos-leading-normal);
+}
+
+/* ── 6.5 信息提示 Info Banner ── */
+.mindos-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  background: var(--mindos-info-bg);
+  border: 1px solid var(--mindos-info-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-info);
+  line-height: var(--mindos-leading-normal);
+}
+
+/* ── 6.6 警告 Banner ── */
+.mindos-warning-box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  background: var(--mindos-warning-bg);
+  border: 1px solid var(--mindos-warning-border);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-warning);
+  line-height: var(--mindos-leading-normal);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   7. TABLE — 表格规范
+   ── 表头样式 · 奇偶行 · 列对齐 · 空状态 · 分页
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 表格容器（响应式溢出）── */
+.mindos-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-md);
+}
+
+/* ── 基础表格 ── */
+.mindos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mindos-text-sm);
+  line-height: var(--mindos-leading-normal);
+}
+.mindos-table thead {
+  background: var(--mindos-surface-secondary);
+  border-bottom: 2px solid var(--mindos-border);
+}
+.mindos-table th {
+  padding: 10px var(--mindos-space-lg);
+  font-weight: 600;
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  white-space: nowrap;
+  user-select: none;
+}
+.mindos-table th.is-sortable {
+  cursor: pointer;
+}
+.mindos-table th.is-sortable:hover {
+  color: var(--mindos-text-primary);
+}
+.mindos-table th.is-numeric,
+.mindos-table td.is-numeric {
+  text-align: right;
+}
+.mindos-table th.is-center,
+.mindos-table td.is-center {
+  text-align: center;
+}
+
+.mindos-table td {
+  padding: 10px var(--mindos-space-lg);
+  color: var(--mindos-text-primary);
+  border-bottom: 1px solid var(--mindos-border);
+  vertical-align: middle;
+}
+
+/* 奇偶行区分 */
+.mindos-table tbody tr:nth-child(even) {
+  background: var(--mindos-surface-secondary);
+}
+.mindos-table tbody tr:hover {
+  background: var(--mindos-surface-hover);
+}
+
+/* 操作列（固定宽度、右对齐） */
+.mindos-table .is-actions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+.mindos-table .is-actions .mindos-icon-btn {
+  margin-left: 2px;
+}
+
+/* 超长文本省略 */
+.mindos-table .is-ellipsis {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 表格空状态 ── */
+.mindos-table-empty {
+  text-align: center;
+  padding: var(--mindos-space-3xl) var(--mindos-space-lg) !important;
+  color: var(--mindos-text-tertiary);
+  font-size: var(--mindos-text-sm);
+}
+
+/* ── 分页器 ── */
+.mindos-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-text-secondary);
+  border-top: 1px solid var(--mindos-border);
+}
+.mindos-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mindos-pagination-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
+  color: var(--mindos-text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+.mindos-pagination-page:hover {
+  background: var(--mindos-surface-hover);
+  color: var(--mindos-text-primary);
+}
+.mindos-pagination-page.is-active {
+  background: var(--mindos-primary);
+  color: var(--mindos-primary-text);
+  border-color: var(--mindos-primary);
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. NAVIGATION — 导航标签 · 面包屑
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Tab 导航（Underline 风格，与 Obsidian 一致）── */
+.mindos-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--mindos-border);
+  margin-bottom: var(--mindos-space-lg);
+}
+.mindos-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
+  color: var(--mindos-text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  white-space: nowrap;
+  font-family: inherit;
+  margin-bottom: -1px;
+}
+.mindos-tab:hover {
+  color: var(--mindos-text-primary);
+  background: var(--mindos-surface-hover);
+}
+.mindos-tab.is-active {
+  color: var(--mindos-primary);
+  border-bottom-color: var(--mindos-primary);
+}
+.mindos-tab.is-active:hover {
+  background: transparent;
+}
+.mindos-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* Tab 内徽章计数 */
+.mindos-tab .mindos-badge {
+  margin-left: 2px;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+}
+
+/* ── 面包屑导航 ── */
+.mindos-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-text-secondary);
+  padding: var(--mindos-space-sm) 0;
+  flex-wrap: wrap;
+}
+.mindos-breadcrumb-item {
+  color: var(--mindos-text-secondary);
+  cursor: pointer;
+  transition: color var(--mindos-transition);
+}
+.mindos-breadcrumb-item:hover {
+  color: var(--mindos-primary);
+}
+.mindos-breadcrumb-item.is-active {
+  color: var(--mindos-text-primary);
+  font-weight: 600;
+  cursor: default;
+}
+.mindos-breadcrumb-separator {
+  color: var(--mindos-text-tertiary);
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. MODAL & DRAWER — 弹窗 · 抽屉
+   ── 统一宽度 / 遮罩 / 动画 / 标题 / 按钮位置
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Modal 容器（覆盖 Obsidian Modal）── */
+.mindos-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+}
+/* 规范：标题栏高度 40px，左右 padding 16px */
+.mindos-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--mindos-space-lg);
+  height: 40px;
+  border-bottom: 1px solid var(--mindos-border);
+  flex-shrink: 0;
+}
+/* 规范：弹窗标题 14px / font-weight 500（非粗体），区分正文层级 */
+.mindos-modal-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 500;
+  color: var(--mindos-text-primary);
+  line-height: var(--mindos-leading-tight);
+}
+.mindos-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--mindos-space-xl);
+}
+/* 规范：Footer 右对齐，padding 与 header 对称 */
+.mindos-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md) var(--mindos-space-lg);
+  border-top: 1px solid var(--mindos-border);
+  flex-shrink: 0;
+}
+
+/* ── 抽屉 Drawer（侧边滑出面板）── */
+.mindos-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: mindos-fade-in 150ms ease forwards;
+}
+.mindos-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 90vw;
+  background: var(--mindos-surface);
+  border-left: 1px solid var(--mindos-border);
+  box-shadow: var(--mindos-shadow-lg);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  animation: mindos-slide-up 200ms ease forwards;
+}
+.mindos-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mindos-space-lg) var(--mindos-space-xl);
+  border-bottom: 1px solid var(--mindos-border);
+  flex-shrink: 0;
+}
+.mindos-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--mindos-space-xl);
+}
+.mindos-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-lg) var(--mindos-space-xl);
+  border-top: 1px solid var(--mindos-border);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. MISC — 标签 · 徽章 · Tooltip · 危险区域
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 7.1 标签 Tag ── */
+.mindos-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--mindos-text-xs);
+  padding: 2px 8px;
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-secondary);
+  border-radius: var(--mindos-radius-full);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.mindos-tag.is-primary {
+  background: rgba(var(--color-accent-rgb, 124 58 237), 0.1);
+  color: var(--mindos-primary);
+}
+.mindos-tag.is-success {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+}
+.mindos-tag.is-warning {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+}
+.mindos-tag.is-danger {
+  background: var(--mindos-danger-bg);
+  color: var(--mindos-danger);
+}
+
+/* ── 7.2 徽章 Badge（右上角计数）── */
+.mindos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--mindos-primary-text);
+  background: var(--mindos-primary);
+  border-radius: var(--mindos-radius-full);
+  line-height: 1;
+}
+
+/* ── 7.3 危险操作区域 Danger Zone ── */
+.mindos-danger-zone {
+  border: 1px solid var(--mindos-danger-border);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  background: var(--mindos-danger-bg);
+}
+.mindos-danger-zone .mindos-section-title {
+  color: var(--mindos-danger);
+}
+
+/* ── 7.4 Tooltip 容器 ── */
+.mindos-tooltip-wrapper {
+  position: relative;
+}
+.mindos-tooltip-wrapper [data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  font-size: var(--mindos-text-xs);
+  color: var(--text-on-accent, #fff);
+  background: var(--mindos-text-primary);
+  border-radius: var(--mindos-radius-xs);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   11. ANIMATIONS — 动画关键帧
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes mindos-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes mindos-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mindos-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes mindos-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes mindos-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mindos-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes mindos-pop-in {
+  0%   { opacity: 0; transform: scale(0.8); }
+  70%  { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes mindos-modal-in {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── 骨架屏动画 ── */
+.mindos-skeleton {
+  background: linear-gradient(90deg, var(--mindos-surface-secondary) 25%, var(--mindos-surface-hover) 50%, var(--mindos-surface-secondary) 75%);
+  background-size: 200% 100%;
+  animation: mindos-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--mindos-radius-sm);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   12. KEYBOARD & ACCESSIBILITY — 键盘焦点 · 可访问性
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 全局键盘焦点环 ── */
+.mindos-root *:focus-visible {
+  outline: 2px solid var(--mindos-primary);
+  outline-offset: 2px;
+  border-radius: var(--mindos-radius-xs);
+}
+.mindos-root button:focus-visible,
+.mindos-root input:focus-visible,
+.mindos-root select:focus-visible,
+.mindos-root textarea:focus-visible {
+  outline: 2px solid var(--mindos-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb, 124 58 237), 0.15);
+}
+
+/* ── Number Input Styles ── */
+.mindos-root input[type="number"] {
+  -moz-appearance: textfield;
+}
+.mindos-root input[type="number"]::-webkit-outer-spin-button,
+.mindos-root input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   13. SCROLLBAR — 滚动条美化
+   ═══════════════════════════════════════════════════════════ */
+
+.mindos-root *::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.mindos-root *::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mindos-root *::-webkit-scrollbar-thumb {
+  background: var(--mindos-border);
+  border-radius: var(--mindos-radius-full);
+  transition: background var(--mindos-transition);
+}
+.mindos-root *::-webkit-scrollbar-thumb:hover {
+  background: var(--mindos-text-tertiary);
+}
+.mindos-root *::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   14. UTILITY — 通用工具类
+   ═══════════════════════════════════════════════════════════ */
+
+.mindos-root .mindos-fade-in    { animation: mindos-fade-in 200ms ease forwards; }
+.mindos-root .mindos-slide-up   { animation: mindos-slide-up 250ms ease forwards; }
+.mindos-root .mindos-scale-in   { animation: mindos-scale-in 200ms ease forwards; }
+
+.mindos-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   15. BACKWARD COMPAT — 向下兼容旧类名
+   ═══════════════════════════════════════════════════════════ */
+
+/* 旧版按钮类名向后兼容（代码逐步迁移后移除） */
+.mindos-btn-large {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: var(--mindos-text-md);
+  font-weight: 700;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  white-space: nowrap;
+  line-height: 1;
+  font-family: inherit;
+}
+.mindos-btn-large svg { width: 17px; height: 17px; }
+.mindos-btn-large.is-primary {
+  background: var(--mindos-primary);
+  color: var(--mindos-primary-text);
+  border-color: var(--mindos-primary);
+  box-shadow: var(--mindos-shadow-sm);
+}
+.mindos-btn-large.is-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: var(--mindos-shadow-md);
+}
+.mindos-btn-large.is-danger {
+  background: var(--mindos-danger);
+  color: var(--text-on-accent, #fff);
+  border-color: transparent;
+}
+.mindos-btn-large.is-ghost {
+  background: transparent;
+  border-color: var(--mindos-border);
+  color: var(--mindos-text-primary);
+}
+.mindos-btn-large:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 旧版小按钮向后兼容 */
+.mindos-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--mindos-border);
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-primary);
+  font-size: var(--mindos-text-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--mindos-transition);
+  gap: 4px;
+}
+.mindos-btn:hover { background: var(--mindos-surface-hover); }
+.mindos-btn svg { width: 13px; height: 13px; }
+
+/* 旧版迷你按钮 → 图标按钮映射 */
+.mindos-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-sm);
+  background: var(--mindos-surface);
+  color: var(--mindos-text-secondary);
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  padding: 0;
+}
+.mindos-mini-btn:hover {
+  background: var(--mindos-surface-hover);
+  color: var(--mindos-text-primary);
+}
+.mindos-mini-btn svg { width: 14px; height: 14px; }
+.mindos-mini-btn.is-success {
+  background: var(--mindos-success);
+  color: var(--text-on-accent, #fff);
+  border-color: transparent;
+}
+.mindos-mini-btn.is-warning {
+  background: var(--mindos-warning);
+  color: var(--text-on-accent, #fff);
+  border-color: transparent;
+  width: auto;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.mindos-mini-btn.is-danger { color: var(--mindos-danger); }
+
+.mindos-btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: var(--mindos-space-sm);
+}
+
+/* 旧版间距变量别名 */
+.mindos-root {
+  --mindos-space-1: var(--mindos-space-xs);
+  --mindos-space-2: var(--mindos-space-sm);
+  --mindos-space-3: var(--mindos-space-md);
+  --mindos-space-4: var(--mindos-space-lg);
+  --mindos-space-5: var(--mindos-space-xl);
+  --mindos-space-6: var(--mindos-space-2xl);
+}
+
+/* Modal 弹入动画兼容 */
+.mindos-health-modal,
+.mindos-gaps-modal {
+  animation: mindos-modal-in 200ms ease forwards;
+}

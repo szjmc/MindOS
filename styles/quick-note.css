@@ -1,0 +1,122 @@
+/* =========================================================
+   Quick Note Modal
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-quick-note-modal {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-quick-note-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-lg);
+}
+
+.mindos-quick-note-desc {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  margin: 0;
+  padding-bottom: var(--mindos-space-sm);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-quick-note-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: var(--mindos-space-md) 14px;
+  font-size: var(--mindos-text-md);
+  font-family: var(--font-text);
+  background: var(--background-modifier-form-field);
+  border: 1.5px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  color: var(--text-normal);
+  resize: vertical;
+  transition: all var(--mindos-transition);
+  box-sizing: border-box;
+}
+
+.mindos-quick-note-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+}
+
+.mindos-quick-note-textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.mindos-quick-note-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mindos-quick-note-tags-label {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.mindos-quick-note-tags-input {
+  flex: 1;
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  font-size: var(--mindos-text-base);
+  background: var(--background-modifier-form-field);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  color: var(--text-normal);
+  transition: all var(--mindos-transition);
+}
+
+.mindos-quick-note-tags-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+}
+
+.mindos-quick-note-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: var(--mindos-space-sm);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.mindos-quick-note-btn {
+  padding: var(--mindos-space-sm) var(--mindos-space-xl);
+  border-radius: var(--mindos-radius-md);
+  font-size: var(--mindos-text-base);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-quick-note-btn-secondary {
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+
+.mindos-quick-note-btn-secondary:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(--text-muted);
+}
+
+.mindos-quick-note-btn-primary {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  color: var(--mindos-text-on-primary);
+  border-color: transparent;
+  box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-quick-note-btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--mindos-shadow-md);
+}
+
+.mindos-quick-note-btn-primary:active {
+  filter: brightness(0.95);
+}

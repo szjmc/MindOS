@@ -1,0 +1,671 @@
+/* =========================================================
+   MindOS Task Center / Capture Styles
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.workspace-leaf-content[data-type="mindos-view"] .view-content {
+  padding: 0 !important;
+  overflow: hidden !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mindos-task-center {
+  flex: 1;
+  min-height: 0;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: var(--mindos-text-base);
+}
+
+/* ── 顶部工具栏 ── */
+.mindos-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+.mindos-topbar-left {
+  flex: 1;
+  min-width: 0;
+}
+.mindos-topbar-center {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  flex-shrink: 0;
+}
+.mindos-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  flex-shrink: 0;
+}
+
+.mindos-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+.mindos-brand-icon {
+  display: flex;
+  color: var(--mindos-primary);
+}
+.mindos-brand-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.mindos-brand-text {
+  font-size: var(--mindos-text-lg);
+  font-weight: 700;
+  color: var(--text-normal);
+  letter-spacing: -0.01em;
+}
+.mindos-version-tag {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  padding: 2px var(--mindos-space-sm);
+  background: var(--background-modifier-border);
+  border-radius: var(--mindos-radius-full);
+  font-weight: 500;
+}
+
+/* ── 状态横幅 ── */
+.mindos-banner {
+  border-radius: var(--mindos-radius-md);
+  padding: 14px var(--mindos-space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  flex-shrink: 0;
+}
+.mindos-banner.status-running {
+  background: color-mix(in srgb, var(--mindos-primary) 8%, var(--background-secondary));
+  border-color: color-mix(in srgb, var(--mindos-primary) 25%, transparent);
+}
+.mindos-banner.status-awaiting_review {
+  background: color-mix(in srgb, var(--mindos-warning) 8%, var(--background-secondary));
+  border-color: color-mix(in srgb, var(--mindos-warning) 30%, transparent);
+}
+.mindos-banner.status-done {
+  background: color-mix(in srgb, var(--mindos-success) 8%, var(--background-secondary));
+  border-color: color-mix(in srgb, var(--mindos-success) 25%, transparent);
+}
+.mindos-banner.status-error {
+  background: color-mix(in srgb, var(--mindos-danger) 8%, var(--background-secondary));
+  border-color: color-mix(in srgb, var(--mindos-danger) 30%, transparent);
+}
+
+.mindos-banner-head { display: flex; align-items: center; gap: var(--mindos-space-md); }
+.mindos-banner-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--background-primary);
+  flex-shrink: 0;
+}
+.mindos-banner-icon svg { width: var(--mindos-space-xl); height: var(--mindos-space-xl); }
+.mindos-banner.status-running .mindos-banner-icon { color: var(--mindos-info); }
+.mindos-banner.status-running .mindos-banner-icon svg { animation: mindos-spin 1.2s linear infinite; }
+.mindos-banner.status-awaiting_review .mindos-banner-icon { color: var(--mindos-warning); }
+.mindos-banner.status-done .mindos-banner-icon { color: var(--mindos-success); }
+.mindos-banner.status-error .mindos-banner-icon { color: var(--mindos-danger); }
+
+.mindos-banner-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.mindos-banner-title { font-size: var(--mindos-text-md); font-weight: 600; color: var(--text-normal); }
+.mindos-banner-detail { font-size: var(--mindos-text-sm); color: var(--text-muted); line-height: 1.5; }
+
+.mindos-banner-error {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  padding: var(--mindos-space-sm) 10px;
+  background: var(--mindos-danger-bg);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+  color: var(--text-error);
+}
+.mindos-banner-error-icon { display: flex; }
+.mindos-banner-error-icon svg { width: 14px; height: 14px; }
+
+.mindos-banner-actions { display: flex; gap: var(--mindos-space-sm); flex-wrap: wrap; margin-top: var(--mindos-space-xs); }
+
+/* ── 流水线面板 ── */
+.mindos-pipeline-card {
+  background: color-mix(in srgb, var(--mindos-primary) 5%, var(--background-secondary));
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  border-radius: var(--mindos-radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+  flex-shrink: 0;
+}
+.mindos-pipeline-card.is-collapsed {
+  padding: 10px 14px;
+  gap: 0;
+}
+.mindos-pipeline-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  cursor: pointer;
+  user-select: none;
+}
+.mindos-pipeline-title-icon { display: flex; color: var(--mindos-primary); }
+.mindos-pipeline-title-icon svg { width: var(--mindos-text-lg); height: var(--mindos-text-lg); }
+.mindos-pipeline-title {
+  font-size: var(--mindos-text-base);
+  font-weight: 700;
+  color: var(--text-normal);
+  flex: 1;
+}
+.mindos-pipeline-chev { display: flex; color: var(--mindos-primary); opacity: 0.7; }
+.mindos-pipeline-chev svg { width: var(--mindos-text-lg); height: var(--mindos-text-lg); }
+
+.mindos-pipeline-stages { display: flex; flex-direction: column; gap: var(--mindos-space-xs); }
+.mindos-pipeline-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--mindos-space-sm) 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  border-left: 3px solid var(--background-modifier-border);
+  transition: all var(--mindos-transition);
+}
+.mindos-pipeline-stage.status-pending { opacity: 0.5; }
+.mindos-pipeline-stage.status-running {
+  border-left-color: var(--mindos-info);
+  background: color-mix(in srgb, var(--mindos-info) 5%, var(--background-primary));
+}
+.mindos-pipeline-stage.status-done { border-left-color: var(--mindos-success); }
+.mindos-pipeline-stage.status-failed {
+  border-left-color: var(--mindos-danger);
+  background: color-mix(in srgb, var(--mindos-danger) 5%, var(--background-primary));
+}
+
+.mindos-pipeline-stage-num {
+  width: var(--mindos-space-2xl);
+  height: var(--mindos-space-2xl);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: var(--mindos-text-xs);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.mindos-pipeline-stage-num svg { width: var(--mindos-text-sm); height: var(--mindos-text-sm); }
+.mindos-pipeline-stage.status-running .mindos-pipeline-stage-num {
+  background: var(--mindos-info);
+  color: var(--mindos-text-on-primary);
+}
+.mindos-pipeline-stage.status-running .mindos-pipeline-stage-num svg {
+  animation: mindos-spin 1.2s linear infinite;
+}
+.mindos-pipeline-stage.status-done .mindos-pipeline-stage-num {
+  background: var(--mindos-success);
+  color: var(--mindos-text-on-primary);
+}
+.mindos-pipeline-stage.status-failed .mindos-pipeline-stage-num {
+  background: var(--mindos-danger);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-pipeline-stage-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.mindos-pipeline-stage-label {
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.mindos-pipeline-stage-detail {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  word-break: break-all;
+}
+
+.mindos-pipeline-summary {
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  padding: var(--mindos-space-sm) 10px;
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── 待审核 actions ── */
+.mindos-section { display: flex; flex-direction: column; gap: var(--mindos-space-sm); flex-shrink: 0; }
+.mindos-section-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 2px;
+}
+.mindos-section-icon { display: flex; color: var(--text-muted); }
+.mindos-section-icon svg { width: 14px; height: 14px; }
+.mindos-section-title {
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+.mindos-section-badge {
+  font-size: var(--mindos-text-xs);
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: var(--mindos-radius-full);
+  background: var(--mindos-primary);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-action-list { display: flex; flex-direction: column; gap: var(--mindos-space-sm); }
+.mindos-action-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-left: 3px solid var(--mindos-info);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+.mindos-action-card.op-create { border-left-color: var(--mindos-success); }
+.mindos-action-card.op-update { border-left-color: var(--mindos-info); }
+.mindos-action-card.op-append_section { border-left-color: var(--mindos-warning); }
+.mindos-action-card.op-link { border-left-color: var(--mindos-primary); }
+
+.mindos-action-card-head { display: flex; align-items: center; gap: var(--mindos-space-sm); }
+.mindos-op-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  font-size: var(--mindos-text-xs);
+  font-weight: 700;
+  padding: 3px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-sm);
+  text-transform: uppercase;
+}
+.mindos-op-badge svg { width: 10px; height: 10px; }
+.mindos-op-badge.op-create { background: var(--mindos-success-bg); color: var(--mindos-success); }
+.mindos-op-badge.op-update { background: var(--mindos-info-bg); color: var(--mindos-info); }
+.mindos-op-badge.op-append_section { background: var(--mindos-warning-bg); color: var(--mindos-warning); }
+.mindos-op-badge.op-link { background: color-mix(in srgb, var(--mindos-primary) 15%, transparent); color: var(--mindos-primary); }
+
+.mindos-action-type-label { font-size: var(--mindos-text-xs); color: var(--text-muted); flex: 1; }
+.mindos-action-card-ops { display: flex; gap: var(--mindos-space-xs); }
+
+.mindos-action-card-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: 1.4;
+}
+.mindos-action-card-brief {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+  padding: 6px 10px;
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  border-left: 2px solid var(--background-modifier-border);
+}
+.mindos-action-card-reason,
+.mindos-action-card-rounds {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+.mindos-action-card-rounds {
+  font-family: var(--font-monospace);
+}
+.mindos-action-reason-icon { display: flex; margin-top: 2px; }
+.mindos-action-reason-icon svg { width: var(--mindos-text-xs); height: var(--mindos-text-xs); }
+
+.mindos-action-preview-wrap { display: flex; flex-direction: column; gap: 6px; }
+.mindos-action-preview-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-info);
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+}
+.mindos-action-preview-toggle:hover { color: var(--text-accent-hover); }
+.mindos-toggle-icon { display: flex; }
+.mindos-toggle-icon svg { width: var(--mindos-text-sm); height: var(--mindos-text-sm); }
+
+.mindos-action-preview {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 10px var(--mindos-space-md);
+  font-family: var(--font-monospace);
+  font-size: var(--mindos-text-xs);
+  line-height: 1.6;
+  color: var(--text-normal);
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.mindos-action-card-tags { display: flex; flex-wrap: wrap; gap: var(--mindos-space-xs); }
+
+/* ── 快速开始引导 ── */
+.mindos-guide {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--mindos-primary) 6%, transparent), color-mix(in srgb, var(--mindos-info) 4%, transparent));
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  border-radius: var(--mindos-radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.mindos-guide.is-collapsed {
+  padding: 10px 14px;
+  gap: 0;
+}
+
+.mindos-guide-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+  border-radius: var(--mindos-radius-sm);
+}
+.mindos-guide-title-row:hover { background: color-mix(in srgb, var(--mindos-primary) 5%, transparent); }
+
+.mindos-guide-title {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  font-size: var(--mindos-text-lg);
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-guide-icon { display: flex; color: var(--mindos-primary); }
+.mindos-guide-icon svg { width: var(--mindos-space-xl); height: var(--mindos-space-xl); }
+.mindos-guide-chev { display: flex; color: var(--mindos-primary); opacity: 0.7; }
+.mindos-guide-chev svg { width: var(--mindos-text-lg); height: var(--mindos-text-lg); }
+
+.mindos-guide-subtitle { font-size: var(--mindos-text-sm); color: var(--text-muted); font-style: italic; }
+.mindos-guide-steps { display: flex; flex-direction: column; gap: var(--mindos-space-sm); }
+.mindos-guide-step {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-md);
+  padding: var(--mindos-space-md);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all var(--mindos-transition-fast);
+}
+.mindos-guide-step:hover {
+  border-color: var(--mindos-primary);
+  background: var(--background-modifier-hover);
+  transform: translateX(2px);
+}
+.mindos-guide-step-num {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mindos-primary);
+  color: var(--mindos-text-on-primary);
+  border-radius: 50%;
+  font-size: var(--mindos-text-sm);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.mindos-guide-step-icon { display: flex; color: var(--text-muted); }
+.mindos-guide-step-icon svg { width: var(--mindos-text-lg); height: var(--mindos-text-lg); }
+.mindos-guide-step-text { flex: 1; display: flex; flex-direction: column; }
+.mindos-guide-step-title { font-size: var(--mindos-text-base); font-weight: 600; color: var(--text-normal); }
+.mindos-guide-step-desc { font-size: var(--mindos-text-xs); color: var(--text-muted); margin-top: 2px; }
+.mindos-guide-step-arrow { display: flex; color: var(--text-muted); }
+.mindos-guide-step-arrow svg { width: 14px; height: 14px; }
+
+.mindos-guide-cta { display: flex; justify-content: center; margin-top: var(--mindos-space-xs); }
+
+/* ── 折叠面板 ── */
+.mindos-collapsible {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.mindos-collapsible-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  padding: 10px var(--mindos-space-md);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--mindos-transition-fast);
+}
+.mindos-collapsible-head:hover { background: var(--background-modifier-hover); }
+
+.mindos-collapsible-chev { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-collapsible-chev svg { width: 14px; height: 14px; }
+.mindos-collapsible-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.mindos-collapsible-icon svg { width: 14px; height: 14px; }
+.mindos-collapsible-title {
+  flex: 1;
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.mindos-collapsible-badge {
+  font-size: var(--mindos-text-xs);
+  padding: 1px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-full);
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.mindos-collapsible-body {
+  padding: var(--mindos-space-md);
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+  animation: mindos-expand var(--mindos-transition);
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+/* ── 统计卡片 ── */
+.mindos-stat-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--mindos-space-md);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-sm);
+}
+.mindos-stat-big-value {
+  font-size: var(--mindos-text-2xl);
+  font-weight: 700;
+  color: var(--mindos-primary);
+  line-height: 1;
+}
+.mindos-stat-big-label {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  margin-top: var(--mindos-space-xs);
+  text-transform: uppercase;
+}
+
+.mindos-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 6px;
+}
+.mindos-stat-grid.two-cols { grid-template-columns: 1fr 1fr; }
+.mindos-stat-cell {
+  background: var(--background-secondary);
+  padding: var(--mindos-space-sm) 10px;
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mindos-stat-cell-label { font-size: var(--mindos-text-xs); color: var(--text-muted); }
+.mindos-stat-cell-value {
+  font-size: var(--mindos-text-lg);
+  font-weight: 700;
+  color: var(--text-normal);
+}
+.mindos-stat-cell-value.is-success { color: var(--mindos-success); font-size: var(--mindos-text-base); }
+.mindos-stat-cell-value.is-error { color: var(--mindos-danger); font-size: var(--mindos-text-base); }
+
+.mindos-warn-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--mindos-space-sm) 10px;
+  background: var(--mindos-warning-bg);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-warning);
+}
+.mindos-warn-icon { display: flex; }
+.mindos-warn-icon svg { width: 14px; height: 14px; }
+
+/* ── 结果列表 ── */
+.mindos-result-list { display: flex; flex-direction: column; gap: var(--mindos-space-sm); }
+.mindos-result-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 10px var(--mindos-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mindos-result-card.is-error { border-color: var(--mindos-danger-border); }
+.mindos-result-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  flex-wrap: wrap;
+}
+.mindos-result-summary { flex: 1; font-size: var(--mindos-text-sm); color: var(--text-normal); font-weight: 500; }
+.mindos-action-count-tag {
+  font-size: var(--mindos-text-xs);
+  padding: 2px 7px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  border-radius: var(--mindos-radius-full);
+  font-weight: 600;
+}
+.mindos-result-error {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  padding: 6px var(--mindos-space-sm);
+  background: var(--mindos-danger-bg);
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-xs);
+  color: var(--text-error);
+}
+.mindos-result-error-icon { display: flex; }
+.mindos-result-error-icon svg { width: var(--mindos-text-sm); height: var(--mindos-text-sm); }
+
+.mindos-result-files { display: flex; flex-direction: column; gap: 3px; }
+.mindos-file-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--mindos-text-xs);
+  padding: var(--mindos-space-xs) 6px;
+  border-radius: var(--mindos-radius-xs);
+}
+.mindos-file-link:hover { background: var(--background-modifier-hover); }
+.mindos-file-link-icon { display: flex; color: var(--text-muted); }
+.mindos-file-link-icon svg { width: var(--mindos-text-sm); height: var(--mindos-text-sm); }
+.mindos-file-link-path {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-monospace);
+  font-size: var(--mindos-text-xs);
+  word-break: break-all;
+}
+.mindos-file-link-path:hover {
+  color: var(--text-accent);
+  text-decoration: underline;
+}
+.mindos-file-link-title {
+  flex: 1;
+  color: var(--text-normal);
+  cursor: pointer;
+  font-weight: 500;
+}
+.mindos-file-link-title:hover { color: var(--text-accent); }
+
+/* ── 日志 ── */
+.mindos-log-box {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: var(--mindos-space-sm) 10px;
+  font-family: var(--font-monospace);
+  font-size: var(--mindos-text-xs);
+  line-height: 1.7;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.mindos-log-line {
+  padding: 1px var(--mindos-space-xs);
+  border-radius: 2px;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.mindos-log-line.log-default { color: var(--text-muted); }
+.mindos-log-line.log-error { color: var(--text-error); }
+.mindos-log-line.log-success { color: var(--mindos-success); }
+.mindos-log-line.log-info { color: var(--mindos-info); }
+.mindos-log-line.log-warn { color: var(--mindos-warning); }

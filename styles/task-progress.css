@@ -1,0 +1,189 @@
+/* =========================================================
+   Task Progress
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-task-progress {
+  padding: var(--mindos-space-lg);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.progress-header {
+  margin-bottom: var(--mindos-space-lg);
+}
+
+.progress-title {
+  font-size: var(--mindos-text-lg);
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 0;
+}
+
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-md);
+  margin-bottom: var(--mindos-space-xl);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--background-modifier-border);
+  border-radius: var(--mindos-radius-xs);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+  border-radius: var(--mindos-radius-xs);
+  transition: width var(--mindos-transition-slow);
+}
+
+.progress-label {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* ── 阶段指示器 ── */
+.stages-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md);
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-md);
+  margin-bottom: var(--mindos-space-lg);
+}
+
+.stage-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  min-width: 80px;
+  transition: all var(--mindos-transition);
+}
+
+.stage-icon {
+  font-size: var(--mindos-text-xl);
+}
+
+.stage-label {
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
+  color: var(--text-normal);
+}
+
+.stage-status {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+}
+
+.stage-detail {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  max-width: 120px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-arrow {
+  color: var(--text-muted);
+  font-size: var(--mindos-text-md);
+  margin: 0 var(--mindos-space-xs);
+}
+
+.stage-item.is-done {
+  background: var(--mindos-info-bg);
+}
+
+.stage-item.is-done .stage-status {
+  color: var(--color-accent);
+}
+
+.stage-item.is-running {
+  background: color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+  animation: pulse 1.5s infinite;
+}
+
+.stage-item.is-running .stage-status {
+  color: var(--color-accent);
+}
+
+.stage-item.is-failed {
+  background: var(--mindos-danger-bg);
+}
+
+.stage-item.is-failed .stage-status {
+  color: var(--mindos-danger);
+}
+
+.stage-item.is-pending {
+  opacity: 0.5;
+}
+
+.arrow-done {
+  color: var(--color-accent);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+/* ── 日志 ── */
+.logs-header {
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.logs-title {
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.logs-container {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: var(--mindos-space-md);
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--mindos-text-sm);
+  line-height: 1.6;
+}
+
+.log-item {
+  color: var(--text-muted);
+  margin-bottom: var(--mindos-space-xs);
+  padding-left: var(--mindos-space-xs);
+  border-left: 2px solid transparent;
+}
+
+.log-success {
+  color: var(--mindos-success);
+  border-left-color: var(--mindos-success);
+}
+
+.log-error {
+  color: var(--mindos-danger);
+  border-left-color: var(--mindos-danger);
+}
+
+.log-detail {
+  color: var(--text-faint);
+  padding-left: var(--mindos-space-lg);
+  font-size: var(--mindos-text-xs);
+}

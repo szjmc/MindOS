@@ -1,0 +1,71 @@
+/* =========================================================
+   Recall TTS / Vocab Mask (v0.7+)
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-recall-card-tools{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: var(--mindos-space-md);
+  margin: var(--mindos-space-sm) 0 var(--mindos-space-md);
+}
+
+.mindos-recall-tts-btn{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  border-radius: var(--mindos-radius-md);
+}
+
+.mindos-recall-tts-hint{
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+/* 你的 DOM 遮罩块（vocab 正面隐藏） */
+.mindos-vocab-mask{
+  border: 1px dashed color-mix(in srgb, var(--color-accent) 35%, var(--background-modifier-border));
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--background-secondary));
+  border-radius: 14px;
+  padding: 18px var(--mindos-space-lg);
+  margin: 10px 0 14px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.mindos-vocab-mask-dots{
+  font-size: 26px;
+  letter-spacing: 6px;
+  font-weight: 800;
+  color: var(--text-normal);
+  opacity: 0.75;
+  line-height: 1;
+}
+
+.mindos-vocab-mask-sub{
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+
+/* 朗读中：按钮动效 */
+.mindos-recall-tts-btn.is-speaking {
+  color: var(--color-accent);
+  animation: mindos-tts-pulse 1s ease-in-out infinite;
+}
+
+@keyframes mindos-tts-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* autoSpeak 开启时，Space/Enter 提示区分显示 */
+.mindos-recall-flip-hint.is-vocab-autospeak {
+  color: var(--color-accent);
+  opacity: 0.85;
+}

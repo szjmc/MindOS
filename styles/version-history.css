@@ -1,0 +1,2052 @@
+/* ── Version Timeline Modal ── */
+.mindos-version-modal {
+  padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.mindos-version-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-version-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0 0 4px 0;
+}
+
+.mindos-version-page-path {
+  font-size: 12px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+.mindos-version-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.mindos-version-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--background-modifier-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: mindos-version-spin 0.8s linear infinite;
+}
+
+@keyframes mindos-version-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mindos-version-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  gap: 8px;
+}
+
+.mindos-version-empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.mindos-version-empty-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mindos-version-empty-hint {
+  font-size: 13px;
+  color: var(--text-faint);
+  margin: 0;
+}
+
+.mindos-version-error {
+  color: var(--text-error);
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+/* ── Summary Bar ── */
+.mindos-version-summary {
+  display: flex;
+  gap: 24px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  margin-bottom: 16px;
+}
+
+.mindos-version-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.mindos-version-summary-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* ── Actions ── */
+.mindos-version-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mindos-version-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--mindos-radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--mindos-transition-fast);
+  background: var(--background-modifier-form-field);
+  color: var(--text-normal);
+}
+
+.mindos-version-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mindos-version-btn-secondary {
+  border-color: var(--background-modifier-border);
+}
+
+/* ── Timeline ── */
+.mindos-version-timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.mindos-version-item {
+  position: relative;
+  padding: 10px 14px;
+  margin-bottom: 2px;
+  border-radius: var(--mindos-radius-md);
+  cursor: pointer;
+  transition: background var(--mindos-transition-fast);
+}
+
+.mindos-version-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mindos-version-item.is-selected {
+  background: var(--background-modifier-active-hover);
+  border: 1px solid var(--color-accent);
+}
+
+.mindos-version-dot {
+  position: absolute;
+  left: -20px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  border: 2px solid var(--background-primary);
+  z-index: 1;
+}
+
+.mindos-version-dot.is-latest {
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+}
+
+/* Timeline line - pseudo element on the container */
+.mindos-version-timeline::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--background-modifier-border);
+}
+
+/* ── Version Content ── */
+.mindos-version-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.mindos-version-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-version-badge {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: var(--mindos-radius-lg);
+  background: var(--color-accent);
+  color: var(--mindos-text-on-primary);
+  font-weight: 500;
+}
+
+.mindos-version-date {
+  margin-bottom: 4px;
+}
+
+.mindos-version-date-text {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mindos-version-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mindos-version-wordcount {
+  color: var(--text-faint);
+}
+
+.mindos-version-change {
+  color: var(--text-accent-hover);
+  font-weight: 500;
+}
+
+/* ── Diff View ── */
+.mindos-version-diff {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-lg);
+  background: var(--background-primary);
+}
+
+.mindos-version-diff-header {
+  margin-bottom: 12px;
+}
+
+.mindos-version-diff-header h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  color: var(--text-normal);
+}
+
+.mindos-version-diff-meta {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.mindos-version-diff-stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mindos-version-diff-added {
+  color: var(--mindos-success);
+}
+
+.mindos-version-diff-removed {
+  color: var(--mindos-danger);
+}
+
+.mindos-version-diff-sep {
+  color: var(--text-faint);
+}
+
+.mindos-version-diff-lines {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.mindos-version-diff-line {
+  display: flex;
+  padding: 1px 0;
+}
+
+.mindos-version-diff-line.is-added {
+  background: var(--mindos-success-bg);
+}
+
+.mindos-version-diff-line.is-removed {
+  background: var(--mindos-danger-bg);
+}
+
+.mindos-version-diff-sign {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  color: var(--text-faint);
+  user-select: none;
+}
+
+.mindos-version-diff-line.is-added .mindos-version-diff-sign {
+  color: var(--mindos-success);
+}
+
+.mindos-version-diff-line.is-removed .mindos-version-diff-sign {
+  color: var(--mindos-danger);
+}
+
+.mindos-version-diff-text {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-normal);
+}
+
+/* ── Version View Modal (full content) ── */
+.mindos-version-view-modal {
+  padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.mindos-version-view-detail {
+  display: flex;
+  gap: 20px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  margin-bottom: 16px;
+}
+
+.mindos-version-view-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mindos-version-view-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.mindos-version-view-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-version-view-section h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--text-normal);
+}
+
+.mindos-version-view-content {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: 12px;
+}
+
+.mindos-version-view-content pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-normal);
+}
+
+/* ── Modal Base ── */
+.mindos-modal {
+  max-width: 90vw;
+  max-height: 85vh;
+}
+
+.mindos-modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-modal-body {
+  padding: 20px 24px;
+  max-height: calc(85vh - 80px);
+  overflow-y: auto;
+}
+
+/* ── Diff View ── */
+.mindos-diff-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.diff-add {
+  color: var(--mindos-success);
+}
+
+.diff-remove {
+  color: var(--mindos-danger);
+}
+
+.mindos-diff-area {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  overflow: hidden;
+}
+
+.mindos-diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mindos-diff-table tr {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-diff-table tr:last-child {
+  border-bottom: none;
+}
+
+.diff-add, .diff-remove, .diff-unchanged {
+  background: transparent;
+}
+
+.diff-add {
+  background: var(--mindos-success-bg);
+}
+
+.diff-remove {
+  background: var(--mindos-danger-bg);
+}
+
+.diff-lineno {
+  padding: 4px 12px;
+  text-align: right;
+  color: var(--text-faint);
+  background: var(--background-secondary);
+  border-right: 1px solid var(--background-modifier-border);
+  user-select: none;
+  min-width: 40px;
+}
+
+.diff-content {
+  padding: 4px 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-normal);
+}
+
+/* ── Evolution View ── */
+.mindos-evolution-view {
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mindos-evolution-tabs {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  margin-bottom: var(--mindos-space-xl);
+  padding-bottom: var(--mindos-space-md);
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-evolution-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+  cursor: pointer;
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all var(--mindos-transition);
+  color: var(--text-muted);
+  position: relative;
+}
+
+.mindos-evolution-tab-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+
+.mindos-evolution-tab-btn.is-active {
+  color: var(--mindos-primary);
+  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+  border-color: color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  font-weight: 600;
+}
+
+.mindos-evolution-tab-btn.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * var(--mindos-space-md) - 1px);
+  left: var(--mindos-space-md);
+  right: var(--mindos-space-md);
+  height: 2px;
+  background: var(--mindos-primary);
+  border-radius: var(--mindos-radius-full);
+}
+
+.mindos-evolution-tab-icon {
+  font-size: var(--mindos-text-base);
+}
+
+.mindos-evolution-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Versions Container ── */
+.mindos-evolution-versions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mindos-evolution-page-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  flex-wrap: wrap;
+}
+
+.mindos-evolution-selector-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.mindos-evolution-select-wrapper {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.mindos-evolution-custom-select {
+  position: relative;
+}
+
+.mindos-evolution-select-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  transition: all var(--mindos-transition-fast);
+}
+
+.mindos-evolution-select-display:hover {
+  border-color: var(--interactive-accent);
+}
+
+.mindos-evolution-select-text {
+  font-size: 13px;
+  color: var(--text-normal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-evolution-select-arrow {
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform var(--mindos-transition);
+  flex-shrink: 0;
+}
+
+.mindos-evolution-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  box-shadow: var(--mindos-shadow-md);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+}
+
+.mindos-evolution-select-dropdown.is-open {
+  display: block;
+}
+
+.mindos-evolution-select-option {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: background var(--mindos-transition-fast);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-evolution-select-option:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mindos-evolution-selected-path {
+  font-size: 12px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  margin-left: auto;
+  padding: 4px 8px;
+  background: var(--background-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+
+/* ── Versions List ── */
+.mindos-evolution-versions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mindos-evolution-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.mindos-evolution-loading p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.mindos-evolution-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--background-modifier-border);
+  border-top-color: var(--interactive-accent);
+  border-radius: 50%;
+  animation: mindos-evolution-spin 0.8s linear infinite;
+}
+
+@keyframes mindos-evolution-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mindos-evolution-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+  text-align: center;
+}
+
+.mindos-evolution-empty-icon {
+  font-size: 64px;
+  opacity: 0.4;
+}
+
+.mindos-evolution-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mindos-evolution-empty-desc {
+  font-size: 13px;
+  color: var(--text-faint);
+  margin: 0;
+  max-width: 400px;
+}
+
+.mindos-evolution-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 12px;
+  text-align: center;
+}
+
+.mindos-evolution-error-icon {
+  font-size: 48px;
+}
+
+.mindos-evolution-error-message {
+  font-size: 14px;
+  color: var(--text-error);
+  margin: 0;
+}
+
+/* ── Filter Container ── */
+.mindos-evolution-filter-container {
+  margin-bottom: 8px;
+}
+
+.mindos-evolution-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+}
+
+.mindos-evolution-filter-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mindos-evolution-filter-btn {
+  padding: 6px 14px;
+  border-radius: var(--mindos-radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  transition: all var(--mindos-transition-fast);
+}
+
+.mindos-evolution-filter-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.mindos-evolution-filter-btn.is-active {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+  border-color: var(--interactive-accent);
+}
+
+/* ── Versions Header ── */
+.mindos-evolution-versions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+  margin-bottom: 12px;
+}
+
+.mindos-evolution-versions-path {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-evolution-versions-count {
+  font-size: 13px;
+  color: var(--text-accent);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Timeline ── */
+.mindos-evolution-timeline-wrapper {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.mindos-evolution-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.mindos-evolution-version-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+
+.mindos-evolution-version-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.mindos-evolution-version-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  border: 3px solid var(--background-primary);
+  box-shadow: 0 0 0 2px var(--background-modifier-border);
+  z-index: 1;
+}
+
+.mindos-evolution-version-dot.is-latest {
+  background: var(--interactive-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+}
+
+.mindos-evolution-version-line {
+  flex: 1;
+  width: 2px;
+  background: var(--background-modifier-border);
+  margin-top: 4px;
+}
+
+.mindos-evolution-version-body {
+  flex: 1;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  padding: 14px 16px;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-evolution-version-body:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mindos-evolution-version-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mindos-evolution-version-number {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-evolution-version-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.mindos-evolution-version-badge {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: var(--mindos-radius-lg);
+  font-weight: 600;
+}
+
+.mindos-evolution-version-badge.is-latest {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-evolution-version-badge.is-history {
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.mindos-evolution-version-summary {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.mindos-evolution-version-changes {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.mindos-evolution-change-add {
+  color: var(--mindos-success);
+  font-weight: 600;
+}
+
+.mindos-evolution-change-remove {
+  color: var(--mindos-danger);
+  font-weight: 600;
+}
+
+.mindos-evolution-version-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mindos-evolution-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  transition: all var(--mindos-transition-fast);
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.mindos-evolution-action-btn:hover {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-evolution-action-view:hover {
+  background: var(--interactive-accent);
+}
+
+/* ============================================
+   File Preview Modal - 文件预览模态框
+   ============================================ */
+
+.mindos-file-preview-modal {
+  --mindos-purple: var(--mindos-primary);
+  --mindos-purple-light: var(--mindos-primary);
+  --mindos-purple-bg: color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+  --mindos-green: var(--mindos-success);
+  --mindos-red: var(--mindos-danger);
+  --mindos-blue: var(--mindos-info);
+  
+  width: 95vw;
+  height: 90vh;
+  max-width: 1400px;
+}
+
+.mindos-file-preview-modal .modal-content {
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mindos-preview-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-primary);
+  /* 消除容器层 focus outline */
+  outline: none !important;
+}
+
+/* Header - 头部
+ * 规范：高度 40px，左右 padding 16px，按钮紧凑型 */
+.mindos-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* 规范：标题栏高度 40px，左右 16px */
+  padding: 0 16px;
+  height: 40px;
+  border-bottom: 1px solid var(--mindos-border);
+  background: var(--mindos-surface);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.mindos-preview-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* 规范：面包屑 12px，与截图中路径文字对齐 */
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mindos-breadcrumb-item {
+  color: var(--mindos-text-secondary);
+  white-space: nowrap;
+  transition: color var(--mindos-transition-fast);
+}
+
+.mindos-breadcrumb-item.is-active {
+  color: var(--mindos-text-primary);
+  font-weight: 500;
+}
+
+.mindos-breadcrumb-item:not(.is-active):hover {
+  color: var(--mindos-primary);
+}
+
+.mindos-breadcrumb-separator {
+  color: var(--mindos-text-tertiary);
+}
+
+.mindos-preview-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mindos-text-primary);
+  white-space: nowrap;
+}
+
+.mindos-preview-icon {
+  font-size: 14px;
+}
+
+.mindos-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* 规范：工具栏按钮 — 紧凑型，padding 4px 10px，含图标 */
+.mindos-preview-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--mindos-radius-xs);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  border: 1px solid var(--mindos-border);
+  background: var(--mindos-surface);
+  color: var(--mindos-text-primary);
+  transition: background var(--mindos-transition-fast), border-color var(--mindos-transition-fast);
+  white-space: nowrap;
+  line-height: 1;
+  height: 28px;
+}
+
+.mindos-preview-btn:hover {
+  background: var(--mindos-surface-hover);
+  border-color: var(--mindos-border-light);
+}
+
+.mindos-preview-btn.is-active {
+  background: var(--mindos-primary);
+  color: var(--mindos-text-on-primary);
+  border-color: var(--mindos-primary);
+}
+
+/* 缩放按钮：方形图标按钮 */
+.mindos-preview-btn-zoom {
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* 关闭按钮：图标按钮，无文字 */
+.mindos-preview-btn-close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  font-size: 15px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.mindos-preview-btn-close:hover {
+  background: var(--mindos-surface-hover);
+  border-color: transparent;
+}
+
+/* 分隔线 */
+.mindos-preview-actions-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--mindos-border);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+/* Body - 主体 */
+.mindos-preview-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  outline: none !important;
+}
+
+/* Sidebar - 侧边栏
+ * 规范：展开宽度 200px，折叠收纳为 20px 开关条 */
+.mindos-preview-sidebar {
+  /* 规范：200px（展开）*/
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--mindos-border);
+  background: var(--mindos-surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width var(--mindos-transition-slow);
+}
+
+/* 规范：折叠态仅保留 20px 的触发条 */
+.mindos-preview-sidebar.is-collapsed {
+  width: 20px;
+}
+
+/* 折叠开关条：20px 宽，全高，background-secondary */
+.mindos-sidebar-toggle {
+  width: 20px;
+  flex-shrink: 0;
+  border: none;
+  border-right: 1px solid var(--mindos-border);
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-tertiary);
+  cursor: pointer;
+  font-size: 10px;
+  transition: background var(--mindos-transition-fast), color var(--mindos-transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 独立为侧边竖条，不随侧边栏宽度变化 */
+  align-self: stretch;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.mindos-sidebar-toggle:hover {
+  background: var(--mindos-surface-hover);
+  color: var(--mindos-text-primary);
+}
+
+/* 当侧边栏展开时，toggle 在侧边栏内部右边缘 */
+.mindos-preview-sidebar:not(.is-collapsed) .mindos-sidebar-toggle {
+  position: static;
+  width: 100%;
+  height: 32px;
+  align-self: auto;
+  border-right: none;
+  border-bottom: 1px solid var(--mindos-border);
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.mindos-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  /* 规范：侧边栏内容区 padding 12px */
+  padding: 12px;
+}
+
+/* 元数据卡片：去掉 hover 阴影，仅保留边框变色 */
+.mindos-meta-card {
+  background: var(--mindos-surface);
+  border: 1px solid var(--mindos-border);
+  border-radius: var(--mindos-radius-sm);
+  padding: 12px;
+  margin-bottom: 10px;
+  /* 规范：meta card 无 hover 阴影效果 */
+  transition: border-color var(--mindos-transition-fast);
+}
+
+.mindos-meta-card:hover {
+  border-color: var(--mindos-border-light);
+}
+
+.mindos-meta-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* 规范：分组标题 11px，font-weight 500 */
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mindos-text-secondary);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--mindos-border);
+}
+
+.mindos-meta-icon {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.mindos-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* 规范：各字段项间距 8px */
+  margin-bottom: 8px;
+}
+
+.mindos-meta-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 规范：字段标签 11px，不使用 uppercase，颜色 text-tertiary */
+.mindos-meta-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--mindos-text-tertiary);
+}
+
+/* 规范：字段值 12px，text-primary */
+.mindos-meta-value {
+  font-size: 12px;
+  color: var(--mindos-text-primary);
+  line-height: 1.4;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* 规范：空值显示 text-tertiary */
+.mindos-meta-value.is-empty {
+  color: var(--mindos-text-tertiary);
+}
+
+.mindos-meta-link {
+  color: var(--mindos-info);
+  text-decoration: none;
+  transition: color var(--mindos-transition-fast);
+  font-size: 12px;
+}
+
+.mindos-meta-link:hover {
+  color: var(--mindos-primary);
+  text-decoration: underline;
+}
+
+.mindos-meta-action-icon {
+  font-size: 11px;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity var(--mindos-transition-fast);
+}
+
+.mindos-meta-action-icon:hover {
+  opacity: 1;
+}
+
+/* 规范：标签列表 — 小 badge 样式，gray 底色 */
+.mindos-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.mindos-meta-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: var(--mindos-radius-xs);
+  background: var(--mindos-surface-secondary);
+  border: 1px solid var(--mindos-border);
+  font-size: 11px;
+  color: var(--mindos-text-secondary);
+  line-height: 1.5;
+}
+
+/* Content Area - 内容区
+ * 规范：正文区 padding 20px 28px */
+.mindos-preview-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 28px;
+  background: var(--mindos-surface);
+  transition: zoom var(--mindos-transition);
+  /* 消除 Obsidian focus-visible 产生的红色 outline */
+  outline: none !important;
+}
+
+/* Markdown Preview - Markdown 预览 */
+.mindos-markdown-preview {
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.mindos-markdown-h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-normal);
+  margin: 32px 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--background-modifier-border);
+}
+
+.mindos-markdown-h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 28px 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mindos-markdown-h2::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: var(--mindos-purple);
+  border-radius: 2px;
+}
+
+.mindos-markdown-h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-normal);
+  margin: 24px 0 10px 0;
+}
+
+.mindos-markdown-p {
+  font-size: 15px;
+  color: var(--text-normal);
+  margin: 12px 0;
+  line-height: 1.7;
+}
+
+.mindos-markdown-bold {
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-markdown-italic {
+  font-style: italic;
+}
+
+.mindos-markdown-code {
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  padding: 2px 6px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--mindos-purple);
+}
+
+.mindos-markdown-code-block {
+  margin: 16px 0;
+  border-radius: var(--mindos-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-markdown-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-markdown-code-lang {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--font-monospace);
+}
+
+.mindos-markdown-pre {
+  margin: 0;
+  padding: 16px;
+  background: var(--background-secondary);
+  overflow-x: auto;
+}
+
+.mindos-markdown-codeblock {
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-normal);
+}
+
+.mindos-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-sm);
+  background: var(--background-primary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-copy-btn:hover {
+  border-color: var(--mindos-purple-light);
+  background: var(--mindos-purple-bg);
+}
+
+.mindos-markdown-quote {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+}
+
+.mindos-markdown-quote-bar {
+  width: 4px;
+  background: var(--mindos-purple);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.mindos-markdown-quote-content {
+  flex: 1;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.mindos-markdown-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.mindos-markdown-list-item {
+  font-size: 15px;
+  color: var(--text-normal);
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+.mindos-markdown-link {
+  color: var(--mindos-blue);
+  text-decoration: none;
+  transition: color var(--mindos-transition);
+}
+
+.mindos-markdown-link:hover {
+  color: var(--mindos-purple);
+  text-decoration: underline;
+}
+
+.mindos-markdown-hr {
+  border: none;
+  height: 1px;
+  background: var(--background-modifier-border);
+  margin: 32px 0;
+}
+
+/* Compare Mode - 对比模式 */
+.mindos-compare-area {
+  display: flex;
+  height: 100%;
+  gap: 16px;
+}
+
+.mindos-compare-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  overflow: hidden;
+}
+
+.mindos-compare-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+}
+
+.mindos-compare-icon {
+  font-size: 14px;
+}
+
+.mindos-compare-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-compare-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.mindos-compare-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.mindos-compare-old {
+  border: 1px solid var(--mindos-red);
+}
+
+.mindos-compare-new {
+  border: 1px solid var(--mindos-green);
+}
+
+/* Unified Diff - 行内对比 */
+.mindos-unified-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mindos-diff-stats {
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-diff-add {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mindos-green);
+}
+
+.mindos-diff-del {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mindos-red);
+}
+
+.mindos-unified-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Scrollbar - 滚动条 */
+.mindos-preview-content::-webkit-scrollbar,
+.mindos-sidebar-content::-webkit-scrollbar,
+.mindos-compare-content::-webkit-scrollbar,
+.mindos-unified-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mindos-preview-content::-webkit-scrollbar-thumb,
+.mindos-sidebar-content::-webkit-scrollbar-thumb,
+.mindos-compare-content::-webkit-scrollbar-thumb,
+.mindos-unified-content::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.mindos-preview-content::-webkit-scrollbar-thumb:hover,
+.mindos-sidebar-content::-webkit-scrollbar-thumb:hover,
+.mindos-compare-content::-webkit-scrollbar-thumb:hover,
+.mindos-unified-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Responsive - 响应式 */
+@media (max-width: 900px) {
+  .mindos-file-preview-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+  }
+  
+  .mindos-preview-header {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+  }
+  
+  .mindos-preview-breadcrumbs {
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .mindos-preview-sidebar {
+    width: 240px;
+  }
+  
+  .mindos-preview-content {
+    padding: 16px 20px;
+  }
+  
+  .mindos-compare-area {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .mindos-preview-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .mindos-preview-btn-zoom {
+    padding: 6px 10px;
+  }
+  
+  .mindos-preview-btn-zoom span:nth-child(2) {
+    display: none;
+  }
+  
+  .mindos-preview-btn-copy span:nth-child(2),
+  .mindos-preview-btn-export span:nth-child(2) {
+    display: none;
+  }
+}
+
+.mindos-evolution-action-restore:hover {
+  background: var(--mindos-warning);
+}
+
+.mindos-evolution-action-diff:hover {
+  background: var(--mindos-info);
+}
+
+/* ── Evolution Sub Tab Bar: 样式已合并至文件顶部 490 行 ── */
+
+/* ── Knowledge Quality Analysis ── */
+.mindos-evolution-analysis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.mindos-evolution-analysis-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mindos-evolution-analysis-icon {
+  font-size: 20px;
+}
+
+.mindos-evolution-analysis-title-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-evolution-analysis-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--mindos-radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+  transition: all var(--mindos-transition);
+}
+
+.mindos-evolution-analysis-refresh-btn:hover {
+  border-color: var(--mindos-primary);
+  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+  color: var(--mindos-primary);
+}
+
+.mindos-evolution-analysis-content {
+  padding: 0;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Score Section ── */
+.mindos-evolution-score-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 16px;
+}
+
+.mindos-evolution-score-circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mindos-evolution-score-circle svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.mindos-evolution-score-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.mindos-evolution-score-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-normal);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.mindos-evolution-score-level {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.mindos-evolution-score-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.mindos-evolution-score-level.level-优秀 {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+}
+
+.mindos-evolution-score-level.level-良好 {
+  background: var(--mindos-info-bg);
+  color: var(--mindos-info);
+}
+
+.mindos-evolution-score-level.level-需优化 {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+}
+
+.mindos-evolution-score-level.level-待补充 {
+  background: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+}
+
+/* ── Dimensions Section ── */
+.mindos-evolution-dimensions-section {
+  margin-bottom: 24px;
+}
+
+.mindos-evolution-dimensions-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-evolution-dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.mindos-evolution-dimension-card {
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  padding: 14px;
+  transition: all var(--mindos-transition);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-evolution-dimension-card:hover {
+    box-shadow: var(--mindos-shadow-md);
+}
+
+.mindos-evolution-dimension-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.mindos-evolution-dimension-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-normal);
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.mindos-evolution-dimension-progress {
+  height: 6px;
+  background: var(--background-primary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.mindos-evolution-dimension-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width var(--mindos-transition-slow);
+}
+
+.mindos-evolution-dimension-progress-fill.metric-excellent {
+  background: linear-gradient(90deg, var(--mindos-success), var(--mindos-success));
+}
+
+.mindos-evolution-dimension-progress-fill.metric-good {
+  background: var(--mindos-primary);
+}
+
+.mindos-evolution-dimension-progress-fill.metric-needs-improvement {
+  background: linear-gradient(90deg, var(--mindos-warning), var(--mindos-warning));
+}
+
+.mindos-evolution-dimension-progress-fill.metric-to-add {
+  background: linear-gradient(90deg, #9ca3af, #6b7280);
+}
+
+.mindos-evolution-dimension-status {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--mindos-radius-md);
+  display: inline-block;
+}
+
+.mindos-evolution-dimension-status.level-excellent {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+}
+
+.mindos-evolution-dimension-status.level-good {
+  background: color-mix(in srgb, var(--mindos-primary) 12%, transparent);
+  color: var(--mindos-primary);
+}
+
+.mindos-evolution-dimension-status.level-needs-improvement {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+}
+
+.mindos-evolution-dimension-status.level-to-add {
+  background: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+}
+
+/* ── Actions Section ── */
+.mindos-evolution-actions-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.mindos-evolution-action-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: var(--mindos-radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mindos-evolution-action-btn.suggestions {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+}
+
+.mindos-evolution-action-btn.suggestions:hover {
+  border-color: var(--mindos-primary);
+  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+  color: var(--mindos-primary);
+}
+
+.mindos-evolution-action-btn.fix-all {
+  background: var(--mindos-primary);
+  color: var(--mindos-text-on-primary);
+  border: none;
+  box-shadow: var(--mindos-shadow-primary);
+}
+
+.mindos-evolution-action-btn.fix-all:hover {
+    box-shadow: var(--mindos-shadow-primary);
+}
+
+/* ── Suggestions Section ── */
+.mindos-evolution-suggestions-section {
+  margin-top: 24px;
+}
+
+.mindos-evolution-suggestions-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mindos-evolution-suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mindos-evolution-suggestion-item {
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--mindos-transition);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-evolution-suggestion-item:hover {
+    box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-evolution-suggestion-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--mindos-radius-sm);
+  flex-shrink: 0;
+}
+
+.mindos-evolution-suggestion-badge.priority-high {
+  background: var(--mindos-danger-bg);
+  color: var(--mindos-danger);
+}
+
+.mindos-evolution-suggestion-badge.priority-medium {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+}
+
+.mindos-evolution-suggestion-badge.priority-low {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+}
+
+.mindos-evolution-suggestion-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.mindos-evolution-suggestion-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin-bottom: 4px;
+}
+
+.mindos-evolution-suggestion-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.mindos-evolution-suggestion-action {
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--mindos-primary);
+  color: var(--mindos-text-on-primary);
+  border: none;
+  transition: all var(--mindos-transition);
+  flex-shrink: 0;
+  box-shadow: var(--mindos-shadow-primary);
+}
+
+.mindos-evolution-suggestion-action:hover {
+    box-shadow: var(--mindos-shadow-primary);
+}

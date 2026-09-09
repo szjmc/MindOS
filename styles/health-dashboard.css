@@ -1,0 +1,812 @@
+/* =========================================================
+   Health Dashboard Modal
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+/* ── 根容器 ── */
+.mindos-health-modal {
+  padding: var(--mindos-space-lg);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.mindos-health-header {
+  margin-bottom: var(--mindos-space-xl);
+  padding-bottom: var(--mindos-space-md);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mindos-health-title {
+  font-size: var(--mindos-text-xl);
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0;
+}
+
+/* ── 加载状态 ── */
+.mindos-health-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--mindos-space-3xl) 0;
+  gap: 14px;
+}
+
+.mindos-health-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--background-modifier-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: mindos-health-spin 0.8s linear infinite;
+}
+
+@keyframes mindos-health-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mindos-health-loading-text {
+  font-size: var(--mindos-text-md);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── 错误 / 日期 ── */
+.mindos-health-error {
+  color: var(--text-error);
+  text-align: center;
+  padding: var(--mindos-space-xl);
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-health-date {
+  text-align: center;
+  font-size: var(--mindos-text-sm);
+  color: var(--text-faint);
+  margin: 0 0 var(--mindos-space-lg) 0;
+}
+
+/* ── 分数圈 ── */
+.mindos-health-score-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--mindos-space-md);
+}
+
+.mindos-health-score-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--background-secondary);
+  border: 4px solid var(--score-color, var(--mindos-info));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--mindos-transition-slow);
+}
+
+.mindos-health-score-num {
+  font-size: var(--mindos-text-2xl);
+  font-weight: 800;
+  color: var(--score-color, var(--text-normal));
+}
+
+.mindos-health-score-label {
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--score-color, var(--text-muted));
+}
+
+/* ── 指标网格 ── */
+.mindos-health-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: var(--mindos-space-xl);
+}
+
+.mindos-health-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: 14px var(--mindos-space-sm);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+  text-align: center;
+}
+
+.mindos-health-card-icon {
+  font-size: var(--mindos-text-2xl);
+}
+
+.mindos-health-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mindos-health-card-value {
+  font-size: var(--mindos-text-xl);
+  font-weight: 800;
+  color: var(--text-normal);
+}
+
+.mindos-health-card-label {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+}
+
+.mindos-health-card-sub {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-accent);
+  font-weight: 500;
+}
+
+/* ── 分区 ── */
+.mindos-health-section {
+  margin-bottom: 18px;
+}
+
+.mindos-health-section h4 {
+  font-size: var(--mindos-text-md);
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0 0 10px 0;
+}
+
+/* ── 成熟度条 ── */
+.mindos-health-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-health-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mindos-health-bar-label {
+  flex-shrink: 0;
+  width: 80px;
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+}
+
+.mindos-health-bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--background-modifier-border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.mindos-health-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+  border-radius: 5px;
+  transition: width var(--mindos-transition-slow);
+  min-width: 2px;
+}
+
+.mindos-health-bar-count {
+  flex-shrink: 0;
+  width: 30px;
+  text-align: right;
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+/* ── 新鲜度 ── */
+.mindos-health-freshness {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-health-fresh-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-secondary);
+}
+
+.mindos-health-fresh-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mindos-health-fresh-item.is-recent .mindos-health-fresh-dot {
+  background: var(--mindos-success);
+}
+
+.mindos-health-fresh-item.is-moderate .mindos-health-fresh-dot {
+  background: var(--mindos-warning);
+}
+
+.mindos-health-fresh-item.is-stale .mindos-health-fresh-dot {
+  background: var(--mindos-danger);
+}
+
+.mindos-health-fresh-label {
+  flex: 1;
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+}
+
+.mindos-health-fresh-count {
+  font-size: var(--mindos-text-lg);
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+/* ── Top Linked ── */
+.mindos-health-toplist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-xs);
+}
+
+.mindos-health-topitem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: var(--mindos-radius-sm);
+  background: var(--background-secondary);
+}
+
+.mindos-health-toprank {
+  font-size: var(--mindos-text-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+  width: var(--mindos-space-xl);
+  text-align: center;
+}
+
+.mindos-health-toppath {
+  flex: 1;
+  font-size: var(--mindos-text-base);
+  color: var(--text-normal);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mindos-health-toplinks {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+/* ── 推荐 ── */
+.mindos-health-recs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mindos-health-rec {
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-secondary);
+  font-size: var(--mindos-text-base);
+  color: var(--text-normal);
+  line-height: var(--mindos-leading-normal);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   健康度报告 v2 — 侧边栏内嵌视图
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 容器 & 操作栏 ── */
+.mindos-health-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mindos-health-ops {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+}
+
+.mindos-health-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--mindos-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-lg);
+}
+
+/* ── 空状态 ── */
+.mindos-health-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mindos-space-3xl) var(--mindos-space-xl);
+  gap: var(--mindos-space-md);
+  text-align: center;
+}
+
+.mindos-health-empty-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mindos-health-empty-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke: currentColor;
+}
+
+.mindos-health-empty-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mindos-health-empty-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-faint);
+  line-height: var(--mindos-leading-relaxed);
+}
+
+/* ── 错误 ── */
+.mindos-health-error {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-md);
+  background: var(--mindos-danger-bg);
+  border: 1px solid var(--mindos-danger-border);
+  border-radius: var(--mindos-radius-md);
+  color: var(--mindos-danger);
+}
+
+.mindos-health-error svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.mindos-health-error p {
+  margin: 0;
+  font-size: var(--mindos-text-sm);
+}
+
+/* ── 总览区 ── */
+.mindos-health-overview {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-lg);
+  padding: var(--mindos-space-md);
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-lg);
+  border: 1px solid var(--background-modifier-border);
+}
+
+/* 环形评分图 */
+.mindos-health-circle-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+}
+
+.mindos-health-circle-wrap svg {
+  display: block;
+}
+
+.mindos-health-circle-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.mindos-health-circle-score {
+  font-size: var(--mindos-text-2xl);
+  font-weight: 800;
+  color: var(--text-normal);
+  line-height: 1;
+}
+
+.mindos-health-circle-label {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+/* 文字概要 */
+.mindos-health-summary {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-health-level-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--mindos-radius-full);
+  font-size: var(--mindos-text-sm);
+  font-weight: 700;
+  width: fit-content;
+}
+
+.mindos-health-level-badge.level-excellent {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+  border: 1px solid var(--mindos-success-border);
+}
+.mindos-health-level-badge.level-good {
+  background: var(--mindos-info-bg);
+  color: var(--mindos-info);
+  border: 1px solid var(--mindos-info-border);
+}
+.mindos-health-level-badge.level-needs-improvement {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+  border: 1px solid var(--mindos-warning-border);
+}
+.mindos-health-level-badge.level-to-add {
+  background: var(--mindos-danger-bg);
+  color: var(--mindos-danger);
+  border: 1px solid var(--mindos-danger-border);
+}
+
+.mindos-health-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-health-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+}
+
+.mindos-health-stat-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-faint);
+}
+.mindos-health-stat-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.mindos-health-stat-value {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+/* ── 分区通用 ── */
+.mindos-health-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-health-section-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  margin-bottom: var(--mindos-space-xs);
+}
+
+.mindos-health-section-icon {
+  display: flex;
+  align-items: center;
+  color: var(--mindos-primary);
+}
+.mindos-health-section-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mindos-health-section-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 700;
+  color: var(--text-normal);
+  flex: 1;
+}
+
+/* ── 四维度卡片 ── */
+.mindos-health-dim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-health-dim-card {
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color var(--mindos-transition-fast);
+}
+
+.mindos-health-dim-card.level-excellent { border-left: 3px solid var(--mindos-success); }
+.mindos-health-dim-card.level-good      { border-left: 3px solid var(--mindos-info); }
+.mindos-health-dim-card.level-needs-improvement { border-left: 3px solid var(--mindos-warning); }
+.mindos-health-dim-card.level-to-add   { border-left: 3px solid var(--mindos-danger); }
+
+.mindos-health-dim-top {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+}
+
+.mindos-health-dim-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+}
+.mindos-health-dim-icon svg { width: 14px; height: 14px; }
+
+.mindos-health-dim-name {
+  flex: 1;
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-health-dim-score {
+  font-size: var(--mindos-text-lg);
+  font-weight: 800;
+  line-height: 1;
+}
+.mindos-health-dim-score.level-excellent { color: var(--mindos-success); }
+.mindos-health-dim-score.level-good      { color: var(--mindos-info); }
+.mindos-health-dim-score.level-needs-improvement { color: var(--mindos-warning); }
+.mindos-health-dim-score.level-to-add   { color: var(--mindos-danger); }
+
+.mindos-health-dim-bar {
+  height: 4px;
+  background: var(--background-modifier-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mindos-health-dim-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mindos-health-dim-fill.level-excellent { background: var(--mindos-success); }
+.mindos-health-dim-fill.level-good      { background: var(--mindos-info); }
+.mindos-health-dim-fill.level-needs-improvement { background: var(--mindos-warning); }
+.mindos-health-dim-fill.level-to-add   { background: var(--mindos-danger); }
+
+.mindos-health-dim-desc {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  line-height: var(--mindos-leading-relaxed);
+}
+
+/* ── 一键修复按钮 ── */
+.mindos-health-fix-all-btn {
+  margin-left: auto;
+}
+
+/* ── 建议列表 ── */
+.mindos-health-sug-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-health-sug-item {
+  position: relative;
+  padding: var(--mindos-space-sm) var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  display: flex;
+  gap: var(--mindos-space-sm);
+  align-items: flex-start;
+}
+
+.mindos-health-sug-item.priority-high {
+  border-left: 3px solid var(--mindos-danger);
+  background: color-mix(in srgb, var(--mindos-danger) 3%, var(--background-secondary));
+}
+.mindos-health-sug-item.priority-medium {
+  border-left: 3px solid var(--mindos-warning);
+  background: color-mix(in srgb, var(--mindos-warning) 3%, var(--background-secondary));
+}
+.mindos-health-sug-item.priority-low {
+  border-left: 3px solid var(--mindos-info);
+}
+
+.mindos-health-sug-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: var(--mindos-radius-full);
+  font-size: var(--mindos-text-xs);
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.mindos-health-sug-badge svg { width: 10px; height: 10px; }
+
+.mindos-health-sug-badge.priority-high {
+  background: var(--mindos-danger-bg);
+  color: var(--mindos-danger);
+  border: 1px solid var(--mindos-danger-border);
+}
+.mindos-health-sug-badge.priority-medium {
+  background: var(--mindos-warning-bg);
+  color: var(--mindos-warning);
+  border: 1px solid var(--mindos-warning-border);
+}
+.mindos-health-sug-badge.priority-low {
+  background: var(--mindos-info-bg);
+  color: var(--mindos-info);
+  border: 1px solid var(--mindos-info-border);
+}
+
+.mindos-health-sug-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mindos-health-sug-title {
+  font-size: var(--mindos-text-sm);
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.mindos-health-sug-desc {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  line-height: var(--mindos-leading-relaxed);
+}
+
+.mindos-health-sug-impact {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-success);
+  margin-top: 2px;
+}
+
+.mindos-health-sug-impact svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* 受影响文件折叠 */
+.mindos-health-sug-files-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-primary);
+  cursor: pointer;
+  margin-top: 4px;
+  user-select: none;
+}
+
+.mindos-health-sug-toggle-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.mindos-health-sug-files-toggle:hover {
+  text-decoration: underline;
+}
+
+.mindos-health-sug-files {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--mindos-space-xs);
+  padding: var(--mindos-space-xs) var(--mindos-space-sm);
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-sm);
+  border: 1px solid var(--background-modifier-border);
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.mindos-health-sug-files.is-hidden {
+  display: none;
+}
+
+.mindos-health-sug-file {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--mindos-text-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  padding: 1px 0;
+}
+
+.mindos-health-sug-file-icon svg {
+  width: 10px;
+  height: 10px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.mindos-health-sug-file-more {
+  font-size: var(--mindos-text-xs);
+  color: var(--text-faint);
+  font-style: italic;
+  padding: 2px 0;
+}
+
+/* 单项修复按钮 */
+.mindos-health-sug-fix-btn {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* ── 通用按钮 is-sm ── */
+.mindos-btn.is-sm {
+  padding: 3px 10px;
+  font-size: var(--mindos-text-xs);
+  gap: 4px;
+}
+
+.mindos-btn.is-sm .mindos-btn-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.mindos-btn.is-success {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+  border: 1px solid var(--mindos-success-border);
+}
+
+.mindos-btn.is-success:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--mindos-success) 15%, transparent);
+}
+
+.mindos-btn.is-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "mindos",
+  "version": "1.0.0",
+  "description": "Your Second Brain, OS-Level",
+  "private": true,
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs --prod",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.11.30",
+    "esbuild": "^0.25.0",
+    "jest": "^30.4.2",
+    "obsidian": "^1.5.12",
+    "ts-jest": "^29.4.11",
+    "tslib": "^2.6.3",
+    "typescript": "^5.4.5"
+  }
+}

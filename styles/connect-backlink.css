@@ -1,0 +1,362 @@
+/* =========================================================
+   Connected Backlinks
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-backlink-view {
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-backlink-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-lg);
+  padding: var(--mindos-space-lg);
+}
+
+.mindos-backlink-tabs {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mindos-backlink-tab {
+  padding: var(--mindos-space-sm) var(--mindos-space-lg);
+  border-radius: var(--mindos-radius-md);
+  cursor: pointer;
+  font-size: var(--mindos-text-md);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  transition: all var(--mindos-transition);
+}
+
+.mindos-backlink-tab:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mindos-backlink-tab.active {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+  border-color: var(--interactive-accent);
+}
+
+.mindos-backlink-count {
+  font-size: var(--mindos-text-sm);
+  opacity: 0.8;
+  margin-left: var(--mindos-space-xs);
+}
+
+.mindos-backlink-refresh {
+  margin-left: auto;
+  padding: 6px 10px;
+  border: none;
+  background: var(--background-modifier-hover);
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+}
+
+.mindos-backlink-refresh:hover {
+  background: var(--background-modifier-active);
+}
+
+.mindos-backlink-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-backlink-item {
+  padding: 14px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-primary);
+}
+
+.mindos-backlink-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-backlink-title {
+  font-weight: 600;
+  font-size: var(--mindos-text-md);
+  cursor: pointer;
+}
+
+.mindos-backlink-title:hover {
+  color: var(--text-accent);
+}
+
+.mindos-backlink-time {
+  font-size: var(--mindos-text-sm);
+  opacity: 0.7;
+}
+
+.mindos-backlink-score {
+  font-size: var(--mindos-text-base);
+  color: var(--interactive-accent);
+  font-weight: 600;
+}
+
+.mindos-backlink-context,
+.mindos-backlink-reason {
+  font-size: var(--mindos-text-base);
+  opacity: 0.8;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.mindos-backlink-actions {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  justify-content: flex-end;
+}
+
+.mindos-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: 5px 10px;
+  font-size: var(--mindos-text-base);
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  background: var(--background-modifier-hover);
+}
+
+.mindos-mini-btn:hover {
+  background: var(--background-modifier-active);
+}
+
+.mindos-mini-btn.mod-cta {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-mini-btn.mod-cta:hover {
+  background: var(--interactive-accent-hover);
+}
+
+.mindos-backlink-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mindos-space-sm);
+  padding: var(--mindos-space-2xl);
+}
+
+.mindos-backlink-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mindos-backlink-empty {
+  text-align: center;
+  padding: var(--mindos-space-3xl);
+  color: var(--text-muted);
+}
+
+/* ── Stats Panel ── */
+.mindos-backlink-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--mindos-space-md);
+  margin-bottom: var(--mindos-space-lg);
+}
+
+.mindos-stat-card {
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-md);
+  padding: var(--mindos-space-lg);
+  text-align: center;
+  border: 1px solid var(--background-modifier-border);
+  transition: all var(--mindos-transition);
+}
+
+.mindos-stat-card:hover {
+  box-shadow: var(--mindos-shadow-sm);
+}
+
+.mindos-stat-value {
+  font-size: var(--mindos-text-2xl);
+  font-weight: 800;
+  color: var(--interactive-accent);
+  margin-bottom: var(--mindos-space-xs);
+  line-height: 1;
+}
+
+.mindos-stat-label {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── Tab Bar ── */
+.mindos-backlink-tab-icon {
+  font-size: var(--mindos-text-lg);
+  margin-right: 6px;
+}
+
+.mindos-backlink-tab-text {
+  font-weight: 500;
+}
+
+/* ── Backlink Card ── */
+.mindos-backlink-card {
+  background: var(--background-primary);
+  border-radius: var(--mindos-radius-md);
+  padding: 14px var(--mindos-space-lg);
+  border: 1px solid var(--background-modifier-border);
+  transition: all var(--mindos-transition);
+  position: relative;
+}
+
+.mindos-backlink-card:hover {
+  border-color: var(--interactive-accent);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-backlink-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.mindos-backlink-card-icon {
+  font-size: var(--mindos-text-xl);
+  flex-shrink: 0;
+}
+
+.mindos-backlink-card-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+  cursor: pointer;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--mindos-transition-fast);
+}
+
+.mindos-backlink-card-title:hover {
+  color: var(--interactive-accent);
+}
+
+.mindos-backlink-card-time {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.mindos-backlink-card-score {
+  font-size: var(--mindos-text-base);
+  font-weight: 700;
+  color: var(--interactive-accent);
+  background: color-mix(in srgb, var(--mindos-primary) 10%, transparent);
+  padding: 3px var(--mindos-space-sm);
+  border-radius: var(--mindos-radius-sm);
+  flex-shrink: 0;
+}
+
+.mindos-backlink-card-context {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.mindos-backlink-card-reason {
+  font-size: var(--mindos-text-base);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: var(--background-secondary);
+  border-radius: var(--mindos-radius-sm);
+  border-left: 3px solid var(--interactive-accent);
+}
+
+.mindos-backlink-highlight {
+  background: color-mix(in srgb, var(--mindos-primary) 15%, transparent);
+  color: var(--interactive-accent);
+  padding: 1px var(--mindos-space-xs);
+  border-radius: var(--mindos-radius-xs);
+  font-weight: 600;
+}
+
+.mindos-backlink-card-actions {
+  display: flex;
+  gap: var(--mindos-space-sm);
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity var(--mindos-transition);
+}
+
+.mindos-backlink-card:hover .mindos-backlink-card-actions {
+  opacity: 1;
+}
+
+.mindos-backlink-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--mindos-space-md);
+  font-size: var(--mindos-text-base);
+  border: none;
+  border-radius: var(--mindos-radius-sm);
+  cursor: pointer;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  transition: all var(--mindos-transition-fast);
+}
+
+.mindos-backlink-action-btn:hover {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-backlink-action-btn.mod-cta {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-backlink-action-btn.mod-cta:hover {
+  background: var(--interactive-accent-hover);
+}
+
+/* ── Responsive Adjustments ── */
+@media (max-width: 600px) {
+  .mindos-backlink-card-actions {
+    opacity: 1;
+    flex-wrap: wrap;
+  }
+
+  .mindos-stat-card {
+    padding: var(--mindos-space-md);
+  }
+
+  .mindos-stat-value {
+    font-size: var(--mindos-text-2xl);
+  }
+}

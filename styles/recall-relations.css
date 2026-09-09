@@ -1,0 +1,183 @@
+/* =========================================================
+   Recall Card Relations
+   ── 已迁移至 MindOS v2.0 设计令牌
+   ========================================================= */
+
+.mindos-card-relations {
+  margin-top: var(--mindos-space-lg);
+  padding: var(--mindos-space-lg);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-lg);
+  background: var(--background-secondary);
+}
+
+.mindos-card-relations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--mindos-space-md);
+}
+
+.mindos-card-relations-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-card-relations-title {
+  font-weight: 600;
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-card-relations-refresh-btn {
+  padding: var(--mindos-space-xs);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  opacity: 0.6;
+  transition: opacity var(--mindos-transition);
+}
+
+.mindos-card-relations-refresh-btn:hover {
+  opacity: 1;
+  color: var(--text-accent);
+}
+
+.mindos-card-relations-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mindos-space-xl);
+  color: var(--text-muted);
+}
+
+.mindos-card-relations-loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mindos-card-relations-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mindos-space-2xl);
+  color: var(--text-muted);
+  font-size: var(--mindos-text-md);
+}
+
+.mindos-card-relations-hint {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--mindos-space-md);
+}
+
+.mindos-card-relations-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mindos-space-md);
+}
+
+.mindos-card-relation-item {
+  padding: var(--mindos-space-md);
+  border-radius: var(--mindos-radius-md);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  transition: all var(--mindos-transition);
+}
+
+.mindos-card-relation-item:hover {
+  border-color: var(--interactive-accent);
+  box-shadow: var(--mindos-shadow-xs);
+}
+
+.mindos-card-relation-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--mindos-space-sm);
+}
+
+.mindos-card-relation-scenario {
+  font-size: var(--mindos-text-xs);
+  padding: 2px 6px;
+  border-radius: var(--mindos-radius-xs);
+  background: var(--background-modifier-hover);
+  color: var(--text-muted);
+}
+
+.mindos-card-relation-score {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+.mindos-card-relation-front {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.mindos-card-relation-back {
+  font-size: var(--mindos-text-sm);
+  opacity: 0.85;
+  margin-bottom: 10px;
+  line-height: 1.6;
+  color: var(--text-normal);
+}
+
+.mindos-card-relation-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mindos-card-relation-reason {
+  font-size: var(--mindos-text-xs);
+  padding: 2px 6px;
+  border-radius: var(--mindos-radius-full);
+  background: rgba(var(--interactive-accent-rgb), 0.15);
+  color: var(--interactive-accent);
+}
+
+.mindos-card-relation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--mindos-space-sm);
+}
+
+.mindos-card-relation-review-btn,
+.mindos-card-relation-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mindos-space-xs);
+  padding: 5px 10px;
+  font-size: var(--mindos-text-sm);
+  border-radius: var(--mindos-radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all var(--mindos-transition);
+}
+
+.mindos-card-relation-review-btn {
+  background: var(--interactive-accent);
+  color: var(--mindos-text-on-primary);
+}
+
+.mindos-card-relation-review-btn:hover {
+  background: var(--interactive-accent-hover);
+}
+
+.mindos-card-relation-open-btn {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.mindos-card-relation-open-btn:hover {
+  background: var(--background-modifier-active);
+}
