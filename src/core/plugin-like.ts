@@ -6,8 +6,12 @@
  */
 import { App } from "obsidian";
 import { MindOSSettings } from "./types";
+import type { AIClient } from "../modules/pipeline/ai-client";
 
 export interface PluginLike {
   app: App;
   settings: MindOSSettings;
+  aiClient: AIClient;
+  loadData(): Promise<any>;
+  saveData(data: any): Promise<void>;
 }

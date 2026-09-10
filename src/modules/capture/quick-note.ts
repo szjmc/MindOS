@@ -2,8 +2,8 @@ import { App, Modal, Notice, TFile } from "obsidian";
 import { MindOSSettings } from "../../core/types";
 
 export class QuickNoteModal extends Modal {
-  private textarea: HTMLTextAreaElement;
-  private tagsInput: HTMLInputElement;
+  private textarea!: HTMLTextAreaElement;
+  private tagsInput!: HTMLInputElement;
   private callback: (note: string, tags: string[]) => void;
 
   constructor(

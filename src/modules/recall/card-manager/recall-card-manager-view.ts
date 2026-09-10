@@ -727,9 +727,11 @@ class RecallCardPreviewModal extends Modal {
     const relationView = new CardRelationView(
       relatedContainer,
       this.plugin.cardRelationService,
-      (relatedCard) => {
-        this.close();
-        new RecallCardPreviewModal(this.plugin, relatedCard).open();
+      {
+        onOpenCard: (relatedCard) => {
+          this.close();
+          new RecallCardPreviewModal(this.plugin, relatedCard).open();
+        },
       }
     );
     relationView.render(this.card, 3);

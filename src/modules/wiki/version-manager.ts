@@ -134,13 +134,14 @@ export class VersionManager {
     const settings = this.getSettings();
     const versions = await this.getVersions(filePath);
 
-    if (versions.length <= settings.versionMaxCount) return;
+    const maxCount = settings.versionMaxCount ?? 50;
+    if (versions.length <= maxCount) return;
 
     const safeName = filePath.replace(/[/\\:]/g, "_").replace(/\.md$/, "");
     const versionDir = `${settings.baseFolder}/${DIR_VERSIONS}/${safeName}`;
 
     // Keep newest N, delete the rest
-    const toDelete = versions.slice(settings.versionMaxCount);
+    const toDelete = versions.slice(maxCount);
     for (const v of toDelete) {
       const file = `${versionDir}/${v.id}.json`;
       try {

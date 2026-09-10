@@ -1,6 +1,7 @@
 import { Notice } from "obsidian";
 import type MindOSPlugin from "../../../main";
 import { KnowledgeGapAnalyzer, KnowledgeGap, GapAnalysisResult } from "./knowledge-gaps";
+import { createSvgEl } from "../../core/utils";
 
 export type GapPriority = "high" | "medium" | "low";
 
@@ -109,31 +110,31 @@ export class KnowledgeGapsRenderer {
     const emptyWrap = this.container.createDiv({ cls: "mindos-gaps-empty" });
     
     const illustration = emptyWrap.createDiv({ cls: "mindos-gaps-illustration" });
-    const svg = illustration.createEl("svg", {
+    const svg = createSvgEl(illustration, "svg", {
       attr: { viewBox: "0 0 200 120", width: "160", height: "96" }
     });
     
-    const circleGroup = svg.createEl("g");
-    circleGroup.createEl("circle", {
+    const circleGroup = createSvgEl(svg, "g");
+    createSvgEl(circleGroup, "circle", {
       attr: { cx: "100", cy: "60", r: "45", fill: "none", stroke: "#10b981", "stroke-width": "3", "stroke-dasharray": "283", "stroke-dashoffset": "0" }
     });
     
-    circleGroup.createEl("circle", {
+    createSvgEl(circleGroup, "circle", {
       attr: { cx: "100", cy: "60", r: "35", fill: "none", stroke: "#34d399", "stroke-width": "2", "stroke-dasharray": "220", "stroke-dashoffset": "0" }
     });
     
-    circleGroup.createEl("circle", {
+    createSvgEl(circleGroup, "circle", {
       attr: { cx: "100", cy: "60", r: "25", fill: "none", stroke: "#6ee7b7", "stroke-width": "2", "stroke-dasharray": "157", "stroke-dashoffset": "0" }
     });
     
-    const checkGroup = svg.createEl("g", { attr: { fill: "#10b981" } });
-    checkGroup.createEl("path", { attr: { d: "M 85 60 L 95 70 L 115 50", stroke: "#10b981", "stroke-width": "3", fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" } });
+    const checkGroup = createSvgEl(svg, "g", { attr: { fill: "#10b981" } });
+    createSvgEl(checkGroup, "path", { attr: { d: "M 85 60 L 95 70 L 115 50", stroke: "#10b981", "stroke-width": "3", fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" } });
     
-    const statsGroup = svg.createEl("g", { attr: { fill: "#10b981", "font-size": "10", "font-family": "system-ui" } });
-    statsGroup.createEl("text", { attr: { x: "25", y: "45", text: "✓ 完整" } });
-    statsGroup.createEl("text", { attr: { x: "140", y: "45", text: "✓ 无缺" } });
-    statsGroup.createEl("text", { attr: { x: "25", y: "85", text: "✓ 覆盖" } });
-    statsGroup.createEl("text", { attr: { x: "140", y: "85", text: "✓ 关联" } });
+    const statsGroup = createSvgEl(svg, "g", { attr: { fill: "#10b981", "font-size": "10", "font-family": "system-ui" } });
+    createSvgEl(statsGroup, "text", { attr: { x: "25", y: "45" }, text: "✓ 完整" });
+    createSvgEl(statsGroup, "text", { attr: { x: "140", y: "45" }, text: "✓ 无缺" });
+    createSvgEl(statsGroup, "text", { attr: { x: "25", y: "85" }, text: "✓ 覆盖" });
+    createSvgEl(statsGroup, "text", { attr: { x: "140", y: "85" }, text: "✓ 关联" });
 
     emptyWrap.createDiv({ cls: "mindos-gaps-empty-title", text: "🎉 当前主题知识覆盖较完整，继续保持！" });
     emptyWrap.createDiv({ cls: "mindos-gaps-empty-desc", text: "系统未发现明显的知识空白，建议继续丰富内容" });

@@ -3,11 +3,11 @@ import { PipelineStage, StageStatus } from "../../core/types";
 
 export class TaskProgressView {
   private container: HTMLElement;
-  private progressBar: HTMLElement;
-  private progressFill: HTMLElement;
-  private progressLabel: HTMLElement;
-  private stagesContainer: HTMLElement;
-  private logsContainer: HTMLElement;
+  private progressBar!: HTMLElement;
+  private progressFill!: HTMLElement;
+  private progressLabel!: HTMLElement;
+  private stagesContainer!: HTMLElement;
+  private logsContainer!: HTMLElement;
   private stageIcons: Record<PipelineStage, string> = {
     cluster: "🔍",
     draft: "📝",

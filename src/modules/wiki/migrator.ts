@@ -221,7 +221,7 @@ export class Migrator {
         // 如果原文件夹为空，删除它
         if (child.children.length === 0) {
           try {
-            await this.app.vault.remove(child);
+            await this.app.vault.adapter.remove(child.path);
           } catch (e) {}
         }
       }
@@ -230,7 +230,7 @@ export class Migrator {
     // 如果原文件夹为空，删除它
     if (from.children.length === 0) {
       try {
-        await this.app.vault.remove(from);
+        await this.app.vault.adapter.remove(from.path);
       } catch (e) {}
     }
 

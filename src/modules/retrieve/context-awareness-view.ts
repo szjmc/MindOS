@@ -10,7 +10,7 @@ export class ContextAwarenessView {
     outdatedPages: TFile[];
     relatedReading: RelatedPage[];
   } | null = null;
-  private fileChangeListener: () => void;
+  private fileChangeListener!: () => void;
   private currentFilePath: string | null = null;
   private lastRefreshTime = 0;
   private MIN_REFRESH_INTERVAL = 60 * 1000; // 至少60秒间隔

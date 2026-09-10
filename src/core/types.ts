@@ -16,7 +16,7 @@ export type EmbeddingProvider = "openai" | "zhipu" | "aliyun" | "custom";
 export type RetrieveTab = "capture" | "search" | "chat" | "recall"; // v0.6 新增 recall
 export type AnalysisTab = "context" | "gaps" | "evolution" | "backlink"; // v0.8 智能分析
 export type ExpressSearchMode = 'vector' | 'keyword' | 'none';
-export type VectorizeStatus = "idle" | "running" | "done" | "error";
+export type VectorizeStatus = "idle" | "running" | "done" | "error" | "stopped";
 
 export interface ChunkMeta {
   id: string;
