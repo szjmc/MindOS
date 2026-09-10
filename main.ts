@@ -54,6 +54,7 @@ import {
 import { QuickNoteService, CaptureService } from "./src/modules/capture";
 import { ExpressView, EXPRESS_VIEW_TYPE, ArticleStore, OutlineBuilder, ArticleGenerator }
   from "./src/modules/express";
+import { MigrationService, MigrationModal } from "./src/modules/migrate";
 
 import { MindOSSettingTab } from "./src/ui/settings-tab";
 
@@ -143,6 +144,9 @@ export default class MindOSPlugin extends Plugin {
   ttsService!: TTSService;
   cardVectorStore!: CardVectorStore;
   cardRelationService!: CardRelationService;
+
+  // v1.1 数据迁移（4C）
+  migrationService!: MigrationService;
 
   // v0.7 其它
   knowledgeGapAnalyzer!: KnowledgeGapAnalyzer;
@@ -270,6 +274,12 @@ export default class MindOSPlugin extends Plugin {
     this.recallCardStore.setOnCardUpdatedCallback((card) => {
       this.cardRelationService.scheduleCardVectorUpdate(card);
     });
+
+    // ── 3b. 数据迁移与备份（v1.1 / 4C）──
+    this.migrationService = new MigrationService(
+      this.app, () => this.settings.baseFolder, this.recallCardStore,
+      () => this.loadData(), (data: any) => this.saveData(data),
+    );
 
     // ── 4. Recall 场景生成器 ──
     this.recallWikiGenerator = new RecallWikiGenerator(
@@ -541,6 +551,10 @@ export default class MindOSPlugin extends Plugin {
         await this.cardVectorStore.clear();
         new Notice("已清空卡片向量索引");
       } });
+
+    // v1.1 数据迁移（4C）
+    this.addCommand({ id: "mindos-open-migration", name: "打开数据迁移中心（导出/导入/备份）",
+      callback: () => { new MigrationModal(this.app, this.migrationService).open(); } });
 
     // v0.8 命令
     this.addCommand({ id: "mindos-open-evolution", name: "打开知识演化面板",

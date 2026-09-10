@@ -86,3 +86,11 @@ node esbuild.config.mjs --prod                # → main.js 1.1MB 构建成功
 node node_modules/jest/bin/jest.js            # → Validation Error（tests/ 不存在）
 grep/diff 重复文件比对                          # → 26 个死文件 / 12,145 行
 ```
+
+---
+
+## 后续进展（2026-09-10）
+
+- ✅ 本报告的修复项已全部落地并合并（PR #3 → main @ 9d0a866）
+- ✅ tag `1.0.0` + GitHub Release 已发布
+- ✅ **路线图 4C 数据迁移已实现**（v1.1.0）：Anki 文本/CSV/Markdown/JSON 导出、多格式导入（自动识别+去重）、一键备份与恢复；新增 21 个测试（累计 58 个）

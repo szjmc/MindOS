@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-Obsidian%201.5+-lightgray)
 
@@ -21,9 +21,9 @@
 | 属性 | 内容 |
 |------|------|
 | **项目定位** | Obsidian 个人知识管理 + AI 智能复习系统 |
-| **当前版本** | v1.0.0 |
-| **代码总量** | ~36,000 行 TypeScript + ~14,400 行 CSS |
-| **核心文件数** | ~104 个 |
+| **当前版本** | v1.1.0 |
+| **代码总量** | ~36,900 行 TypeScript + ~14,400 行 CSS |
+| **核心文件数** | ~109 个 |
 | **复习场景** | 7 个（含自定义） |
 | **核心功能点** | 100+ |
 | **架构模式** | 模块化 + Store 状态管理 + View 渲染分离 |
@@ -162,7 +162,15 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 
 ## 更新日志
 
-### v1.0.0（当前）→ 工程化整合
+### v1.1.0（当前）→ 数据迁移（路线图 4C）
+
+- 📤 **导出**：全部复习卡片一键导出为 Anki 文本（Anki 可直接导入）/ CSV / Markdown / JSON
+- 📥 **导入**：支持 MindOS JSON、Anki 文本（含 `#` 指令）、CSV/TSV（中英文表头自动识别、引号转义、去重）
+- 💾 **一键备份**：卡片 + 插件数据完整备份为 `.json`，支持恢复
+- 新增命令「打开数据迁移中心」，导出文件存于 `迁移与备份/` 目录
+- 新增 21 个单元测试（导出/导入/往返无损），累计 58 个
+
+### v1.0.0 → 工程化整合
 
 - 代码瘦身：清理 26 个重构遗留的旧版文件（约 1.2 万行死代码）
 - 类型安全：修复全部 100+ 个 TypeScript strict 编译错误，`tsc --noEmit` 全绿
@@ -189,9 +197,9 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 - **4A: Express 输出引擎** - 多风格文章生成（技术博客/公众号/周报等）
 - **4B: TTS 听力模式** - Web Speech API 单词朗读
 - **智能卡片关联** - 复习时基于向量相似度推荐相关卡片
+- **4C: 数据迁移** - Anki 文本 / CSV / Markdown / JSON 导出 + 导入 + 一键备份（v1.1）
 
 #### 待开发
-- **4C: 数据迁移** - Anki 互通 / 导入导出
 - **PPT 大纲生成 / 简历生成器**（规划中，尚未实现）
 
 ### v0.6.5 (基线版本)
@@ -230,9 +238,9 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 
 | 维度 | 数值 |
 |------|------|
-| TypeScript 代码 | ~36,000 行 |
+| TypeScript 代码 | ~36,900 行 |
 | CSS 样式 | ~14,400 行（模块化管理） |
-| 核心文件数 | ~104 个 |
+| 核心文件数 | ~109 个 |
 | 复习场景数 | 7 个 |
 | 预设模板 | 4 个 |
 | 内置词库 | 6 个 |
@@ -242,7 +250,7 @@ cp main.js manifest.json styles.css ~/.obsidian/plugins/mindos/
 | 核心功能点 | 120+ |
 | 状态管理 Store | 3 个 |
 | AI 集成场景 | 10+ 个 |
-| 单元测试 | 37 个（SRS/相似度/Token 估算） |
+| 单元测试 | 58 个（SRS/相似度/Token 估算/数据迁移） |
 
 ### CSS 模块化结构
 
