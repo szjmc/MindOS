@@ -70,6 +70,8 @@ export const FILE_RETRIEVE_CONFIG = "_系统数据/检索配置.json";
 // v0.6 Recall 路径
 export const DIR_RECALL = "_系统数据/复习";
 export const DIR_RECALL_CARDS = "_系统数据/复习/卡片";
+/** 数据迁移与备份目录（v1.1 4C） */
+export const DIR_MIGRATION = "迁移与备份";
 export const DIR_RECALL_SESSIONS = "_系统数据/复习/会话";
 export const DIR_RECALL_STATS = "_系统数据/复习/统计";
 

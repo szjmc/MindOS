@@ -1326,3 +1326,31 @@ body {
 .mindos-gaps-modal {
   animation: mindos-modal-in 200ms ease forwards;
 }
+
+/* ═══ v1.1 数据迁移中心 ═══ */
+.mindos-migration-modal {
+  padding: 8px 4px;
+}
+.mindos-migration-section {
+  margin: 18px 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.mindos-migration-section h3 {
+  margin: 6px 0 8px;
+  font-size: 15px;
+}
+.mindos-migration-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mindos-migration-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mindos-migration-action .mindos-btn {
+  min-width: 160px;
+  flex-shrink: 0;
+}
