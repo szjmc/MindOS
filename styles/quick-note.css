@@ -4,7 +4,7 @@
    ========================================================= */
 
 .mindos-quick-note-modal {
-  padding: var(--mindos-space-lg);
+  padding: 4px 2px;
 }
 
 .mindos-quick-note-form {
@@ -86,35 +86,36 @@
 
 .mindos-quick-note-btn {
   padding: var(--mindos-space-sm) var(--mindos-space-xl);
-  border-radius: var(--mindos-radius-md);
-  font-size: var(--mindos-text-base);
-  font-weight: 500;
+  border-radius: var(--mindos-radius-sm);
+  font-size: var(--mindos-text-sm);
+  font-weight: 600;
   cursor: pointer;
   border: 1px solid transparent;
+  box-shadow: none !important;
   transition: all var(--mindos-transition);
 }
 
 .mindos-quick-note-btn-secondary {
-  background: var(--background-modifier-form-field);
+  background: var(--background-secondary);
   color: var(--text-normal);
   border-color: var(--background-modifier-border);
 }
 
 .mindos-quick-note-btn-secondary:hover {
   background: var(--background-modifier-hover);
-  border-color: var(--text-muted);
+  border-color: var(--background-modifier-border-hover, var(--background-modifier-border));
 }
 
 .mindos-quick-note-btn-primary {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
-  border-color: transparent;
-  box-shadow: var(--mindos-shadow-sm);
+  border-color: var(--mindos-primary);
+  box-shadow: var(--mindos-shadow-xs) !important;
 }
 
 .mindos-quick-note-btn-primary:hover {
-  filter: brightness(1.1);
-  box-shadow: var(--mindos-shadow-md);
+  background: var(--mindos-primary-hover);
+  filter: brightness(1.06);
 }
 
 .mindos-quick-note-btn-primary:active {

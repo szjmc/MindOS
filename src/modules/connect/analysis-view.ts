@@ -38,6 +38,7 @@ export class AnalysisView extends ItemView {
   async onClose() {
     this.mdComponent.unload();
     this.cleanupFileChangeListener();
+    this.wikiEvolutionRenderer.destroy();
     this.backlinkRenderer.destroy();
     this.contextAwarenessRenderer.destroy();
   }
@@ -68,11 +69,13 @@ export class AnalysisView extends ItemView {
     contentEl.style.flexDirection = "column";
 
     const wrap = contentEl.createDiv({ cls: "mindos-analysis-view" });
-    
+
     this.renderTopBar(wrap);
     this.renderTabBar(wrap);
-    
-    const contentArea = wrap.createDiv({ cls: "mindos-content-area" });
+
+    const contentArea = wrap.createDiv({
+      cls: `mindos-content-area${this.currentTab === "evolution" ? " is-flush" : ""}`,
+    });
     await this.renderContent(contentArea);
   }
 
@@ -121,8 +124,6 @@ export class AnalysisView extends ItemView {
 
   private async renderContent(parent: HTMLElement) {
     parent.empty();
-    parent.style.height = "100%";
-    parent.style.overflowY = "auto";
 
     switch (this.currentTab) {
       case "context":

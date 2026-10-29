@@ -175,12 +175,22 @@ export class KnowledgeGapsRenderer {
     const processedCount = this.gaps.filter(g => g.isProcessed).length;
     const processedRate = totalGaps > 0 ? Math.round((processedCount / totalGaps) * 100) : 0;
 
+    const toolbar = this.container.createDiv({ cls: "mindos-gaps-toolbar" });
+    toolbar.createSpan({ cls: "mindos-gaps-toolbar-title", text: "📡 知识空白扫描结果" });
+    const refreshBtn = toolbar.createEl("button", { cls: "mindos-gaps-refresh-btn" });
+    refreshBtn.createEl("span", { text: "🔄" });
+    refreshBtn.createEl("span", { text: "刷新" });
+    refreshBtn.onclick = () => {
+      this.isAnalyzed = false;
+      this.render();
+    };
+
     const statsWrap = this.container.createDiv({ cls: "mindos-gaps-stats" });
-    
+
     const totalCard = statsWrap.createDiv({ cls: "mindos-gaps-stat-card" });
     totalCard.createDiv({ cls: "mindos-gaps-stat-value", text: String(totalGaps) });
     totalCard.createDiv({ cls: "mindos-gaps-stat-label", text: "缺口总数" });
-    
+
     const highCard = statsWrap.createDiv({ cls: "mindos-gaps-stat-card" });
     highCard.createDiv({ cls: "mindos-gaps-stat-value mindos-gaps-stat-high", text: String(highPriorityCount) });
     highCard.createDiv({ cls: "mindos-gaps-stat-label", text: "高优先级" });
@@ -188,14 +198,6 @@ export class KnowledgeGapsRenderer {
     const rateCard = statsWrap.createDiv({ cls: "mindos-gaps-stat-card" });
     rateCard.createDiv({ cls: "mindos-gaps-stat-value", text: `${processedRate}%` });
     rateCard.createDiv({ cls: "mindos-gaps-stat-label", text: "已处理率" });
-
-    const refreshBtn = statsWrap.createEl("button", { cls: "mindos-gaps-refresh-btn" });
-    refreshBtn.createEl("span", { text: "🔄" });
-    refreshBtn.createEl("span", { text: "刷新" });
-    refreshBtn.onclick = () => {
-      this.isAnalyzed = false;
-      this.render();
-    };
   }
 
   private renderGapList() {
@@ -216,11 +218,11 @@ export class KnowledgeGapsRenderer {
 
     const badges = cardHeader.createDiv({ cls: "mindos-gaps-card-badges" });
     badges.createEl("span", {
-      cls: "mindos-gaps-priority-badge",
-      text: gap.priority === "high" ? "高" : gap.priority === "medium" ? "中" : "低"
+      cls: `mindos-gaps-priority-badge priority-${gap.priority}`,
+      text: gap.priority === "high" ? "高优先级" : gap.priority === "medium" ? "中优先级" : "低优先级"
     });
     badges.createEl("span", {
-      cls: "mindos-gaps-type-badge",
+      cls: `mindos-gaps-type-badge mindos-gaps-type-${gap.pageType}`,
       text: this.getPageTypeLabel(gap.pageType)
     });
 

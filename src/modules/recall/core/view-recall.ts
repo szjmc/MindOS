@@ -1131,6 +1131,7 @@ export class RecallView {
 
         // vocab 场景走单词学习专属布局
         if (scenario === "vocab") {
+          contentEl.addClass("is-vocab");
           this.renderVocabLayout(contentEl, card);
           return;
         }
