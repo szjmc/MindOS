@@ -93,12 +93,10 @@ export class DashboardView extends Modal {
     ];
 
     for (const p of periods) {
-      const tab = tabs.createEl("button", {
+      const tab = tabs.createDiv({
         cls: `mindos-dashboard-period-tab ${this.currentPeriod === p.key ? "is-active" : ""}`,
         text: p.label,
       });
-      tab.setAttribute("type", "button");
-      tab.setAttribute("aria-pressed", String(this.currentPeriod === p.key));
       tab.onclick = () => {
         if (this.currentPeriod === p.key) return;
         this.currentPeriod = p.key;

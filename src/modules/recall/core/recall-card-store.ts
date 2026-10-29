@@ -17,11 +17,6 @@ import {
 } from "../../../core/constants";
 import { nowISOString, generateUID, vaultSave } from "../../../core/utils";
 
-/** 已遗忘的旧卡片可能仍保存为 new；lastReview 可区分它们和真正的新卡。 */
-export function isNewRecallCard(card: RecallCard): boolean {
-  return card.status === "new" && !card.srs.lastReview;
-}
-
 export class RecallCardStore {
   // 内存缓存：scenario → cards
   private cache = new Map<RecallScenario, RecallCard[]>();
@@ -171,7 +166,7 @@ export class RecallCardStore {
     for (const card of cards) {
       if (card.status === "suspended") continue;
 
-      if (isNewRecallCard(card)) {
+      if (card.status === "new" || card.srs.repetitions === 0) {
         newCards.push(card);
       } else if (card.srs.nextReview <= today) {
         reviewCards.push(card);
@@ -211,7 +206,7 @@ export class RecallCardStore {
 
     for (const card of cards) {
       if (card.status === "suspended") { suspendedCount++; continue; }
-      if (isNewRecallCard(card)) { newCount++; continue; }
+      if (card.status === "new" || card.srs.repetitions === 0) { newCount++; continue; }
       if (card.status === "mastered") { masteredCount++; }
       if (card.srs.nextReview <= today) dueCount++;
     }
@@ -286,8 +281,7 @@ export class RecallCardStore {
   }
 
   private deriveStatus(srs: SRSData): RecallCardStatus {
-    if (!srs.lastReview) return "new";
-    if (srs.repetitions === 0) return "learning";
+    if (srs.repetitions === 0) return "new";
     if (srs.interval < 1) return "learning";
     if (srs.interval >= 21) return "mastered";
     return "review";

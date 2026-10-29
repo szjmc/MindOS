@@ -160,7 +160,7 @@ export class SRSEngine {
     let { stability, difficulty, interval, repetitions } = card;
 
     // 初始化（新卡片）
-    if (card.algorithm !== "fsrs" || !card.lastReview || !stability) {
+    if (repetitions === 0 || !stability) {
       // 初始稳定性基于评分
       stability = w[rating - 1];          // w[0..3] 对应 rating 1..4
       difficulty = this.initDifficulty(rating, w);
@@ -234,7 +234,7 @@ export class SRSEngine {
     const hardPenalty = rating === 2 ? w[15] : 1;
     const easyBonus = rating === 4 ? w[16] : 1;
     return s * (
-      1 + Math.exp(w[8]) *
+      Math.exp(w[8]) *
       (11 - d) *
       Math.pow(s, -w[9]) *
       (Math.exp((1 - r) * w[10]) - 1) *
