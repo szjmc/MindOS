@@ -997,4 +997,6 @@
 .mindos-chat-stop-btn svg { width: 12px; height: 12px; }
 
 /* 响应式：宽度小时隐藏会话列表 */
-/* The session list remains available in narrow layouts; see layout.css. */
+@media (max-width: 600px) {
+  .mindos-session-list { display: none; }
+}

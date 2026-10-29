@@ -3197,6 +3197,11 @@ body {
   width: 12px;
   height: 12px;
 }
+@media (max-width: 600px) {
+  .mindos-session-list {
+    display: none;
+  }
+}
 
 /* styles/recall.css */
 .mindos-recall-today-banner {
@@ -7976,7 +7981,7 @@ body {
 }
 .mindos-express .express-style-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: var(--mindos-space-md);
 }
 .mindos-express .express-style-card {
@@ -8867,12 +8872,12 @@ body {
 /* styles/capture-methods.css */
 .mindos-capture-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--mindos-space-md);
   padding: var(--mindos-space-lg);
 }
 .mindos-analysis-grid {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 14px;
   padding: var(--mindos-space-lg) var(--mindos-space-lg) var(--mindos-space-sm);
 }
@@ -12927,7 +12932,7 @@ body {
 }
 .mindos-backlink-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--mindos-space-md);
   margin-bottom: var(--mindos-space-lg);
 }
@@ -13719,389 +13724,6 @@ body {
   border-top: 1px solid var(--background-modifier-border);
   font-size: var(--mindos-text-sm);
   color: var(--text-faint);
-}
-
-/* styles/glass.css */
-.mindos-root {
-  --mindos-glass-bg: color-mix(in srgb, var(--background-primary) 83%, transparent);
-  --mindos-glass-border: color-mix(in srgb, var(--background-modifier-border) 65%, #a69bff 35%);
-  --mindos-glass-shadow: 0 8px 28px rgba(45, 31, 104, .08), inset 0 1px 0 rgba(255, 255, 255, .15);
-  background:
-    radial-gradient(
-      ellipse at 5% 0%,
-      rgba(69, 116, 221, .15),
-      transparent 48%),
-    radial-gradient(
-      ellipse at 100% 15%,
-      rgba(177, 67, 202, .14),
-      transparent 48%),
-    var(--background-primary);
-}
-.theme-dark .mindos-root {
-  --mindos-glass-bg: color-mix(in srgb, var(--background-secondary) 78%, transparent);
-  --mindos-glass-border: rgba(203, 190, 255, .18);
-  --mindos-glass-shadow: 0 8px 28px rgba(0, 0, 0, .16), inset 0 1px 0 rgba(255, 255, 255, .05);
-}
-.mindos-root :is(.mindos-topbar, .mindos-index-card, .mindos-quota-card, .mindos-search-result-item, .mindos-pipeline-card, .mindos-action-card, .mindos-result-card, .mindos-guide, .mindos-capture-card, .mindos-recall-today-banner, .mindos-recall-scenario-card, .mindos-recall-card, .mindos-recall-gen-panel, .mindos-recall-manager-item, .mindos-recall-summary-stat, .express-header, .express-draft-card, .express-style-card, .express-outline-section-card) {
-  background: var(--mindos-glass-bg);
-  border: 1px solid var(--mindos-glass-border);
-  border-radius: 16px;
-  box-shadow: var(--mindos-glass-shadow);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-}
-.mindos-root :is(.mindos-recall-scenario-card, .mindos-capture-card, .mindos-search-result-item, .mindos-recall-manager-item, .express-draft-card, .express-style-card):hover {
-  border-color: color-mix(in srgb, var(--mindos-primary) 55%, var(--mindos-glass-border));
-  box-shadow: 0 10px 30px rgba(89, 62, 160, .16), inset 0 1px 0 rgba(255, 255, 255, .2);
-}
-.mindos-root .mindos-tab-bar {
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--mindos-glass-border);
-  border-radius: 14px;
-  background: var(--mindos-glass-bg);
-}
-.mindos-root .mindos-tab-btn {
-  min-width: 0;
-  margin: 0;
-  border: 0;
-  border-radius: 10px;
-}
-.mindos-root .mindos-tab-btn:hover {
-  border-radius: 10px;
-}
-.mindos-root .mindos-tab-btn.is-active {
-  background: color-mix(in srgb, var(--mindos-primary) 16%, var(--background-primary));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mindos-primary) 22%, transparent);
-}
-.mindos-root .mindos-recall-scenario-icon-wrap {
-  background:
-    linear-gradient(
-      135deg,
-      #466ac9,
-      #9b4ad2);
-  color: #fff;
-  border-radius: 11px;
-}
-.mindos-dashboard-modal {
-  --text-normal: #fff;
-  --text-muted: #f0eaff;
-  --text-faint: #ded3f8;
-  --background-modifier-border: rgba(255, 255, 255, .24);
-  --background-modifier-hover: rgba(255, 255, 255, .14);
-  --mindos-primary: #e8d9ff;
-  --mindos-info: #bde6ff;
-  --mindos-success: #a4f3d9;
-  --mindos-warning: #ffe4a8;
-  --mindos-danger: #ffc2d8;
-  color: var(--text-normal);
-  background:
-    linear-gradient(
-      115deg,
-      #294b82 0%,
-      #7132c9 55%,
-      #ac287d 100%);
-  border: 1px solid rgba(255, 255, 255, .22);
-  border-radius: 20px;
-  padding: 22px;
-  box-sizing: border-box;
-}
-.mindos-dashboard-head {
-  border-color: rgba(255, 255, 255, .18);
-}
-.mindos-dashboard-title-icon,
-.mindos-dashboard-card-icon,
-.mindos-dashboard-scenario-icon {
-  color: #eee1ff;
-}
-.mindos-dashboard-period-tabs {
-  background: rgba(255, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .23);
-  border-radius: 999px;
-}
-.mindos-dashboard-period-tab {
-  height: auto;
-  box-shadow: none;
-  border: 0;
-  background: transparent;
-  color: var(--text-muted);
-  border-radius: 999px;
-}
-.mindos-dashboard-period-tab:hover {
-  background: rgba(255, 255, 255, .14);
-  color: #fff;
-}
-.mindos-dashboard-period-tab.is-active {
-  background: rgba(255, 255, 255, .27);
-  color: #fff;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3);
-}
-.mindos-dashboard-period-tab:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-.mindos-dashboard-metric,
-.mindos-dashboard-card {
-  background: rgba(255, 255, 255, .13);
-  border: 1px solid rgba(255, 255, 255, .27);
-  border-radius: 16px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 8px 28px rgba(39, 17, 89, .08);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-}
-.mindos-dashboard-metric {
-  min-width: 0;
-  padding: 16px;
-}
-.mindos-dashboard-card {
-  padding: 18px;
-}
-.mindos-dashboard-metric-icon:is(.is-success, .is-info, .is-warning, .is-primary, .is-danger) {
-  color: #fff;
-  background: rgba(255, 255, 255, .16);
-}
-.mindos-dashboard-metric-value {
-  font-size: 24px;
-  letter-spacing: -.02em;
-}
-.mindos-dashboard-metric-sub {
-  color: #d8fbee;
-}
-.mindos-dashboard-heatmap-cell.level-0 {
-  background: rgba(255, 255, 255, .18);
-}
-.mindos-dashboard-heatmap-cell.level-1 {
-  background: rgba(255, 255, 255, .35);
-}
-.mindos-dashboard-heatmap-cell.level-2 {
-  background: rgba(255, 255, 255, .55);
-}
-.mindos-dashboard-heatmap-cell.level-3 {
-  background: rgba(255, 255, 255, .78);
-}
-.mindos-dashboard-heatmap-cell.level-4 {
-  background: #fff;
-}
-.mindos-dashboard-bar {
-  border-radius: 5px 5px 0 0;
-}
-.mindos-dashboard-bar.is-empty {
-  background: rgba(255, 255, 255, .2);
-}
-@media (max-width: 480px) {
-  .mindos-dashboard-modal {
-    padding: 16px;
-  }
-  .mindos-dashboard-head {
-    align-items: flex-start;
-  }
-  .mindos-dashboard-period-tab {
-    padding: 5px 9px;
-  }
-  .mindos-dashboard-metric {
-    padding: 12px;
-    gap: 8px;
-  }
-  .mindos-dashboard-metric-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .mindos-dashboard-metric-value {
-    font-size: 20px;
-  }
-  .mindos-root .mindos-tab-btn {
-    padding-inline: 6px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .mindos-root :is(.mindos-recall-scenario-card, .mindos-capture-card, .mindos-search-result-item),
-  .mindos-dashboard-modal * {
-    transition-duration: 0s;
-    animation-duration: 0s;
-  }
-}
-
-/* styles/layout.css */
-.mindos-root {
-  container: mindos-view / inline-size;
-  min-width: 0;
-}
-.mindos-dashboard-modal {
-  container: mindos-dashboard / inline-size;
-}
-.mindos-task-center > .mindos-tab-bar {
-  margin: 0;
-}
-.mindos-root :is(.mindos-topbar-left, .mindos-brand, .mindos-tab-bar, .mindos-recall-scenario-card, .mindos-recall-manager-search-input, .mindos-chat-main, .express-content-area, .express-editor-body) {
-  min-width: 0;
-}
-.mindos-root :is(.mindos-search-result-title, .mindos-search-result-path, .mindos-search-result-preview, .mindos-recall-card-front, .mindos-recall-card-back, .mindos-recall-manager-item-front, .mindos-recall-manager-item-back, .mindos-capture-desc, .mindos-health-dim-desc) {
-  overflow-wrap: anywhere;
-}
-.mindos-recall-card :is(pre, table),
-.mindos-chat-msg pre {
-  max-width: 100%;
-  overflow-x: auto;
-}
-.mindos-recall-gen-panel {
-  box-sizing: border-box;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-.mindos-recall-manager-search {
-  min-width: min(180px, 100%);
-}
-.mindos-evolution-select-wrapper {
-  min-width: min(200px, 100%);
-}
-.mindos-drawer {
-  max-width: 100%;
-}
-.mindos-recall-scenario-grid,
-.mindos-custom-tpl-grid,
-.mindos-evolution-dimensions-grid,
-.mindos-health-dim-grid,
-.mindos-custom-preview {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
-}
-.mindos-recall-rating-btns {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 80px), 1fr));
-}
-.mindos-editor-srs-grid,
-.mindos-health-grid,
-.mindos-gaps-stats {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
-}
-.mindos-dashboard-top-metrics {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr));
-}
-.mindos-dashboard-chart-wrap {
-  overflow-x: auto;
-  padding-bottom: 20px;
-}
-.mindos-dashboard-bars {
-  min-width: 360px;
-}
-.mindos-dashboard-chart-legend {
-  flex-wrap: wrap;
-}
-.mindos-dashboard-head,
-.mindos-dashboard-period-tabs {
-  max-width: 100%;
-}
-.mindos-dashboard-period-tabs {
-  flex-wrap: wrap;
-}
-.mindos-dashboard-metric-body,
-.mindos-dashboard-card {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-.mindos-root .mindos-recall-manager-item.is-selected {
-  border-color: var(--mindos-primary);
-  background: color-mix(in srgb, var(--mindos-primary) 12%, var(--background-primary));
-  box-shadow: 0 0 0 1px var(--mindos-primary);
-}
-.mindos-root .express-style-card.active {
-  border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 12%, var(--background-primary));
-}
-@container mindos-view (max-width: 500px) {
-  .mindos-task-center {
-    padding: 10px;
-    gap: 10px;
-  }
-  .mindos-task-center .mindos-topbar {
-    padding: 8px 10px;
-  }
-  .mindos-task-center .mindos-tab-btn {
-    padding: 8px 4px;
-    gap: 4px;
-    font-size: var(--mindos-text-sm);
-  }
-  .mindos-recall-manager-head-right,
-  .mindos-recall-manager-stats-left,
-  .mindos-recall-manager-stats-right,
-  .mindos-recall-home-toolbar {
-    flex-wrap: wrap;
-  }
-  .mindos-session-list:not(.is-collapsed) {
-    width: min(125px, 38%);
-  }
-  .mindos-session-list-title {
-    padding: 8px;
-  }
-  .mindos-chat-scroll {
-    padding: 10px;
-  }
-  .mindos-express .express-content-area {
-    padding: 12px;
-  }
-  .mindos-express .express-step-editor {
-    height: auto;
-    min-height: 0;
-  }
-  .mindos-express .express-editor-body {
-    flex-direction: column;
-    overflow: visible;
-  }
-  .mindos-express .express-editor-left {
-    min-height: 300px;
-  }
-  .mindos-express .express-main-editor {
-    min-height: 300px;
-    box-sizing: border-box;
-  }
-  .mindos-express .express-editor-right {
-    width: 100%;
-    overflow: visible;
-  }
-}
-@container mindos-view (max-width: 300px) {
-  .mindos-task-center .mindos-tab-btn {
-    flex-direction: column;
-    gap: 2px;
-  }
-  .mindos-brand {
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .mindos-recall-manager-item {
-    gap: 6px;
-    padding: 8px;
-  }
-}
-@container mindos-dashboard (max-width: 420px) {
-  .mindos-dashboard-top-metrics {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
-  }
-  .mindos-dashboard-metric {
-    padding: 12px;
-    gap: 8px;
-  }
-  .mindos-dashboard-metric-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .mindos-dashboard-metric-value {
-    font-size: 20px;
-  }
-}
-@media (max-width: 600px) {
-  .mindos-preview-sidebar:not(.is-collapsed) {
-    width: min(180px, 35vw);
-  }
-  .mindos-preview-content {
-    min-width: 0;
-  }
-  .mindos-migration-action {
-    flex-wrap: wrap;
-  }
-  .mindos-migration-action .mindos-btn {
-    min-width: 0;
-    max-width: 100%;
-  }
 }
 
 /* styles/index.css */
