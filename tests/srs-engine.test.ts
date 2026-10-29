@@ -195,3 +195,27 @@ describe("SRSEngine - 通用", () => {
     expect(engine.daysUntilReview(sm2Card({ nextReview: "" }))).toBe(0);
   });
 });
+
+describe("FSRS 复习回归", () => {
+  const engine = new SRSEngine("fsrs");
+
+  test("成功复习保留原有稳定性并叠加增长量", () => {
+    const card = sm2Card({ algorithm: "fsrs", repetitions: 2, stability: 100,
+      difficulty: 5, lastReview: todayPlus(-1) });
+    expect(engine.review(card, 3).newSRS.stability).toBeGreaterThan(100);
+  });
+
+  test("遗忘后再次复习沿用遗忘后的记忆状态，而非重新初始化", () => {
+    const card = sm2Card({ algorithm: "fsrs", repetitions: 3, stability: 10,
+      difficulty: 5, lastReview: todayPlus(-9) });
+    const forgotten = engine.review(card, 1).newSRS;
+    const recovered = engine.review(forgotten, 3).newSRS;
+    expect(recovered.stability).toBeGreaterThan(forgotten.stability);
+    expect(recovered.difficulty).not.toBeCloseTo(engine.review(sm2Card({ algorithm: "fsrs" }), 3).newSRS.difficulty);
+  });
+
+  test("切换到 FSRS 时初始化记忆状态", () => {
+    const card = sm2Card({ repetitions: 4, lastReview: todayPlus(-2), stability: 50 });
+    expect(engine.review(card, 3).newSRS.stability).toBeCloseTo(3.1262, 4);
+  });
+});

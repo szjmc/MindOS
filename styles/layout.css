@@ -1,0 +1,83 @@
+/* Layout rules for resizable Obsidian panes. Viewport media queries alone do
+   not describe a narrow sidebar in a wide desktop window. */
+.mindos-root { container: mindos-view / inline-size; min-width: 0; }
+.mindos-dashboard-modal { container: mindos-dashboard / inline-size; }
+
+.mindos-task-center > .mindos-tab-bar { margin: 0; }
+.mindos-root :is(.mindos-topbar-left, .mindos-brand, .mindos-tab-bar,
+  .mindos-recall-scenario-card, .mindos-recall-manager-search-input,
+  .mindos-chat-main, .express-content-area, .express-editor-body) { min-width: 0; }
+.mindos-root :is(.mindos-search-result-title, .mindos-search-result-path,
+  .mindos-search-result-preview, .mindos-recall-card-front, .mindos-recall-card-back,
+  .mindos-recall-manager-item-front, .mindos-recall-manager-item-back,
+  .mindos-capture-desc, .mindos-health-dim-desc) { overflow-wrap: anywhere; }
+.mindos-recall-card :is(pre, table), .mindos-chat-msg pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.mindos-recall-gen-panel { box-sizing: border-box; max-width: calc(100vw - 32px); max-height: calc(100vh - 100px); overflow-y: auto; }
+.mindos-recall-manager-search { min-width: min(180px, 100%); }
+.mindos-evolution-select-wrapper { min-width: min(200px, 100%); }
+.mindos-drawer { max-width: 100%; }
+
+/* Responsive grids also work in embedded views and dialogs without a container. */
+.mindos-recall-scenario-grid, .mindos-custom-tpl-grid,
+.mindos-evolution-dimensions-grid, .mindos-health-dim-grid, .mindos-custom-preview {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
+}
+.mindos-recall-rating-btns { grid-template-columns: repeat(auto-fit, minmax(min(100%, 80px), 1fr)); }
+.mindos-editor-srs-grid, .mindos-health-grid, .mindos-gaps-stats {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
+}
+.mindos-dashboard-top-metrics { grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr)); }
+.mindos-dashboard-chart-wrap { overflow-x: auto; padding-bottom: 20px; }
+.mindos-dashboard-bars { min-width: 360px; }
+.mindos-dashboard-chart-legend { flex-wrap: wrap; }
+.mindos-dashboard-head, .mindos-dashboard-period-tabs { max-width: 100%; }
+.mindos-dashboard-period-tabs { flex-wrap: wrap; }
+.mindos-dashboard-metric-body, .mindos-dashboard-card { min-width: 0; overflow-wrap: anywhere; }
+
+/* Restore selection feedback on glass surfaces. */
+.mindos-root .mindos-recall-manager-item.is-selected {
+  border-color: var(--mindos-primary);
+  background: color-mix(in srgb, var(--mindos-primary) 12%, var(--background-primary));
+  box-shadow: 0 0 0 1px var(--mindos-primary);
+}
+.mindos-root .express-style-card.active {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--background-primary));
+}
+
+@container mindos-view (max-width: 500px) {
+  .mindos-task-center { padding: 10px; gap: 10px; }
+  .mindos-task-center .mindos-topbar { padding: 8px 10px; }
+  .mindos-task-center .mindos-tab-btn { padding: 8px 4px; gap: 4px; font-size: var(--mindos-text-sm); }
+  .mindos-recall-manager-head-right, .mindos-recall-manager-stats-left,
+  .mindos-recall-manager-stats-right, .mindos-recall-home-toolbar { flex-wrap: wrap; }
+  .mindos-session-list:not(.is-collapsed) { width: min(125px, 38%); }
+  .mindos-session-list-title { padding: 8px; }
+  .mindos-chat-scroll { padding: 10px; }
+  .mindos-express .express-content-area { padding: 12px; }
+  .mindos-express .express-step-editor { height: auto; min-height: 0; }
+  .mindos-express .express-editor-body { flex-direction: column; overflow: visible; }
+  .mindos-express .express-editor-left { min-height: 300px; }
+  .mindos-express .express-main-editor { min-height: 300px; box-sizing: border-box; }
+  .mindos-express .express-editor-right { width: 100%; overflow: visible; }
+}
+@container mindos-view (max-width: 300px) {
+  .mindos-task-center .mindos-tab-btn { flex-direction: column; gap: 2px; }
+  .mindos-brand { flex-wrap: wrap; gap: 4px; }
+  .mindos-recall-manager-item { gap: 6px; padding: 8px; }
+}
+@container mindos-dashboard (max-width: 420px) {
+  .mindos-dashboard-top-metrics { grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); }
+  .mindos-dashboard-metric { padding: 12px; gap: 8px; }
+  .mindos-dashboard-metric-icon { width: 32px; height: 32px; }
+  .mindos-dashboard-metric-value { font-size: 20px; }
+}
+@media (max-width: 600px) {
+  .mindos-preview-sidebar:not(.is-collapsed) { width: min(180px, 35vw); }
+  .mindos-preview-content { min-width: 0; }
+  .mindos-migration-action { flex-wrap: wrap; }
+  .mindos-migration-action .mindos-btn { min-width: 0; max-width: 100%; }
+}
