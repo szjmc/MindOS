@@ -1,3 +1,4 @@
+import { isNewRecallCard } from "../core/recall-card-store";
 import {
   setIcon,
   Notice,
@@ -337,9 +338,9 @@ export class RecallCardManagerView {
     const cards = this.localCards;
     const selectedCount = state.managerSelectedIds.size;
 
-    const newCount = cards.filter((c) => c.status === "new").length;
+    const newCount = cards.filter((c) => isNewRecallCard(c)).length;
     const dueCount = cards.filter((c) => {
-      if (c.status === "suspended" || c.status === "new") return false;
+      if (c.status === "suspended" || isNewRecallCard(c)) return false;
       const today = new Date().toISOString().substring(0, 10);
       return c.srs.nextReview <= today;
     }).length;

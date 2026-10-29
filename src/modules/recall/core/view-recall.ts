@@ -1,3 +1,4 @@
+import { isNewRecallCard } from "./recall-card-store";
 import {
   setIcon,
   MarkdownRenderer,
@@ -734,8 +735,8 @@ export class RecallView {
         return;
       }
 
-      const newCards = dueCards.filter((c) => c.status === "new");
-      const reviewCards = dueCards.filter((c) => c.status !== "new");
+      const newCards = dueCards.filter((c) => isNewRecallCard(c));
+      const reviewCards = dueCards.filter((c) => !isNewRecallCard(c));
       this.shuffleArray(reviewCards);
       const orderedCards = [...newCards, ...reviewCards];
 
@@ -834,7 +835,7 @@ export class RecallView {
     cardEl.style.overflowY = "auto";
     cardEl.style.marginBottom = "16px";
 
-    if (card.status === "new") {
+    if (isNewRecallCard(card)) {
       const newBadge = cardEl.createDiv({ cls: "mindos-recall-card-new-badge" });
       setIcon(newBadge.createSpan(), "sparkles");
       newBadge.createSpan({ text: " 新卡片" });
@@ -1481,7 +1482,7 @@ export class RecallView {
     await this.plugin.recallCardStore.recordReview(
       card.scenario,
       rating >= 3,
-      card.status === "new",
+      isNewRecallCard(card),
       responseTimeMs,
     );
 

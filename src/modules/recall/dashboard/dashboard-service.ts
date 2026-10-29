@@ -1,3 +1,4 @@
+import { isNewRecallCard } from "../core/recall-card-store";
 import { App, normalizePath, TFile, TFolder } from "obsidian";
 import {
   DashboardOverview,
@@ -49,12 +50,12 @@ export class DashboardService {
     // 5. 待复习
     const today = new Date().toISOString().substring(0, 10);
     const dueToday = allCards.filter((c) => {
-      if (c.status === "suspended" || c.status === "new") return false;
+      if (c.status === "suspended" || isNewRecallCard(c)) return false;
       return c.srs.nextReview && c.srs.nextReview <= today;
     }).length;
 
     const newAvailable = allCards.filter((c) =>
-      c.status === "new" || c.srs.repetitions === 0,
+      c.status !== "suspended" && isNewRecallCard(c),
     ).length;
 
     // 6. 连续学习

@@ -5,13 +5,13 @@
 
 .mindos-capture-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
   gap: var(--mindos-space-md);
   padding: var(--mindos-space-lg);
 }
 
 .mindos-analysis-grid {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
   gap: 14px;
   padding: var(--mindos-space-lg) var(--mindos-space-lg) var(--mindos-space-sm);
 }
