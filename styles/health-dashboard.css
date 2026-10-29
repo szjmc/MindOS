@@ -186,7 +186,7 @@
 
 .mindos-health-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+  background: linear-gradient(90deg, var(--mindos-primary), color-mix(in srgb, var(--mindos-primary) 72%, var(--mindos-info)));
   border-radius: 5px;
   transition: width var(--mindos-transition-slow);
   min-width: 2px;
@@ -276,7 +276,7 @@
   flex: 1;
   font-size: var(--mindos-text-base);
   color: var(--text-normal);
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -308,30 +308,27 @@
    健康度报告 v2 — 侧边栏内嵌视图
    ════════════════════════════════════════════════════════════ */
 
-/* ── 容器 & 操作栏 ── */
+/* ── 容器 & 操作栏（内嵌于 .mindos-evolution-content，由外层统一提供内边距与滚动）── */
 .mindos-health-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+  gap: var(--mindos-space-md);
 }
 
 .mindos-health-ops {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--mindos-space-sm);
-  padding: var(--mindos-space-sm) var(--mindos-space-md);
-  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 0;
   flex-shrink: 0;
 }
 
 .mindos-health-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--mindos-space-md);
   display: flex;
   flex-direction: column;
   gap: var(--mindos-space-lg);
+  padding: 0;
 }
 
 /* ── 空状态 ── */
@@ -399,10 +396,11 @@
 .mindos-health-overview {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--mindos-space-lg);
   padding: var(--mindos-space-md);
   background: var(--background-secondary);
-  border-radius: var(--mindos-radius-lg);
+  border-radius: var(--mindos-radius-md);
   border: 1px solid var(--background-modifier-border);
 }
 
@@ -543,7 +541,7 @@
 /* ── 四维度卡片 ── */
 .mindos-health-dim-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--mindos-space-sm);
 }
 
@@ -759,7 +757,7 @@
   gap: 4px;
   font-size: var(--mindos-text-xs);
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   padding: 1px 0;
 }
 

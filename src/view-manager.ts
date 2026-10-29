@@ -83,7 +83,18 @@ export class ViewManager {
     titleDiv.createDiv({ cls: "mindos-context-panel-title", text: "🔗 情境感知" });
     titleDiv.createDiv({ cls: "mindos-context-panel-desc", text: "基于当前页面推荐相关内容" });
 
-    const closeBtn = header.createEl("button", { cls: "mindos-context-panel-close" });
+    const actionsDiv = header.createDiv({ cls: "mindos-context-panel-actions" });
+
+    const refreshBtn = actionsDiv.createEl("button", { cls: "mindos-context-panel-refresh" });
+    setIcon(refreshBtn, "refresh-cw");
+    refreshBtn.title = "刷新推荐";
+    refreshBtn.onclick = async () => {
+      if (this.contextAwarenessView) {
+        await this.contextAwarenessView.refresh();
+      }
+    };
+
+    const closeBtn = actionsDiv.createEl("button", { cls: "mindos-context-panel-close" });
     setIcon(closeBtn, "x");
     closeBtn.title = "关闭";
     closeBtn.onclick = () => {
@@ -92,15 +103,6 @@ export class ViewManager {
         this.contextAwarenessView = null;
       }
       leaf.detach();
-    };
-
-    const refreshBtn = header.createEl("button", { cls: "mindos-context-panel-refresh" });
-    setIcon(refreshBtn, "refresh-cw");
-    refreshBtn.title = "刷新推荐";
-    refreshBtn.onclick = async () => {
-      if (this.contextAwarenessView) {
-        await this.contextAwarenessView.refresh();
-      }
     };
 
     const { ContextAwarenessView: CV } = await import("./modules/retrieve/context-awareness-view");

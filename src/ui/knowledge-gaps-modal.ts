@@ -25,7 +25,6 @@ export class KnowledgeGapsModal extends Modal {
 
   private renderHeader(parent: HTMLElement) {
     const header = parent.createDiv({ cls: "mindos-gaps-header" });
-    header.createEl("h2", { cls: "mindos-gaps-title", text: "🧠 知识空白雷达" });
     header.createEl("p", {
       cls: "mindos-gaps-desc",
       text: "扫描你的 Wiki，发现应该有但还没有的页面",

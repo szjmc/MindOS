@@ -778,29 +778,24 @@ export class MindOSSettingTab extends PluginSettingTab {
       );
     // ── 紧急控制 ──
     containerEl.createEl("h3", { text: "🚨 紧急控制" });
-    
+
     const emergencySection = containerEl.createDiv({ cls: "mindos-emergency-section" });
-    emergencySection.style.cssText = "background: var(--background-modifier-error); padding: 16px; border-radius: 8px; margin-bottom: 16px;";
-    
-    const emergencyTitle = emergencySection.createEl("h4", { text: "紧急停止所有 API 调用" });
-    emergencyTitle.style.cssText = "color: var(--text-error); margin-top: 0;";
-    
-    const emergencyDesc = emergencySection.createEl("p", { 
-      text: "如果发现插件在后台消耗大量 Token，点击下方按钮紧急停止所有 API 调用。" 
+    emergencySection.createEl("h4", { text: "紧急停止所有 API 调用" });
+    emergencySection.createEl("p", {
+      text: "如果发现插件在后台消耗大量 Token，点击下方按钮紧急停止所有 API 调用。",
     });
-    emergencyDesc.style.cssText = "color: var(--text-muted); margin-bottom: 12px;";
-    
+
     const emergencyBtnContainer = emergencySection.createDiv({ cls: "mindos-emergency-buttons" });
-    emergencyBtnContainer.style.cssText = "display: flex; gap: 8px;";
-    
-    const stopBtn = emergencyBtnContainer.createEl("button", { text: "🛑 紧急停止" });
-    stopBtn.style.cssText = "background: var(--interactive-normal); border: 1px solid var(--background-modifier-border); color: var(--text-error); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;";
+
+    const stopBtn = emergencyBtnContainer.createEl("button", {
+      cls: "mindos-btn mindos-btn-md is-danger-text",
+      text: "🛑 紧急停止",
+    });
     stopBtn.onclick = async () => {
       if (confirm("确定要紧急停止所有 API 调用吗？\n\n这将：\n1. 立即停止所有进行中的向量化\n2. 清空待向量化队列\n3. 禁用自动向量化功能")) {
         try {
           this.plugin.settings.autoVectorize = false;
           await this.plugin.saveSettings();
-          // 尝试停止正在进行的向量化
           if (this.plugin.embeddingManager) {
             this.plugin.embeddingManager.emergencyStop();
           }
@@ -812,9 +807,11 @@ export class MindOSSettingTab extends PluginSettingTab {
         }
       }
     };
-    
-    const checkQuotaBtn = emergencyBtnContainer.createEl("button", { text: "📊 查看配额" });
-    checkQuotaBtn.style.cssText = "background: var(--interactive-normal); border: 1px solid var(--background-modifier-border); padding: 8px 16px; border-radius: 6px; cursor: pointer;";
+
+    const checkQuotaBtn = emergencyBtnContainer.createEl("button", {
+      cls: "mindos-btn mindos-btn-md",
+      text: "📊 查看配额",
+    });
     checkQuotaBtn.onclick = async () => {
       try {
         const status = await this.plugin.quotaManager.getStatus();
@@ -920,31 +917,26 @@ export class MindOSSettingTab extends PluginSettingTab {
       }));
     
     const logContainer = logSection.createDiv({ cls: "mindos-log-container" });
-    logContainer.style.cssText = "max-height: 300px; overflow-y: auto; background: var(--background-secondary); border-radius: 6px; padding: 12px; font-family: monospace; font-size: 12px;";
-    
+
     // 获取真实的日志
     const recentLogs = this.plugin.activityLogger?.getRecentLogs(50) || [];
-    
+
     if (recentLogs.length === 0) {
       const emptyEl = logContainer.createDiv({ cls: "mindos-log-empty" });
-      emptyEl.style.cssText = "color: var(--text-muted); text-align: center; padding: 20px;";
       emptyEl.textContent = "暂无活动日志";
     } else {
       for (const log of recentLogs) {
         const logEl = logContainer.createDiv({ cls: "mindos-log-entry" });
-        const timeStr = new Date(log.timestamp).toLocaleString('zh-CN');
-        const timeEl = logEl.createSpan({ cls: "mindos-log-time", text: `[${timeStr}]` });
-        timeEl.style.cssText = "color: var(--text-faint); margin-right: 8px;";
-        
-        const levelEl = logEl.createSpan({ cls: `mindos-log-level mindos-log-level-${log.level}`, text: `[${log.level.toUpperCase()}]` });
-        levelEl.style.cssText = `color: ${log.level === 'error' ? 'var(--text-error)' : log.level === 'warn' ? 'var(--text-warning)' : 'var(--text-accent)'}; margin-right: 8px; font-weight: 600;`;
-        
+        const timeStr = new Date(log.timestamp).toLocaleString("zh-CN");
+        logEl.createSpan({ cls: "mindos-log-time", text: `[${timeStr}]` });
+        logEl.createSpan({
+          cls: `mindos-log-level mindos-log-level-${log.level}`,
+          text: `[${log.level.toUpperCase()}]`,
+        });
         if (log.source) {
-          const sourceEl = logEl.createSpan({ cls: "mindos-log-source", text: `[${log.source}]` });
-          sourceEl.style.cssText = "color: var(--text-muted); margin-right: 8px;";
+          logEl.createSpan({ cls: "mindos-log-source", text: `[${log.source}]` });
         }
-        
-        const msgEl = logEl.createSpan({ cls: "mindos-log-message", text: log.message });
+        logEl.createSpan({ cls: "mindos-log-message", text: log.message });
       }
     }
     

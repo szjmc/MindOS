@@ -4,63 +4,88 @@
    ========================================================= */
 
 .mindos-backlink-view {
-  padding: var(--mindos-space-lg);
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .mindos-backlink-container {
   display: flex;
   flex-direction: column;
-  gap: var(--mindos-space-lg);
-  padding: var(--mindos-space-lg);
+  gap: 12px;
+  padding: 14px 16px 20px 16px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* 内嵌在 AnalysisView .mindos-content-area 时避免双重内边距与嵌套滚动 */
+.mindos-content-area .mindos-backlink-container {
+  padding: 0;
+  flex: none;
+  overflow: visible;
 }
 
 .mindos-backlink-tabs {
   display: flex;
-  gap: var(--mindos-space-sm);
+  gap: 6px;
   flex-wrap: wrap;
   align-items: center;
 }
 
 .mindos-backlink-tab {
-  padding: var(--mindos-space-sm) var(--mindos-space-lg);
-  border-radius: var(--mindos-radius-md);
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-sm);
   cursor: pointer;
-  font-size: var(--mindos-text-md);
+  font-size: var(--mindos-text-base);
+  font-weight: 500;
   border: 1px solid var(--background-modifier-border);
   background: var(--background-secondary);
+  color: var(--text-muted);
   transition: all var(--mindos-transition);
+  display: inline-flex;
+  align-items: center;
 }
 
 .mindos-backlink-tab:hover {
   background: var(--background-modifier-hover);
+  color: var(--text-normal);
 }
 
 .mindos-backlink-tab.active {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
-  border-color: var(--interactive-accent);
+  border-color: var(--mindos-primary);
+  font-weight: 600;
 }
 
 .mindos-backlink-count {
-  font-size: var(--mindos-text-sm);
-  opacity: 0.8;
-  margin-left: var(--mindos-space-xs);
+  font-size: var(--mindos-text-xs);
+  opacity: 0.85;
+  margin-left: 2px;
 }
 
 .mindos-backlink-refresh {
   margin-left: auto;
   padding: 6px 10px;
-  border: none;
-  background: var(--background-modifier-hover);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
+  background: var(--background-secondary);
+  color: var(--text-muted);
   border-radius: var(--mindos-radius-sm);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--mindos-space-xs);
+  transition: all var(--mindos-transition);
 }
 
 .mindos-backlink-refresh:hover {
-  background: var(--background-modifier-active);
+  background: var(--background-modifier-hover);
+  border-color: var(--mindos-primary);
+  color: var(--text-normal);
 }
 
 .mindos-backlink-content {
@@ -118,29 +143,35 @@
   justify-content: flex-end;
 }
 
-.mindos-mini-btn {
+.mindos-backlink-actions .mindos-mini-btn {
+  width: auto;
+  height: auto;
   display: inline-flex;
   align-items: center;
   gap: var(--mindos-space-xs);
   padding: 5px 10px;
-  font-size: var(--mindos-text-base);
-  border: none;
+  font-size: var(--mindos-text-sm);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   cursor: pointer;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+}
+
+.mindos-backlink-actions .mindos-mini-btn:hover {
   background: var(--background-modifier-hover);
+  border-color: var(--mindos-primary);
 }
 
-.mindos-mini-btn:hover {
-  background: var(--background-modifier-active);
-}
-
-.mindos-mini-btn.mod-cta {
-  background: var(--interactive-accent);
+.mindos-backlink-actions .mindos-mini-btn.mod-cta {
+  background: var(--mindos-primary);
+  border-color: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
 }
 
-.mindos-mini-btn.mod-cta:hover {
-  background: var(--interactive-accent-hover);
+.mindos-backlink-actions .mindos-mini-btn.mod-cta:hover {
+  background: var(--mindos-primary-hover);
 }
 
 .mindos-backlink-loading {
@@ -149,6 +180,7 @@
   justify-content: center;
   gap: var(--mindos-space-sm);
   padding: var(--mindos-space-2xl);
+  color: var(--text-muted);
 }
 
 .mindos-backlink-spinner {
@@ -161,9 +193,32 @@
 }
 
 .mindos-backlink-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: var(--mindos-space-3xl);
+  padding: 48px var(--mindos-space-xl);
   color: var(--text-muted);
+  gap: 8px;
+}
+
+.mindos-backlink-empty-icon {
+  font-size: 2.5em;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.mindos-backlink-empty-title {
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.mindos-backlink-empty-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
 /* ── Stats Panel ── */
@@ -321,9 +376,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px var(--mindos-space-md);
-  font-size: var(--mindos-text-base);
-  border: none;
+  padding: 5px 10px;
+  font-size: var(--mindos-text-sm);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   cursor: pointer;
   background: var(--background-secondary);
@@ -332,21 +388,23 @@
 }
 
 .mindos-backlink-action-btn:hover {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
+  border-color: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
 }
 
 .mindos-backlink-action-btn.mod-cta {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
+  border-color: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
 }
 
 .mindos-backlink-action-btn.mod-cta:hover {
-  background: var(--interactive-accent-hover);
+  background: var(--mindos-primary-hover);
 }
 
-/* ── Responsive Adjustments ── */
-@media (max-width: 600px) {
+/* ── 窄侧栏适配：默认展示操作按钮，避免无法悬停发现 ── */
+@container (max-width: 520px) {
   .mindos-backlink-card-actions {
     opacity: 1;
     flex-wrap: wrap;
@@ -357,6 +415,6 @@
   }
 
   .mindos-stat-value {
-    font-size: var(--mindos-text-2xl);
+    font-size: var(--mindos-text-xl);
   }
 }

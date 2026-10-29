@@ -94,11 +94,19 @@ export class WikiEvolutionRenderer {
   private displayedCount: number = 10;
   private dropdownOpen: boolean = false;
   private tabChangeCallback: ((tab: EvolutionTab) => void) | null = null;
+  private docClickHandler: (() => void) | null = null;
 
   constructor(plugin: MindOSPlugin) {
     this.plugin = plugin;
     this.versionManager = plugin.versionManager;
     this.qualityAnalyzer = new QualityAnalyzer(plugin.app, () => plugin.settings);
+  }
+
+  destroy() {
+    if (this.docClickHandler) {
+      document.removeEventListener("click", this.docClickHandler);
+      this.docClickHandler = null;
+    }
   }
 
   setContainer(container: HTMLElement) {
@@ -115,13 +123,14 @@ export class WikiEvolutionRenderer {
 
   async render() {
     if (!this.container) return;
+    this.destroy();
     this.container.empty();
 
     const wrap = this.container.createDiv({ cls: "mindos-evolution-view" });
     this.renderTabBar(wrap);
-    
+
     const content = wrap.createDiv({ cls: "mindos-evolution-content" });
-    
+
     if (this.currentTab === "versions") {
       await this.renderVersionsTab(content);
     } else {
@@ -129,26 +138,16 @@ export class WikiEvolutionRenderer {
     }
   }
 
-  private renderTopBar(parent: HTMLElement) {
-    const bar = parent.createDiv({ cls: "mindos-topbar" });
-    const left = bar.createDiv({ cls: "mindos-topbar-left" });
-    const titleWrap = left.createDiv({ cls: "mindos-brand" });
-    const iconEl = titleWrap.createSpan({ cls: "mindos-brand-icon" });
-    setIcon(iconEl, "git-branch");
-    titleWrap.createSpan({ cls: "mindos-brand-text", text: "知识演化" });
-    titleWrap.createSpan({ cls: "mindos-version-tag", text: `v${this.plugin.manifest.version}` });
-  }
-
   private renderTabBar(parent: HTMLElement) {
-    const tabs = parent.createDiv({ cls: "mindos-tab-bar" });
+    const tabs = parent.createDiv({ cls: "mindos-evolution-tabs" });
     const tabConfig: Record<EvolutionTab, { label: string; icon: string }> = {
       versions: { label: "版本历史", icon: "history" },
       health:   { label: "健康度报告", icon: "heart-pulse" },
     };
 
     for (const [key, info] of Object.entries(tabConfig)) {
-      const btn = tabs.createDiv({
-        cls: `mindos-tab-btn ${this.currentTab === key ? "is-active" : ""}`,
+      const btn = tabs.createEl("button", {
+        cls: `mindos-evolution-tab-btn ${this.currentTab === key ? "is-active" : ""}`,
       });
       const ic = btn.createSpan({ cls: "mindos-tab-btn-icon" });
       setIcon(ic, info.icon);
@@ -164,41 +163,46 @@ export class WikiEvolutionRenderer {
   private async renderVersionsTab(parent: HTMLElement) {
     const container = parent.createDiv({ cls: "mindos-evolution-versions-container" });
 
-    // 页面选择器 - 优化版本
+    // 页面选择器
     const selector = container.createDiv({ cls: "mindos-evolution-page-selector" });
-    selector.createSpan({ cls: "mindos-evolution-selector-label", text: "📄 选择页面：" });
+    selector.createSpan({ cls: "mindos-evolution-selector-label", text: "📄 选择页面" });
 
     const files = this.getWikiFiles();
     const selectWrapper = selector.createDiv({ cls: "mindos-evolution-select-wrapper" });
-    
+
     // 自定义下拉框
     const customSelect = selectWrapper.createDiv({ cls: "mindos-evolution-custom-select" });
     const selectDisplay = customSelect.createDiv({ cls: "mindos-evolution-select-display" });
     const selectText = selectDisplay.createSpan({ cls: "mindos-evolution-select-text", text: "-- 请选择一个 Wiki 页面 --" });
     const selectArrow = selectDisplay.createSpan({ cls: "mindos-evolution-select-arrow", text: "▼" });
-    
+
     const dropdown = customSelect.createDiv({ cls: "mindos-evolution-select-dropdown" });
-    
-    // 自动选中当前打开的文件
-    const activeFile = this.plugin.app.workspace.getActiveFile();
-    if (activeFile && files.some(f => f.path === activeFile.path)) {
-      this.selectedFile = activeFile;
-      selectText.setText(activeFile.basename);
+
+    // 自动选中当前打开的文件（若尚未手动选择）
+    if (!this.selectedFile) {
+      const activeFile = this.plugin.app.workspace.getActiveFile();
+      if (activeFile && files.some(f => f.path === activeFile.path)) {
+        this.selectedFile = activeFile;
+      }
+    }
+    if (this.selectedFile) {
+      selectText.setText(this.selectedFile.basename);
     }
 
     // 添加选项
     for (const f of files) {
-      const option = dropdown.createDiv({ cls: "mindos-evolution-select-option", text: f.basename });
+      const option = dropdown.createDiv({
+        cls: `mindos-evolution-select-option${this.selectedFile?.path === f.path ? " is-selected" : ""}`,
+        text: f.basename,
+        attr: { title: f.path },
+      });
       option.onclick = async () => {
         selectText.setText(f.basename);
         this.selectedFile = f;
         this.dropdownOpen = false;
         dropdown.removeClass("is-open");
-        // 更新选中路径显示
-        const pathDisplay = selector.querySelector(".mindos-evolution-selected-path");
-        if (pathDisplay) {
-          pathDisplay.setText(f.path);
-        }
+        dropdown.querySelectorAll(".mindos-evolution-select-option").forEach(el => el.removeClass("is-selected"));
+        option.addClass("is-selected");
         await this.loadVersions(f.path, listContainer);
       };
     }
@@ -210,20 +214,15 @@ export class WikiEvolutionRenderer {
       dropdown.toggleClass("is-open", this.dropdownOpen);
     };
 
-    // 点击外部关闭下拉框
-    document.addEventListener("click", () => {
+    // 点击外部关闭下拉框（可回收监听，无内存泄漏）
+    this.docClickHandler = () => {
       this.dropdownOpen = false;
       dropdown.removeClass("is-open");
-    });
-
-    // 选中的文件路径显示
-    const selectedPath = selector.createDiv({ cls: "mindos-evolution-selected-path" });
-    if (this.selectedFile) {
-      selectedPath.setText(this.selectedFile.path);
-    }
+    };
+    document.addEventListener("click", this.docClickHandler);
 
     const listContainer = container.createDiv({ cls: "mindos-evolution-versions-list" });
-    
+
     if (this.selectedFile) {
       await this.loadVersions(this.selectedFile.path, listContainer);
     } else {
@@ -408,18 +407,18 @@ export class WikiEvolutionRenderer {
   }
 
   private setupScrollLoad(
-    wrapper: HTMLElement, 
-    timeline: HTMLElement, 
+    wrapper: HTMLElement,
+    timeline: HTMLElement,
     filePath: string
   ) {
+    const scrollTarget = (wrapper.closest(".mindos-evolution-content") as HTMLElement | null) ?? wrapper;
     const loadMore = () => {
       if (this.displayedCount >= this.filteredVersions.length) return;
-      
-      // 检查是否滚动到底部
-      const scrollTop = wrapper.scrollTop;
-      const scrollHeight = wrapper.scrollHeight;
-      const clientHeight = wrapper.clientHeight;
-      
+
+      const scrollTop = scrollTarget.scrollTop;
+      const scrollHeight = scrollTarget.scrollHeight;
+      const clientHeight = scrollTarget.clientHeight;
+
       if (scrollTop + clientHeight >= scrollHeight - 100) {
         const prevCount = this.displayedCount;
         this.displayedCount = Math.min(this.displayedCount + 10, this.filteredVersions.length);
@@ -427,7 +426,7 @@ export class WikiEvolutionRenderer {
       }
     };
 
-    wrapper.addEventListener("scroll", loadMore);
+    scrollTarget.addEventListener("scroll", loadMore);
   }
 
   private renderVersionItem(

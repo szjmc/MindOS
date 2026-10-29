@@ -20,18 +20,19 @@ body {
   --mindos-primary-text: var(--text-on-accent);
 
   /* ── 语义状态色（辅助色：仅用于状态提示）── */
-  --mindos-success: var(--color-green);
-  --mindos-success-bg: rgba(var(--color-green-rgb, 22 163 74), 0.08);
-  --mindos-success-border: rgba(var(--color-green-rgb, 22 163 74), 0.2);
-  --mindos-warning: var(--color-yellow);
-  --mindos-warning-bg: rgba(var(--color-yellow-rgb, 234 179 8), 0.08);
-  --mindos-warning-border: rgba(var(--color-yellow-rgb, 234 179 8), 0.2);
-  --mindos-danger: var(--color-red);
-  --mindos-danger-bg: rgba(var(--color-red-rgb, 239 68 68), 0.08);
-  --mindos-danger-border: rgba(var(--color-red-rgb, 239 68 68), 0.2);
-  --mindos-info: var(--color-blue);
-  --mindos-info-bg: rgba(var(--color-blue-rgb, 59 130 246), 0.08);
-  --mindos-info-border: rgba(var(--color-blue-rgb, 59 130 246), 0.2);
+  --mindos-success: var(--color-green, #16a34a);
+  --mindos-success-bg: color-mix(in srgb, var(--color-green, #16a34a) 10%, transparent);
+  --mindos-success-border: color-mix(in srgb, var(--color-green, #16a34a) 24%, transparent);
+  --mindos-warning: var(--color-yellow, #eab308);
+  --mindos-warning-bg: color-mix(in srgb, var(--color-yellow, #eab308) 12%, transparent);
+  --mindos-warning-border: color-mix(in srgb, var(--color-yellow, #eab308) 26%, transparent);
+  --mindos-danger: var(--color-red, #ef4444);
+  --mindos-danger-bg: color-mix(in srgb, var(--color-red, #ef4444) 10%, transparent);
+  --mindos-danger-border: color-mix(in srgb, var(--color-red, #ef4444) 24%, transparent);
+  --mindos-info: var(--color-blue, #3b82f6);
+  --mindos-info-bg: color-mix(in srgb, var(--color-blue, #3b82f6) 10%, transparent);
+  --mindos-info-border: color-mix(in srgb, var(--color-blue, #3b82f6) 24%, transparent);
+  --mindos-accent-bg: color-mix(in srgb, var(--mindos-primary, #7c3aed) 10%, transparent);
 
   /* ── 中性色梯度（文本 / 背景 / 边框分层）── */
   --mindos-text-primary: var(--text-normal);
@@ -42,6 +43,7 @@ body {
   --mindos-surface: var(--background-primary);
   --mindos-surface-secondary: var(--background-secondary);
   --mindos-surface-hover: var(--background-modifier-hover);
+  --mindos-bg-tertiary: var(--background-modifier-border);
   --mindos-border: var(--background-modifier-border);
   --mindos-border-light: var(--background-modifier-border-hover, var(--background-modifier-border));
 
@@ -59,6 +61,7 @@ body {
   --mindos-radius-xs: var(--radius-s, 4px);
   --mindos-radius-sm: var(--radius-s, 6px);
   --mindos-radius-md: var(--radius-m, 8px);
+  --mindos-radius: var(--mindos-radius-md);
   --mindos-radius-lg: var(--radius-l, 12px);
   --mindos-radius-xl: 16px;
   --mindos-radius-full: 999px;
@@ -69,6 +72,7 @@ body {
   --mindos-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
   --mindos-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
   --mindos-shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
+  --mindos-shadow-primary: 0 2px 10px color-mix(in srgb, var(--mindos-primary, #7c3aed) 28%, transparent);
 
   /* ── 过渡 ── */
   --mindos-transition-fast: 120ms ease;
@@ -90,12 +94,31 @@ body {
   --mindos-leading-relaxed: 1.7; /* 长文本 */
 }
 
+/* ── 所有 MindOS 注册视图统一清除 Obsidian 默认 .view-content 内边距 ── */
+.workspace-leaf-content[data-type="mindos-view"] .view-content,
+.workspace-leaf-content[data-type="mindos-express"] .view-content,
+.workspace-leaf-content[data-type="mindos-wiki-evolution"] .view-content,
+.workspace-leaf-content[data-type="mindos-connect-backlink"] .view-content,
+.workspace-leaf-content[data-type="mindos-analysis"] .view-content,
+.workspace-leaf-content[data-type="mindos-smart-extract"] .view-content {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 /* .mindos-root：View 容器布局规则（令牌已移至 body 层） */
 .mindos-root {
   flex: 1;
   min-height: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  background: var(--background-primary);
+  container-type: inline-size;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -143,25 +166,37 @@ body {
    ── sm(紧凑) / md(默认) / lg(大型)
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 3.1 按钮基类 ── */
+/* ── 3.1 按钮基类（默认次按钮外观，同时支持 BEM 变体与 .is-* 修饰符）── */
 .mindos-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 16px;
-  min-height: 32px;
+  padding: 6px 12px;
+  min-height: 30px;
   font-size: var(--mindos-text-sm);
-  border: 1px solid transparent;
+  border: 1px solid var(--mindos-border);
   border-radius: var(--mindos-radius-sm);
-  font-weight: 600;
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-primary);
+  box-shadow: none !important;
+  font-weight: 500;
   letter-spacing: 0.01em;
   cursor: pointer;
   user-select: none;
-  transition: all var(--mindos-transition);
+  transition: background var(--mindos-transition), border-color var(--mindos-transition), color var(--mindos-transition), filter var(--mindos-transition);
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.2;
   font-family: inherit;
+}
+.mindos-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.mindos-btn:hover {
+  background: var(--mindos-surface-hover);
+  border-color: var(--mindos-border-light);
 }
 .mindos-btn:focus-visible {
   outline: 2px solid var(--mindos-primary);
@@ -174,18 +209,35 @@ body {
   pointer-events: none;
 }
 
+/* 按钮内图标与文本 span（防止与 button.mindos-btn-text 冲突） */
+.mindos-btn > .mindos-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mindos-btn > .mindos-btn-text {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+
 /* ── 3.2 尺寸变体 ── */
-.mindos-btn-sm {
+.mindos-btn-sm,
+.mindos-btn.is-sm {
   padding: 4px 10px;
   font-size: var(--mindos-text-xs);
   min-height: 26px;
   border-radius: var(--mindos-radius-xs);
   gap: 4px;
 }
-.mindos-btn-sm svg { width: 13px; height: 13px; }
+.mindos-btn-sm svg,
+.mindos-btn.is-sm svg { width: 13px; height: 13px; }
 
 .mindos-btn-md {
-  padding: 7px 16px;
+  padding: 7px 14px;
   font-size: var(--mindos-text-sm);
   min-height: 34px;
   gap: 6px;
@@ -193,47 +245,54 @@ body {
 .mindos-btn-md svg { width: 15px; height: 15px; }
 
 .mindos-btn-lg {
-  padding: 10px 22px;
+  padding: 10px 20px;
   font-size: var(--mindos-text-md);
   min-height: 40px;
-  font-weight: 700;
+  font-weight: 600;
   gap: 8px;
 }
 .mindos-btn-lg svg { width: 17px; height: 17px; }
 
 /* ── 3.3 主按钮 Primary（核心操作：保存、提交、新增）── */
-.mindos-btn-primary {
+.mindos-btn-primary,
+.mindos-btn.is-primary {
   background: var(--mindos-primary);
   color: var(--mindos-primary-text);
   border-color: var(--mindos-primary);
-  box-shadow: var(--mindos-shadow-sm);
+  font-weight: 600;
+  box-shadow: var(--mindos-shadow-xs) !important;
 }
-.mindos-btn-primary:hover {
-  filter: brightness(1.08);
-  box-shadow: var(--mindos-shadow-md);
+.mindos-btn-primary:hover,
+.mindos-btn.is-primary:hover {
+  background: var(--mindos-primary-hover);
+  border-color: var(--mindos-primary-hover);
+  color: var(--mindos-primary-text);
+  filter: brightness(1.06);
 }
-.mindos-btn-primary:active {
+.mindos-btn-primary:active,
+.mindos-btn.is-primary:active {
   filter: brightness(0.95);
-  box-shadow: var(--mindos-shadow-xs);
 }
 
 /* ── 3.4 次按钮 Secondary（取消、返回、一般操作）── */
-.mindos-btn-secondary {
+.mindos-btn-secondary,
+.mindos-btn.is-secondary {
   background: var(--mindos-surface-secondary);
   color: var(--mindos-text-primary);
   border-color: var(--mindos-border);
 }
-.mindos-btn-secondary:hover {
+.mindos-btn-secondary:hover,
+.mindos-btn.is-secondary:hover {
   background: var(--mindos-surface-hover);
   border-color: var(--mindos-border-light);
-  box-shadow: var(--mindos-shadow-xs);
 }
-.mindos-btn-secondary:active {
+.mindos-btn-secondary:active,
+.mindos-btn.is-secondary:active {
   background: var(--mindos-border);
 }
 
-/* ── 3.5 文字按钮 Text（轻量操作 / 链接型）── */
-.mindos-btn-text {
+/* ── 3.5 文字按钮 Text（轻量操作 / 链接型，仅限 button 元素）── */
+button.mindos-btn-text {
   background: transparent;
   border-color: transparent;
   color: var(--mindos-text-secondary);
@@ -241,44 +300,68 @@ body {
   padding-right: 6px;
   min-width: 0;
 }
-.mindos-btn-text:hover {
+button.mindos-btn-text:hover {
   color: var(--mindos-text-primary);
   background: var(--mindos-surface-hover);
 }
-.mindos-btn-text.is-primary-link {
+button.mindos-btn-text.is-primary-link {
   color: var(--mindos-primary);
 }
-.mindos-btn-text.is-primary-link:hover {
-  background: rgba(var(--color-accent-rgb, 124 58 237), 0.08);
+button.mindos-btn-text.is-primary-link:hover {
+  background: var(--mindos-accent-bg);
 }
 
-/* ── 3.6 危险按钮 Danger（删除、重置等不可逆操作须二次确认）── */
-.mindos-btn-danger {
+/* ── 3.6 危险按钮 Danger & 成功按钮 Success ── */
+.mindos-btn-danger,
+.mindos-btn.is-danger {
   background: var(--mindos-danger);
   color: var(--text-on-accent, #fff);
   border-color: var(--mindos-danger);
+  font-weight: 600;
 }
-.mindos-btn-danger:hover {
-  filter: brightness(1.1);
-  box-shadow: var(--mindos-shadow-sm);
+.mindos-btn-danger:hover,
+.mindos-btn.is-danger:hover {
+  background: var(--mindos-danger);
+  color: var(--text-on-accent, #fff);
+  filter: brightness(1.08);
 }
 
-.mindos-btn-danger-text {
+.mindos-btn-danger-text,
+.mindos-btn.is-danger-text {
   background: transparent;
-  border-color: transparent;
+  border-color: var(--mindos-danger-border);
   color: var(--mindos-danger);
 }
-.mindos-btn-danger-text:hover {
+.mindos-btn-danger-text:hover,
+.mindos-btn.is-danger-text:hover {
   background: var(--mindos-danger-bg);
+  border-color: var(--mindos-danger);
+  color: var(--mindos-danger);
+}
+
+.mindos-btn-success,
+.mindos-btn.is-success {
+  background: var(--mindos-success);
+  color: var(--text-on-accent, #fff);
+  border-color: var(--mindos-success);
+  font-weight: 600;
+}
+.mindos-btn-success:hover,
+.mindos-btn.is-success:hover {
+  background: var(--mindos-success);
+  color: var(--text-on-accent, #fff);
+  filter: brightness(1.08);
 }
 
 /* ── 3.7 幽灵按钮 Ghost（透明底 + 边框）── */
-.mindos-btn-ghost {
+.mindos-btn-ghost,
+.mindos-btn.is-ghost {
   background: transparent;
   border-color: var(--mindos-border);
   color: var(--mindos-text-primary);
 }
-.mindos-btn-ghost:hover {
+.mindos-btn-ghost:hover,
+.mindos-btn.is-ghost:hover {
   background: var(--mindos-surface-hover);
 }
 
@@ -287,14 +370,21 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 28px;
+  height: 28px;
   border: none;
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   background: transparent;
   color: var(--mindos-text-secondary);
   cursor: pointer;
-  transition: all var(--mindos-transition);
+  transition: background var(--mindos-transition), color var(--mindos-transition);
   flex-shrink: 0;
   padding: 0;
+}
+.mindos-icon-btn svg {
+  width: 15px;
+  height: 15px;
 }
 .mindos-icon-btn:hover {
   background: var(--mindos-surface-hover);
@@ -322,7 +412,7 @@ body {
 .mindos-icon-btn.is-danger { color: var(--mindos-danger); }
 .mindos-icon-btn.is-danger:hover { background: var(--mindos-danger-bg); }
 .mindos-icon-btn.is-primary { color: var(--mindos-primary); }
-.mindos-icon-btn.is-primary:hover { background: rgba(var(--color-accent-rgb, 124 58 237), 0.1); }
+.mindos-icon-btn.is-primary:hover { background: var(--mindos-accent-bg); }
 
 /* ── 3.9 按钮组（多个按钮横向排列）── */
 .mindos-btn-group {
@@ -385,7 +475,7 @@ body {
 }
 .mindos-input:focus {
   border-color: var(--mindos-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+  box-shadow: 0 0 0 3px var(--mindos-accent-bg);
 }
 .mindos-input::placeholder {
   color: var(--mindos-text-tertiary);
@@ -423,7 +513,7 @@ body {
 }
 .mindos-textarea:focus {
   border-color: var(--mindos-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+  box-shadow: 0 0 0 3px var(--mindos-accent-bg);
 }
 .mindos-textarea::placeholder {
   color: var(--mindos-text-tertiary);
@@ -457,7 +547,7 @@ body {
 }
 .mindos-select:focus {
   border-color: var(--mindos-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 124 58 237), 0.12);
+  box-shadow: 0 0 0 3px var(--mindos-accent-bg);
 }
 .mindos-select:disabled {
   opacity: 0.5;
@@ -1010,7 +1100,7 @@ body {
   white-space: nowrap;
 }
 .mindos-tag.is-primary {
-  background: rgba(var(--color-accent-rgb, 124 58 237), 0.1);
+  background: var(--mindos-accent-bg);
   color: var(--mindos-primary);
 }
 .mindos-tag.is-success {
@@ -1137,7 +1227,7 @@ body {
 .mindos-root textarea:focus-visible {
   outline: 2px solid var(--mindos-primary);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb, 124 58 237), 0.15);
+  box-shadow: 0 0 0 3px var(--mindos-accent-bg);
 }
 
 /* ── Number Input Styles ── */
@@ -1205,34 +1295,40 @@ body {
    15. BACKWARD COMPAT — 向下兼容旧类名
    ═══════════════════════════════════════════════════════════ */
 
-/* 旧版按钮类名向后兼容（代码逐步迁移后移除） */
+/* 旧版按钮类名向后兼容 */
 .mindos-btn-large {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 22px;
-  font-size: var(--mindos-text-md);
-  font-weight: 700;
-  min-height: 40px;
-  border: 1px solid transparent;
+  padding: 9px 18px;
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  min-height: 36px;
+  border: 1px solid var(--mindos-border);
+  background: var(--mindos-surface-secondary);
+  color: var(--mindos-text-primary);
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   cursor: pointer;
-  transition: all var(--mindos-transition);
+  transition: background var(--mindos-transition), border-color var(--mindos-transition), filter var(--mindos-transition);
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.2;
   font-family: inherit;
 }
-.mindos-btn-large svg { width: 17px; height: 17px; }
+.mindos-btn-large:hover {
+  background: var(--mindos-surface-hover);
+}
+.mindos-btn-large svg { width: 16px; height: 16px; flex-shrink: 0; }
 .mindos-btn-large.is-primary {
   background: var(--mindos-primary);
   color: var(--mindos-primary-text);
   border-color: var(--mindos-primary);
-  box-shadow: var(--mindos-shadow-sm);
+  box-shadow: var(--mindos-shadow-xs) !important;
 }
 .mindos-btn-large.is-primary:hover {
-  filter: brightness(1.08);
-  box-shadow: var(--mindos-shadow-md);
+  background: var(--mindos-primary-hover);
+  filter: brightness(1.06);
 }
 .mindos-btn-large.is-danger {
   background: var(--mindos-danger);
@@ -1244,29 +1340,18 @@ body {
   border-color: var(--mindos-border);
   color: var(--mindos-text-primary);
 }
+.mindos-btn-large.is-ghost:hover {
+  background: var(--mindos-surface-hover);
+}
 .mindos-btn-large:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-/* 旧版小按钮向后兼容 */
-.mindos-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: var(--mindos-radius-sm);
-  border: 1px solid var(--mindos-border);
-  background: var(--mindos-surface-secondary);
-  color: var(--mindos-text-primary);
-  font-size: var(--mindos-text-sm);
-  cursor: pointer;
-  font-weight: 500;
-  transition: all var(--mindos-transition);
-  gap: 4px;
+.mindos-spin {
+  animation: mindos-spin 1s linear infinite;
 }
-.mindos-btn:hover { background: var(--mindos-surface-hover); }
-.mindos-btn svg { width: 13px; height: 13px; }
 
 /* 旧版迷你按钮 → 图标按钮映射 */
 .mindos-mini-btn {
@@ -1279,6 +1364,7 @@ body {
   border-radius: var(--mindos-radius-sm);
   background: var(--mindos-surface);
   color: var(--mindos-text-secondary);
+  box-shadow: none !important;
   cursor: pointer;
   transition: all var(--mindos-transition);
   padding: 0;
@@ -1329,28 +1415,143 @@ body {
 
 /* ═══ v1.1 数据迁移中心 ═══ */
 .mindos-migration-modal {
-  padding: 8px 4px;
+  padding: 4px 2px 8px;
+}
+.mindos-migration-desc {
+  margin: 0 0 14px 0;
+  font-size: var(--mindos-text-base);
+  color: var(--mindos-text-secondary);
+  line-height: 1.55;
 }
 .mindos-migration-section {
-  margin: 18px 0;
-  padding-top: 6px;
+  margin: 14px 0;
+  padding-top: 14px;
   border-top: 1px solid var(--background-modifier-border);
 }
+.mindos-migration-section:first-of-type {
+  margin-top: 8px;
+}
 .mindos-migration-section h3 {
-  margin: 6px 0 8px;
-  font-size: 15px;
+  margin: 0 0 10px 0;
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+  color: var(--mindos-text-primary);
 }
 .mindos-migration-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 .mindos-migration-action {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .mindos-migration-action .mindos-btn {
-  min-width: 160px;
+  min-width: 156px;
   flex-shrink: 0;
+}
+.mindos-migration-action-desc {
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-text-secondary);
+  line-height: 1.45;
+  flex: 1;
+  min-width: 180px;
+}
+.mindos-migration-note {
+  margin: 8px 0 0 0;
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-text-tertiary);
+}
+.mindos-migration-status {
+  margin-top: 14px;
+  padding: 8px 12px;
+  border-radius: var(--mindos-radius-sm);
+  background: var(--mindos-surface-secondary);
+  font-size: var(--mindos-text-sm);
+  color: var(--mindos-text-secondary);
+}
+.mindos-migration-status:empty {
+  display: none;
+}
+
+/* ═══ 设置页扩展区域（紧急控制 & 活动日志）═══ */
+.mindos-emergency-section {
+  background: var(--mindos-danger-bg);
+  border: 1px solid var(--mindos-danger-border);
+  padding: 16px;
+  border-radius: var(--mindos-radius-md);
+  margin: 8px 0 20px 0;
+}
+.mindos-emergency-section h4 {
+  color: var(--mindos-danger);
+  margin: 0 0 6px 0;
+  font-size: var(--mindos-text-md);
+  font-weight: 600;
+}
+.mindos-emergency-section p {
+  color: var(--mindos-text-secondary);
+  font-size: var(--mindos-text-sm);
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+.mindos-emergency-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mindos-log-section {
+  margin-top: 8px;
+}
+.mindos-log-container {
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: 10px 12px;
+  margin: 8px 0 12px 0;
+  font-family: var(--font-monospace);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.mindos-log-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 12px;
+  font-family: var(--font-interface);
+}
+.mindos-log-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--background-modifier-border) 60%, transparent);
+}
+.mindos-log-entry:last-child {
+  border-bottom: none;
+}
+.mindos-log-time {
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.mindos-log-level {
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.mindos-log-level-error { color: var(--mindos-danger); }
+.mindos-log-level-warn  { color: var(--mindos-warning); }
+.mindos-log-level-info  { color: var(--mindos-info); }
+.mindos-log-source {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mindos-log-message {
+  color: var(--text-normal);
+  word-break: break-word;
+  flex: 1;
+  min-width: 140px;
 }

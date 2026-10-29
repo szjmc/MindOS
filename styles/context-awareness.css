@@ -14,27 +14,47 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--mindos-space-xl);
+  gap: 12px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--background-modifier-border);
-  background: var(--background-secondary);
+  background: var(--background-primary);
+  flex-shrink: 0;
 }
 
-.mindos-context-panel-close {
+.mindos-context-panel-actions {
   display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mindos-context-panel-close,
+.mindos-context-panel-refresh {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: var(--background-primary);
-  border: none;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   color: var(--text-muted);
   cursor: pointer;
   transition: all var(--mindos-transition-fast);
 }
 
-.mindos-context-panel-close:hover {
+.mindos-context-panel-close svg,
+.mindos-context-panel-refresh svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mindos-context-panel-close:hover,
+.mindos-context-panel-refresh:hover {
   background: var(--background-modifier-hover);
+  border-color: var(--mindos-primary);
   color: var(--text-normal);
 }
 
@@ -60,7 +80,15 @@
   padding: var(--mindos-space-lg);
   height: 100%;
   overflow-y: auto;
-  background: var(--background-secondary);
+  background: var(--background-primary);
+}
+
+/* 内嵌于智能分析视图时由外层 .mindos-content-area 统一负责滚动与内边距 */
+.mindos-content-area .mindos-context-view {
+  padding: 0;
+  height: auto;
+  overflow: visible;
+  background: transparent;
 }
 
 /* 加载状态 */
@@ -279,13 +307,14 @@
 }
 
 .mindos-context-refresh-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px var(--mindos-space-md);
+  padding: 5px 12px;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--mindos-radius-md);
+  box-shadow: none !important;
+  border-radius: var(--mindos-radius-sm);
   font-size: var(--mindos-text-sm);
   color: var(--text-normal);
   cursor: pointer;
@@ -344,7 +373,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--mindos-space-sm);
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: var(--mindos-space-xs);
 }
 
 .mindos-context-card-title {
@@ -352,10 +383,49 @@
   font-weight: 600;
   color: var(--text-normal);
   cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mindos-context-card-title:hover {
   color: var(--mindos-primary);
+}
+
+.mindos-context-score {
+  font-size: var(--mindos-text-xs);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--mindos-radius-full);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.mindos-score-high {
+  background: var(--mindos-success-bg);
+  color: var(--mindos-success);
+}
+.mindos-score-medium {
+  background: var(--mindos-accent-bg);
+  color: var(--mindos-primary);
+}
+.mindos-score-low {
+  background: var(--background-secondary);
+  color: var(--text-muted);
+}
+
+.mindos-context-type-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--mindos-text-xs);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--mindos-radius-full);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .mindos-context-card-reason {
@@ -367,27 +437,30 @@
 
 .mindos-context-card-preview {
   font-size: var(--mindos-text-sm);
-  color: var(--text-faint);
+  color: var(--text-muted);
   line-height: 1.6;
-  padding: var(--mindos-space-sm);
-  background: var(--background-secondary);
+  padding: var(--mindos-space-sm) 10px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-sm);
   margin-top: var(--mindos-space-sm);
 }
 
 .mindos-context-card-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--mindos-space-sm);
   margin-top: 10px;
 }
 
 .mindos-context-action-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--mindos-space-xs);
-  padding: 6px var(--mindos-space-md);
+  padding: 5px 10px;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
   border-radius: var(--mindos-radius-sm);
   font-size: var(--mindos-text-sm);
   color: var(--text-muted);
@@ -445,11 +518,19 @@
 }
 
 .mindos-context-card {
-  background: var(--background-primary);
+  background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-md);
-  padding: 14px;
+  padding: 12px 14px;
   transition: all var(--mindos-transition);
+}
+
+.mindos-context-card.mindos-context-card-highlight {
+  border-left: 3px solid var(--mindos-success);
+}
+
+.mindos-context-card.mindos-context-card-medium {
+  border-left: 3px solid var(--mindos-primary);
 }
 
 .mindos-context-card:hover {

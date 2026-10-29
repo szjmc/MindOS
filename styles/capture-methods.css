@@ -5,15 +5,15 @@
 
 .mindos-capture-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--mindos-space-md);
-  padding: var(--mindos-space-lg);
+  padding: 0;
 }
 
 .mindos-analysis-grid {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 14px;
-  padding: var(--mindos-space-lg) var(--mindos-space-lg) var(--mindos-space-sm);
+  padding: 0;
 }
 
 .mindos-capture-card {
@@ -141,21 +141,20 @@
 
 /* 采集方式标题 */
 .mindos-capture-section {
-  padding: var(--mindos-space-lg) var(--mindos-space-lg) 0 var(--mindos-space-lg);
+  padding: 4px 0 0 0;
 }
 
 .mindos-capture-section-title {
-  font-size: var(--mindos-text-base);
+  font-size: var(--mindos-text-sm);
   font-weight: 600;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
 /* 上传模态框 */
 .mindos-upload-modal {
-  padding: var(--mindos-space-lg);
+  padding: 4px 2px;
 }
 
 .mindos-upload-desc {
@@ -253,7 +252,7 @@
 
 /* 剪贴板粘贴模态框 */
 .mindos-clipboard-modal {
-  padding: var(--mindos-space-lg);
+  padding: 4px 2px;
 }
 
 .mindos-clipboard-desc {
@@ -278,6 +277,7 @@
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-sm);
+  box-shadow: none !important;
   font-size: var(--mindos-text-sm);
   font-weight: 500;
   color: var(--text-normal);
@@ -384,7 +384,7 @@
 
 /* ── 音频转录 Modal ── */
 .mindos-audio-modal {
-  padding: var(--mindos-space-lg);
+  padding: 4px 2px;
 }
 
 .mindos-audio-desc {
@@ -438,7 +438,7 @@
 
 /* ── 截图 OCR Modal ── */
 .mindos-ocr-modal {
-  padding: var(--mindos-space-lg);
+  padding: 4px 2px;
 }
 
 .mindos-ocr-desc {

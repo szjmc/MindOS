@@ -132,9 +132,9 @@ export class BacklinkView extends ItemView {
         cls: `mindos-backlink-tab ${this.currentTab === tab ? 'active' : ''}` });
       btn.setText(tab === 'explicit' ? '显式链接' : '隐式关联');
       if (tab === 'explicit') {
-        btn.createSpan({ cls: 'mindos-backlink-count', text: `(${this.explicitBacklinks.length}` });
+        btn.createSpan({ cls: 'mindos-backlink-count', text: ` (${this.explicitBacklinks.length})` });
       } else {
-        btn.createSpan({ cls: 'mindos-backlink-count', text: `(${this.implicitBacklinks.length}` });
+        btn.createSpan({ cls: 'mindos-backlink-count', text: ` (${this.implicitBacklinks.length})` });
       }
       btn.onClickEvent(() => {
         this.currentTab = tab;

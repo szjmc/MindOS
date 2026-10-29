@@ -1,18 +1,18 @@
 /* ── Version Timeline Modal ── */
 .mindos-version-modal {
-  padding: 16px;
+  padding: 4px 2px;
   max-height: 80vh;
   overflow-y: auto;
 }
 
 .mindos-version-header {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--background-modifier-border);
 }
 
 .mindos-version-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-normal);
   margin: 0 0 4px 0;
@@ -20,9 +20,10 @@
 
 .mindos-version-page-path {
   font-size: 12px;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-family: var(--font-monospace);
   margin: 0;
+  word-break: break-all;
 }
 
 .mindos-version-loading {
@@ -156,8 +157,8 @@
 }
 
 .mindos-version-item.is-selected {
-  background: var(--background-modifier-active-hover);
-  border: 1px solid var(--color-accent);
+  background: var(--mindos-accent-bg);
+  border: 1px solid var(--mindos-primary);
 }
 
 .mindos-version-dot {
@@ -287,7 +288,7 @@
   overflow-y: auto;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-sm);
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -330,7 +331,7 @@
 
 /* ── Version View Modal (full content) ── */
 .mindos-version-view-modal {
-  padding: 16px;
+  padding: 4px 2px;
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -378,7 +379,7 @@
 
 .mindos-version-view-content pre {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   font-size: 12px;
   line-height: 1.5;
   white-space: pre-wrap;
@@ -388,25 +389,26 @@
 
 /* ── Modal Base ── */
 .mindos-modal {
-  max-width: 90vw;
+  max-width: min(760px, 90vw);
   max-height: 85vh;
 }
 
-.mindos-modal-header {
-  padding: 20px 24px 16px;
+.mindos-modal .mindos-modal-header {
+  padding: 0 0 12px 0;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.mindos-modal-header h2 {
+.mindos-modal .mindos-modal-header h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--mindos-text-xl);
   font-weight: 600;
   color: var(--text-normal);
 }
 
-.mindos-modal-body {
-  padding: 20px 24px;
-  max-height: calc(85vh - 80px);
+.mindos-modal .mindos-modal-body {
+  padding: 4px 2px;
+  max-height: calc(85vh - 100px);
   overflow-y: auto;
 }
 
@@ -436,7 +438,7 @@
 .mindos-diff-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -478,65 +480,57 @@
   color: var(--text-normal);
 }
 
-/* ── Evolution View ── */
+/* ── Evolution View（统一零外层填充 + 单滚动容器 + 对齐 16px 栅格）── */
 .mindos-evolution-view {
-  padding: 16px;
+  padding: 0;
+  flex: 1;
+  min-height: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
+/* 二级分段切换栏（版本历史 / 健康度报告） */
 .mindos-evolution-tabs {
   display: flex;
-  gap: var(--mindos-space-sm);
-  margin-bottom: var(--mindos-space-xl);
-  padding-bottom: var(--mindos-space-md);
-  position: relative;
+  gap: 4px;
+  margin: 10px 16px 0 16px;
+  padding: 3px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
   flex-shrink: 0;
-  border-bottom: 1px solid var(--background-modifier-border);
 }
 
 .mindos-evolution-tab-btn {
   flex: 1;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--mindos-space-sm);
-  padding: var(--mindos-space-sm) var(--mindos-space-lg);
-  border-radius: var(--mindos-radius-md);
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--mindos-radius-sm);
   cursor: pointer;
-  font-size: var(--mindos-text-sm);
+  font-size: var(--mindos-text-base);
   font-weight: 500;
   background: transparent;
-  border: 1px solid transparent;
-  transition: all var(--mindos-transition);
+  border: none;
+  box-shadow: none !important;
+  transition: background var(--mindos-transition), color var(--mindos-transition), box-shadow var(--mindos-transition);
   color: var(--text-muted);
-  position: relative;
 }
 
 .mindos-evolution-tab-btn:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
-  border-color: var(--background-modifier-border);
 }
 
 .mindos-evolution-tab-btn.is-active {
   color: var(--mindos-primary);
-  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
-  border-color: color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  background: var(--background-primary);
   font-weight: 600;
-}
-
-.mindos-evolution-tab-btn.is-active::after {
-  content: '';
-  position: absolute;
-  bottom: calc(-1 * var(--mindos-space-md) - 1px);
-  left: var(--mindos-space-md);
-  right: var(--mindos-space-md);
-  height: 2px;
-  background: var(--mindos-primary);
-  border-radius: var(--mindos-radius-full);
+  box-shadow: var(--mindos-shadow-xs) !important;
 }
 
 .mindos-evolution-tab-icon {
@@ -545,38 +539,41 @@
 
 .mindos-evolution-content {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 12px 16px 20px 16px;
 }
 
 /* ── Versions Container ── */
 .mindos-evolution-versions-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .mindos-evolution-page-selector {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 10px;
+  padding: 10px 12px;
   background: var(--background-secondary);
-  border-radius: var(--mindos-radius-lg);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
   flex-wrap: wrap;
 }
 
 .mindos-evolution-selector-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-size: var(--mindos-text-base);
+  font-weight: 600;
+  color: var(--text-normal);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .mindos-evolution-select-wrapper {
   flex: 1;
-  min-width: 200px;
-  max-width: 400px;
+  min-width: 160px;
 }
 
 .mindos-evolution-custom-select {
@@ -587,20 +584,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 6px 10px;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-sm);
   cursor: pointer;
-  transition: all var(--mindos-transition-fast);
+  transition: border-color var(--mindos-transition-fast);
 }
 
 .mindos-evolution-select-display:hover {
-  border-color: var(--interactive-accent);
+  border-color: var(--mindos-primary);
 }
 
 .mindos-evolution-select-text {
-  font-size: 13px;
+  font-size: var(--mindos-text-base);
   color: var(--text-normal);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -635,8 +633,8 @@
 }
 
 .mindos-evolution-select-option {
-  padding: 8px 12px;
-  font-size: 13px;
+  padding: 7px 12px;
+  font-size: var(--mindos-text-base);
   color: var(--text-normal);
   cursor: pointer;
   transition: background var(--mindos-transition-fast);
@@ -649,18 +647,10 @@
   background: var(--background-modifier-hover);
 }
 
-.mindos-evolution-selected-path {
-  font-size: 12px;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-  margin-left: auto;
-  padding: 4px 8px;
-  background: var(--background-primary);
-  border-radius: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 300px;
+.mindos-evolution-select-option.is-selected {
+  background: var(--mindos-accent-bg);
+  color: var(--mindos-primary);
+  font-weight: 600;
 }
 
 /* ── Versions List ── */
@@ -749,33 +739,37 @@
 
 /* ── Filter Container ── */
 .mindos-evolution-filter-container {
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .mindos-evolution-filter-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
   padding: 8px 12px;
   background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-md);
 }
 
 .mindos-evolution-filter-label {
-  font-size: 13px;
+  font-size: var(--mindos-text-sm);
   color: var(--text-muted);
   font-weight: 500;
+  margin-right: 2px;
 }
 
 .mindos-evolution-filter-btn {
-  padding: 6px 14px;
+  padding: 4px 11px;
   border-radius: var(--mindos-radius-sm);
-  font-size: 13px;
+  font-size: var(--mindos-text-sm);
   cursor: pointer;
   background: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
   color: var(--text-muted);
   transition: all var(--mindos-transition-fast);
+  user-select: none;
 }
 
 .mindos-evolution-filter-btn:hover {
@@ -784,9 +778,10 @@
 }
 
 .mindos-evolution-filter-btn.is-active {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
-  border-color: var(--interactive-accent);
+  border-color: var(--mindos-primary);
+  font-weight: 600;
 }
 
 /* ── Versions Header ── */
@@ -794,45 +789,50 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   padding: 8px 12px;
   background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
   border-radius: var(--mindos-radius-md);
-  margin-bottom: 12px;
+  margin-bottom: 4px;
 }
 
 .mindos-evolution-versions-path {
-  font-size: 13px;
+  font-size: var(--mindos-text-xs);
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-monospace);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .mindos-evolution-versions-count {
-  font-size: 13px;
-  color: var(--text-accent);
+  font-size: var(--mindos-text-xs);
+  color: var(--mindos-primary);
   font-weight: 600;
   flex-shrink: 0;
+  padding: 2px 8px;
+  background: var(--mindos-accent-bg);
+  border-radius: var(--mindos-radius-full);
 }
 
-/* ── Timeline ── */
+/* ── Timeline（由外层 .mindos-evolution-content 统一滚动，消除三层嵌套滚动条）── */
 .mindos-evolution-timeline-wrapper {
-  max-height: 600px;
-  overflow-y: auto;
-  padding-right: 8px;
+  padding: 4px 0 4px 4px;
 }
 
 .mindos-evolution-timeline {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   position: relative;
 }
 
 .mindos-evolution-version-item {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   position: relative;
 }
 
@@ -842,21 +842,23 @@
   align-items: center;
   flex-shrink: 0;
   width: 20px;
+  padding-top: 4px;
 }
 
 .mindos-evolution-version-dot {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--text-faint);
-  border: 3px solid var(--background-primary);
+  border: 2px solid var(--background-primary);
   box-shadow: 0 0 0 2px var(--background-modifier-border);
   z-index: 1;
+  flex-shrink: 0;
 }
 
 .mindos-evolution-version-dot.is-latest {
-  background: var(--interactive-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 20%, transparent);
+  background: var(--mindos-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mindos-primary) 22%, transparent);
 }
 
 .mindos-evolution-version-line {
@@ -868,44 +870,48 @@
 
 .mindos-evolution-version-body {
   flex: 1;
+  min-width: 0;
   background: var(--background-secondary);
-  border-radius: var(--mindos-radius-lg);
-  padding: 14px 16px;
-  transition: all var(--mindos-transition);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--mindos-radius-md);
+  padding: 12px 14px;
+  transition: border-color var(--mindos-transition), box-shadow var(--mindos-transition);
 }
 
 .mindos-evolution-version-body:hover {
-  background: var(--background-modifier-hover);
+  border-color: color-mix(in srgb, var(--mindos-primary) 40%, var(--background-modifier-border));
+  box-shadow: var(--mindos-shadow-xs);
 }
 
 .mindos-evolution-version-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
 .mindos-evolution-version-number {
-  font-size: 15px;
+  font-size: var(--mindos-text-md);
   font-weight: 700;
   color: var(--text-normal);
 }
 
 .mindos-evolution-version-time {
-  font-size: 12px;
+  font-size: var(--mindos-text-xs);
   color: var(--text-muted);
   margin-left: auto;
 }
 
 .mindos-evolution-version-badge {
   font-size: 11px;
-  padding: 2px 10px;
-  border-radius: var(--mindos-radius-lg);
+  padding: 1px 8px;
+  border-radius: var(--mindos-radius-full);
   font-weight: 600;
 }
 
 .mindos-evolution-version-badge.is-latest {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
 }
 
@@ -915,17 +921,17 @@
 }
 
 .mindos-evolution-version-summary {
-  font-size: 13px;
+  font-size: var(--mindos-text-base);
   color: var(--text-muted);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   line-height: 1.5;
 }
 
 .mindos-evolution-version-changes {
   display: flex;
   gap: 12px;
-  margin-bottom: 12px;
-  font-size: 12px;
+  margin-bottom: 10px;
+  font-size: var(--mindos-text-xs);
 }
 
 .mindos-evolution-change-add {
@@ -947,24 +953,24 @@
 .mindos-evolution-action-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 12px;
   border-radius: var(--mindos-radius-sm);
-  font-size: 13px;
+  font-size: var(--mindos-text-sm);
+  font-weight: 500;
   cursor: pointer;
-  border: none;
-  transition: all var(--mindos-transition-fast);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none !important;
+  transition: background var(--mindos-transition-fast), border-color var(--mindos-transition-fast), color var(--mindos-transition-fast);
   background: var(--background-primary);
   color: var(--text-normal);
 }
 
 .mindos-evolution-action-btn:hover {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
+  border-color: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
-}
-
-.mindos-evolution-action-view:hover {
-  background: var(--interactive-accent);
 }
 
 /* ============================================
@@ -1025,22 +1031,22 @@
   overflow: hidden;
 }
 
-.mindos-breadcrumb-item {
+.mindos-file-preview-modal .mindos-breadcrumb-item {
   color: var(--mindos-text-secondary);
   white-space: nowrap;
   transition: color var(--mindos-transition-fast);
 }
 
-.mindos-breadcrumb-item.is-active {
+.mindos-file-preview-modal .mindos-breadcrumb-item.is-active {
   color: var(--mindos-text-primary);
   font-weight: 500;
 }
 
-.mindos-breadcrumb-item:not(.is-active):hover {
+.mindos-file-preview-modal .mindos-breadcrumb-item:not(.is-active):hover {
   color: var(--mindos-primary);
 }
 
-.mindos-breadcrumb-separator {
+.mindos-file-preview-modal .mindos-breadcrumb-separator {
   color: var(--mindos-text-tertiary);
 }
 
@@ -1912,18 +1918,18 @@
   color: #9ca3af;
 }
 
-/* ── Actions Section ── */
+/* ── Actions Section（限定在 .mindos-evolution-actions-section 内，不污染时间线卡片按钮）── */
 .mindos-evolution-actions-section {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-.mindos-evolution-action-btn {
+.mindos-evolution-actions-section .mindos-evolution-action-btn {
   flex: 1;
-  padding: 12px 20px;
-  border-radius: var(--mindos-radius-lg);
-  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: var(--mindos-radius-md);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--mindos-transition);
@@ -1933,27 +1939,23 @@
   gap: 8px;
 }
 
-.mindos-evolution-action-btn.suggestions {
+.mindos-evolution-actions-section .mindos-evolution-action-btn.suggestions {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   color: var(--text-normal);
 }
 
-.mindos-evolution-action-btn.suggestions:hover {
+.mindos-evolution-actions-section .mindos-evolution-action-btn.suggestions:hover {
   border-color: var(--mindos-primary);
-  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+  background: var(--mindos-accent-bg);
   color: var(--mindos-primary);
 }
 
-.mindos-evolution-action-btn.fix-all {
+.mindos-evolution-actions-section .mindos-evolution-action-btn.fix-all {
   background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
   border: none;
   box-shadow: var(--mindos-shadow-primary);
-}
-
-.mindos-evolution-action-btn.fix-all:hover {
-    box-shadow: var(--mindos-shadow-primary);
 }
 
 /* ── Suggestions Section ── */

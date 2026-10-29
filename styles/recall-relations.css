@@ -32,10 +32,11 @@
 .mindos-card-relations-refresh-btn {
   padding: var(--mindos-space-xs);
   border: none;
+  box-shadow: none !important;
   background: transparent;
   cursor: pointer;
   color: var(--text-muted);
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity var(--mindos-transition);
 }
 
@@ -139,10 +140,10 @@
 
 .mindos-card-relation-reason {
   font-size: var(--mindos-text-xs);
-  padding: 2px 6px;
+  padding: 2px 8px;
   border-radius: var(--mindos-radius-full);
-  background: rgba(var(--interactive-accent-rgb), 0.15);
-  color: var(--interactive-accent);
+  background: var(--mindos-accent-bg);
+  color: var(--mindos-primary);
 }
 
 .mindos-card-relation-actions {
@@ -159,25 +160,27 @@
   padding: 5px 10px;
   font-size: var(--mindos-text-sm);
   border-radius: var(--mindos-radius-sm);
-  border: none;
+  border: 1px solid transparent;
+  box-shadow: none !important;
   cursor: pointer;
   transition: all var(--mindos-transition);
 }
 
 .mindos-card-relation-review-btn {
-  background: var(--interactive-accent);
+  background: var(--mindos-primary);
   color: var(--mindos-text-on-primary);
 }
 
 .mindos-card-relation-review-btn:hover {
-  background: var(--interactive-accent-hover);
+  background: var(--mindos-primary-hover);
 }
 
 .mindos-card-relation-open-btn {
-  background: var(--background-modifier-hover);
+  background: var(--background-secondary);
+  border-color: var(--background-modifier-border);
   color: var(--text-normal);
 }
 
 .mindos-card-relation-open-btn:hover {
-  background: var(--background-modifier-active);
+  background: var(--background-modifier-hover);
 }

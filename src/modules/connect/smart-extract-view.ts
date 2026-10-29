@@ -31,24 +31,37 @@ export class SmartExtractView extends ItemView {
   }
 
   async onOpen() {
-    const container = this.containerEl.children[1];
+    const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
     container.addClass('mindos-root', 'mindos-smart-extract-container');
-    
+
+    const activeFile = this.app.workspace.getActiveFile();
+    if (activeFile && activeFile.extension === 'md') {
+      this.currentFile = activeFile;
+      await this.loadData();
+    }
     await this.render();
-    
-    this.app.workspace.on('active-leaf-change', async () => {
-      await this.handleFileChange();
-    });
+
+    this.registerEvent(
+      this.app.workspace.on('active-leaf-change', async () => {
+        await this.handleFileChange();
+      })
+    );
+    this.registerEvent(
+      this.app.workspace.on('file-open', async () => {
+        await this.handleFileChange();
+      })
+    );
   }
 
   async onClose() {
-    // Cleanup
+    this.containerEl.children[1]?.empty();
   }
 
   private async handleFileChange() {
     const activeFile = this.app.workspace.getActiveFile();
     if (activeFile && activeFile.extension === 'md') {
+      if (this.currentFile?.path === activeFile.path && this.summary) return;
       this.currentFile = activeFile;
       await this.loadData();
       await this.render();
@@ -126,15 +139,21 @@ export class SmartExtractView extends ItemView {
 
   private renderFileInfoBar(container: HTMLElement) {
     const header = container.createEl('div', { cls: 'mindos-se-header' });
-    
+
     const fileInfo = header.createEl('div', { cls: 'mindos-se-file-info' });
-    fileInfo.createEl('span', { cls: 'mindos-se-file-icon', text: '📄' });
-    fileInfo.createEl('span', { cls: 'mindos-se-file-name', text: this.currentFile!.basename });
-    
+    const fileIcon = fileInfo.createSpan({ cls: 'mindos-se-file-icon' });
+    setIcon(fileIcon, 'file-text');
+    fileInfo.createEl('span', {
+      cls: 'mindos-se-file-name',
+      text: this.currentFile!.basename,
+      attr: { title: this.currentFile!.path },
+    });
+
     const actions = header.createEl('div', { cls: 'mindos-se-actions' });
-    
+
     const refreshBtn = actions.createEl('button', { cls: 'mindos-se-refresh-btn' });
-    refreshBtn.createEl('span', { cls: 'mindos-se-btn-icon', text: '🔄' });
+    const refreshIcon = refreshBtn.createSpan({ cls: 'mindos-se-btn-icon' });
+    setIcon(refreshIcon, 'refresh-cw');
     refreshBtn.createEl('span', { text: '刷新' });
     refreshBtn.addEventListener('click', async () => {
       this.isLoading = true;
@@ -145,7 +164,8 @@ export class SmartExtractView extends ItemView {
     });
 
     const regenerateBtn = actions.createEl('button', { cls: 'mindos-se-regenerate-btn' });
-    regenerateBtn.createEl('span', { cls: 'mindos-se-btn-icon', text: '✨' });
+    const regenIcon = regenerateBtn.createSpan({ cls: 'mindos-se-btn-icon' });
+    setIcon(regenIcon, 'sparkles');
     regenerateBtn.createEl('span', { text: '重新生成' });
     regenerateBtn.addEventListener('click', async () => {
       if (!this.currentFile) return;
@@ -156,8 +176,6 @@ export class SmartExtractView extends ItemView {
       this.isLoading = false;
       await this.render();
     });
-
-    container.createEl('div', { cls: 'mindos-se-divider' });
   }
 
   private renderTabs(container: HTMLElement) {
@@ -207,29 +225,23 @@ export class SmartExtractView extends ItemView {
     }
 
     const levels = [
-      { level: 1, title: '一句话总结', content: this.summary.level1, icon: '●' },
-      { level: 2, title: '简短摘要', content: this.summary.level2, icon: '◆' },
-      { level: 3, title: '详细摘要', content: this.summary.level3, icon: '■' },
+      { level: 1, title: '一句话总结', badge: '快速预览', content: this.summary.level1 },
+      { level: 2, title: '简短摘要', badge: '核心要点', content: this.summary.level2 },
+      { level: 3, title: '详细摘要', badge: '深度脉络', content: this.summary.level3 },
     ];
 
-    for (const { level, title, content, icon } of levels) {
-      const card = section.createEl('div', { cls: 'mindos-se-summary-card' });
-      
+    for (const { level, title, badge, content } of levels) {
+      const card = section.createEl('div', { cls: `mindos-se-summary-card is-level-${level}` });
+
       const cardHeader = card.createEl('div', { cls: 'mindos-se-card-header' });
-      cardHeader.createEl('span', { cls: 'mindos-se-level-icon', text: icon });
-      cardHeader.createEl('h4', { cls: 'mindos-se-card-title', text: title });
-      
-      card.createEl('div', { cls: 'mindos-se-divider-light' });
-      
+      const titleGroup = cardHeader.createEl('div', { cls: 'mindos-se-card-title-group' });
+      titleGroup.createEl('span', { cls: 'mindos-se-level-icon' });
+      titleGroup.createEl('h4', { cls: 'mindos-se-card-title', text: title });
+      cardHeader.createEl('span', { cls: 'mindos-se-badge', text: badge });
+
       const cardContent = card.createEl('div', { cls: 'mindos-se-card-content' });
-      
       const markdownContainer = cardContent.createEl('div', { cls: 'mindos-se-markdown' });
       MarkdownRenderer.renderMarkdown(content, markdownContainer, this.currentFile!.path, this);
-      
-      const cardFooter = card.createEl('div', { cls: 'mindos-se-card-footer' });
-      if (level === 1) {
-        cardFooter.createEl('span', { cls: 'mindos-se-badge', text: '快速预览' });
-      }
     }
 
     const stats = section.createEl('div', { cls: 'mindos-se-stats' });

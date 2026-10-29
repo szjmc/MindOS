@@ -39,13 +39,9 @@ export class VersionTimelineModal extends Modal {
 
   private renderHeader(parent: HTMLElement) {
     const header = parent.createDiv({ cls: "mindos-version-header" });
-    header.createEl("h3", {
-      cls: "mindos-version-title",
-      text: "📜 版本历史",
-    });
     header.createEl("p", {
       cls: "mindos-version-page-path",
-      text: this.pagePath,
+      text: `📄 ${this.pagePath}`,
     });
   }
 

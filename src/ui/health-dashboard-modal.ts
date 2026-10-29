@@ -19,7 +19,6 @@ export class HealthDashboardModal extends Modal {
     contentEl.addClass("mindos-health-modal");
     contentEl.empty();
 
-    this.renderHeader(contentEl);
     this.renderLoading(contentEl);
 
     try {
@@ -48,7 +47,6 @@ export class HealthDashboardModal extends Modal {
 
   private renderContent(parent: HTMLElement) {
     parent.empty();
-    this.renderHeader(parent);
 
     if (!this.report) return;
 

@@ -176,17 +176,38 @@ export class ExpressView extends ItemView {
   private renderHeader(parent: HTMLElement): void {
     const header = parent.createDiv({ cls: 'express-header' });
 
-    // 左：页面标识（仅文字，品牌已在 topbar）
     const left = header.createDiv({ cls: 'express-header-left' });
-    left.createEl('span', { cls: 'express-header-title', text: '写作工作台' });
 
-    // 中：步骤面包屑（仅 compose 页）
+    if (this.currentPage === 'home') {
+      left.createEl('span', { cls: 'express-header-title', text: '写作工作台' });
+      if (this.allDrafts.length > 0) {
+        left.createEl('span', {
+          cls: 'express-header-count',
+          text: `${this.allDrafts.length} 篇草稿`,
+        });
+      }
+    } else {
+      const backBtn = left.createEl('button', {
+        cls:  'express-btn express-btn-ghost express-btn-sm',
+        text: '← 草稿列表',
+      });
+      backBtn.addEventListener('click', () => {
+        this.outlineAbort?.abort();
+        this.contentAbort?.abort();
+        this.currentPage  = 'home';
+        this.currentDraft = null;
+        this.currentStep  = 'input';
+        this.render();
+      });
+    }
+
+    // 中/右：步骤面包屑（compose 页）或操作按钮（home / preview 页）
     if (this.currentPage === 'compose') {
       const steps = header.createDiv({ cls: 'express-steps' });
       const stepDefs: { key: ComposeStep; label: string }[] = [
         { key: 'input',      label: '① 配置' },
         { key: 'outline',    label: '② 大纲' },
-        { key: 'generating', label: '③ 生成中' },
+        { key: 'generating', label: '③ 生成' },
         { key: 'editor',     label: '④ 编辑' },
       ];
       for (const s of stepDefs) {
@@ -205,31 +226,25 @@ export class ExpressView extends ItemView {
           });
         }
       }
-    }
-
-    // 右：操作按钮
-    const right = header.createDiv({ cls: 'express-header-right' });
-
-    if (this.currentPage !== 'home') {
-      const backBtn = right.createEl('button', {
-        cls:  'express-btn express-btn-ghost',
-        text: '← 草稿列表',
+    } else {
+      const right = header.createDiv({ cls: 'express-header-right' });
+      if (this.currentPage === 'preview') {
+        const editBtn = right.createEl('button', {
+          cls:  'express-btn express-btn-ghost express-btn-sm',
+          text: '✏️ 返回编辑',
+        });
+        editBtn.addEventListener('click', () => {
+          this.currentPage = 'compose';
+          this.currentStep = 'editor';
+          this.render();
+        });
+      }
+      const newBtn = right.createEl('button', {
+        cls:  'express-btn express-btn-primary express-btn-sm',
+        text: '+ 新建文章',
       });
-      backBtn.addEventListener('click', () => {
-        this.outlineAbort?.abort();
-        this.contentAbort?.abort();
-        this.currentPage  = 'home';
-        this.currentDraft = null;
-        this.currentStep  = 'input';
-        this.render();
-      });
+      newBtn.addEventListener('click', () => this.startNewCompose());
     }
-
-    const newBtn = right.createEl('button', {
-      cls:  'express-btn express-btn-primary',
-      text: '+ 新建文章',
-    });
-    newBtn.addEventListener('click', () => this.startNewCompose());
   }
 
   private isStepReachable(step: ComposeStep): boolean {
@@ -1031,11 +1046,12 @@ private async handleGenerateArticle(): Promise<void> {
         resultEl.empty();
         resultEl.createEl('div', { cls: 'express-rewrite-result-text', text: rewriteResult });
 
-        const acceptBtn = resultEl.createEl('button', {
+        const actionRow = resultEl.createDiv({ cls: 'express-rewrite-actions' });
+        const acceptBtn = actionRow.createEl('button', {
           cls:  'express-btn express-btn-primary express-btn-sm',
           text: '✅ 采用',
         });
-        const discardBtn = resultEl.createEl('button', {
+        const discardBtn = actionRow.createEl('button', {
           cls:  'express-btn express-btn-ghost express-btn-sm',
           text: '✗ 放弃',
         });

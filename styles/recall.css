@@ -559,18 +559,28 @@
 
 .mindos-recall-rating-btns {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
+@container (max-width: 380px) {
+  .mindos-recall-rating-btns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .mindos-recall-rating-btn {
+  height: auto !important;
+  white-space: normal;
+  box-shadow: none !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 4px;
   padding: 10px 8px;
   border-radius: var(--mindos-radius);
-  border: 2px solid transparent;
+  border: 1.5px solid transparent;
   cursor: pointer;
   transition: all var(--mindos-transition-fast);
   background: var(--background-secondary);
@@ -3429,14 +3439,20 @@
 /* ─── 顶部 6 大指标 ─── */
 .mindos-dashboard-top-metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 18px;
 }
 
+@container (max-width: 560px) {
+  .mindos-dashboard-top-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
   .mindos-dashboard-top-metrics {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -3852,11 +3868,19 @@
 
 /* ─── 弹窗基础 ─── */
 .mindos-card-detail-modal {
-  max-width: 460px;
-  max-height: 90vh;
+  max-width: 480px;
+  width: min(480px, 92vw);
+  max-height: 88vh;
+  padding: 0;
+  overflow: hidden;
+}
+.mindos-card-detail-modal .modal-close-button {
+  display: none;
 }
 .mindos-card-detail-modal .modal-content {
   padding: 0;
+  max-height: 88vh;
+  overflow-y: auto;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -3864,8 +3888,15 @@
    ═══════════════════════════════════════════════════════════ */
 
 .mindos-card-detail-content {
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 20px 24px 24px 24px;
   background: var(--background-primary);
+}
+
+.mindos-card-detail-content.is-vocab {
+  padding: 0;
 }
 
 /* ─── 顶部导航条 ─── */
@@ -3931,12 +3962,12 @@
 
 /* ─── 单词主体卡 ─── */
 .mindos-vocab-word-card {
-  margin: 20px 20px 16px 20px;
-  padding: 28px 24px 24px 24px;
-  background: var(--mindos-primary);
-  border: 1px solid color-mix(in srgb, var(--mindos-primary) 12%, transparent);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px color-mix(in srgb, var(--mindos-primary) 6%, transparent), 0 1px 2px color-mix(in srgb, black 3%, transparent);
+  margin: 18px 20px 14px 20px;
+  padding: 22px 22px 20px 22px;
+  background: color-mix(in srgb, var(--mindos-primary) 7%, var(--background-secondary));
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 18%, var(--background-modifier-border));
+  border-radius: 14px;
+  box-shadow: var(--mindos-shadow-xs);
 }
 
 /* 单词行：单词 + 发音图标 */
@@ -3949,9 +3980,9 @@
 
 .mindos-vocab-word {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: #3c2e5c;
+  color: var(--text-normal);
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
@@ -3960,8 +3991,9 @@
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--mindos-primary) 20%, transparent);
-  background: color-mix(in srgb, var(--mindos-primary) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 24%, transparent);
+  box-shadow: none !important;
+  background: color-mix(in srgb, var(--mindos-primary) 10%, var(--background-primary));
   color: var(--mindos-primary);
   cursor: pointer;
   display: flex;
@@ -3989,7 +4021,7 @@
   font-family: "Times New Roman", "Georgia", serif;
   font-style: italic;
   font-size: var(--mindos-text-md);
-  color: #a394b8;
+  color: var(--text-muted);
   margin-bottom: 4px;
   letter-spacing: 0.02em;
 }
@@ -3998,7 +4030,7 @@
 .mindos-vocab-pos {
   font-size: var(--mindos-text-sm);
   font-weight: 600;
-  color: #b8a8cc;
+  color: var(--mindos-primary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 8px;
@@ -4007,7 +4039,7 @@
 /* 分隔 */
 .mindos-vocab-divider {
   height: 1px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--mindos-primary) 18%, transparent), color-mix(in srgb, var(--mindos-primary) 4%, transparent), transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--mindos-primary) 22%, transparent), color-mix(in srgb, var(--mindos-primary) 6%, transparent), transparent);
   margin: 14px 0;
 }
 
@@ -4021,7 +4053,7 @@
 .mindos-vocab-defs-label {
   font-size: var(--mindos-text-xs);
   font-weight: 700;
-  color: #b8a8cc;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -4037,13 +4069,13 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid color-mix(in srgb, var(--mindos-primary) 8%, transparent);
+  background: var(--background-primary);
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 12%, var(--background-modifier-border));
   border-radius: 10px;
   transition: background 0.15s;
 }
 .mindos-vocab-def-item:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--background-modifier-hover);
 }
 
 .mindos-vocab-def-idx {
@@ -4062,7 +4094,7 @@
 
 .mindos-vocab-def-text {
   font-size: var(--mindos-text-md);
-  color: #4a3f66;
+  color: var(--text-normal);
   line-height: 1.5;
   flex: 1;
 }
@@ -4075,18 +4107,18 @@
   font-style: italic;
   color: var(--mindos-primary);
   line-height: 1.6;
-  border-left: 3px solid color-mix(in srgb, var(--mindos-primary) 25%, transparent);
-  background: color-mix(in srgb, var(--mindos-primary) 3%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--mindos-primary) 30%, transparent);
+  background: color-mix(in srgb, var(--mindos-primary) 6%, var(--background-primary));
   border-radius: 0 8px 8px 0;
 }
 
 /* ─── 例句区 ─── */
 .mindos-vocab-example-section {
   margin: 0 20px 12px 20px;
-  padding: 16px 18px;
-  background: rgba(245, 242, 250, 0.6);
-  border: 1px solid color-mix(in srgb, var(--mindos-primary) 8%, transparent);
-  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 12px;
 }
 
 .mindos-vocab-section-title {
@@ -4110,7 +4142,7 @@
 
 .mindos-vocab-example-item {
   padding: 10px 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--mindos-primary) 6%, transparent);
+  border-bottom: 1px solid var(--background-modifier-border);
 }
 .mindos-vocab-example-item:last-child {
   border-bottom: none;
@@ -4119,14 +4151,14 @@
 
 .mindos-vocab-example-en {
   font-size: var(--mindos-text-base);
-  color: #4a3f66;
+  color: var(--text-normal);
   line-height: 1.6;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .mindos-vocab-example-cn {
   font-size: var(--mindos-text-sm);
-  color: #a394b8;
+  color: var(--text-muted);
   margin-top: 4px;
   line-height: 1.5;
 }
@@ -4134,9 +4166,9 @@
 /* ─── 近义词 ─── */
 .mindos-vocab-syn-section {
   margin: 0 20px 12px 20px;
-  padding: 14px 18px;
-  background: rgba(245, 242, 250, 0.4);
-  border: 1px solid rgba(149, 117, 205, 0.06);
+  padding: 14px 16px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
   border-radius: 12px;
 }
 
@@ -4148,17 +4180,17 @@
 
 .mindos-vocab-chip {
   font-size: var(--mindos-text-sm);
-  padding: 5px 12px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid color-mix(in srgb, var(--mindos-primary) 12%, transparent);
+  padding: 4px 12px;
+  background: var(--background-primary);
+  border: 1px solid color-mix(in srgb, var(--mindos-primary) 20%, var(--background-modifier-border));
   border-radius: 8px;
   color: var(--mindos-primary);
   font-weight: 500;
   transition: all 0.15s;
 }
 .mindos-vocab-chip:hover {
-  background: color-mix(in srgb, var(--mindos-primary) 8%, transparent);
-  border-color: color-mix(in srgb, var(--mindos-primary) 25%, transparent);
+  background: var(--mindos-accent-bg);
+  border-color: color-mix(in srgb, var(--mindos-primary) 35%, transparent);
 }
 .mindos-vocab-chip.is-tag {
   font-size: var(--mindos-text-xs);
@@ -4171,10 +4203,10 @@
 /* ─── 答案区 ─── */
 .mindos-vocab-answer-section {
   margin: 0 20px 12px 20px;
-  padding: 16px 18px;
-  background: rgba(247, 250, 245, 0.5);
-  border: 1px solid rgba(129, 199, 132, 0.15);
-  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--mindos-success-bg);
+  border: 1px solid var(--mindos-success-border);
+  border-radius: 12px;
 }
 
 .mindos-vocab-answer-body {
@@ -4189,7 +4221,7 @@
   margin-bottom: 0;
 }
 .mindos-vocab-answer-body code {
-  background: color-mix(in srgb, black 5%, transparent);
+  background: var(--background-secondary);
   padding: 1px 5px;
   border-radius: var(--mindos-radius-sm);
   font-size: var(--mindos-text-base);
@@ -4198,17 +4230,17 @@
 /* ─── 提示区 ─── */
 .mindos-vocab-hint-section {
   margin: 0 20px 12px 20px;
-  padding: 14px 18px;
-  background: rgba(255, 248, 235, 0.5);
-  border: 1px solid rgba(255, 183, 77, 0.15);
+  padding: 14px 16px;
+  background: var(--mindos-warning-bg);
+  border: 1px solid var(--mindos-warning-border);
   border-radius: 12px;
 }
 
 .mindos-vocab-hint-item {
   font-size: var(--mindos-text-base);
-  color: #b8944e;
-  padding-left: 14px;
-  border-left: 3px solid rgba(255, 183, 77, 0.35);
+  color: var(--text-normal);
+  padding-left: 12px;
+  border-left: 3px solid var(--mindos-warning);
   line-height: 1.5;
   margin-top: 6px;
 }
@@ -4273,14 +4305,6 @@
 /* ═══════════════════════════════════════════════════════════
    非 vocab 通用弹窗样式（保持向下兼容）
    ═══════════════════════════════════════════════════════════ */
-
-/* 弹窗整体 */
-.mindos-card-detail-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 20px 24px 24px 24px;
-}
 
 /* 头部 */
 .mindos-card-detail-header {

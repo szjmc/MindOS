@@ -47,6 +47,18 @@ export class MindOSRetrieveView extends ItemView {
     this.taskUnsub = this.plugin.taskStore.subscribe(() => this.render());
     this.retrieveUnsub = this.plugin.retrieveStore.subscribe(() => this.render());
     this.recallUnsub = this.plugin.recallStore.subscribe(() => this.render());
+    if (this.contentEl.clientWidth > 0 && this.contentEl.clientWidth < 520) {
+      this.sessionListCollapsed = true;
+    } else {
+      requestAnimationFrame(() => {
+        if (this.contentEl.clientWidth > 0 && this.contentEl.clientWidth < 520 && !this.sessionListCollapsed) {
+          this.sessionListCollapsed = true;
+          if (this.plugin.retrieveStore.getState().currentTab === "chat") {
+            this.render();
+          }
+        }
+      });
+    }
     await this.plugin.refreshQuota();
     await this.plugin.loadChatSessions();
     this.render();
@@ -98,17 +110,20 @@ export class MindOSRetrieveView extends ItemView {
     this.searchInputEl = null;
     this.chatInputEl = null;
 
-    const wrap = contentEl.createDiv({ cls: "mindos-task-center" });
-
-    this.renderTopBar(wrap);
-    this.renderTabBar(wrap);
-
     let tab = this.plugin.retrieveStore.getState().currentTab;
     // 兼容已移除的 express / 未知 tab → 回退到 capture
     if (!["capture", "search", "chat", "recall"].includes(tab)) {
       tab = "capture";
       this.plugin.retrieveStore.setTab(tab);
     }
+
+    this.renderTopBar(contentEl);
+    this.renderTabBar(contentEl);
+
+    const wrap = contentEl.createDiv({
+      cls: `mindos-task-center${tab === "chat" ? " is-chat-tab" : ""}`,
+    });
+
     if (tab === "capture") {
       this.renderCaptureTab(wrap);
     } else if (tab === "search") {
@@ -744,6 +759,9 @@ export class MindOSRetrieveView extends ItemView {
       meta.createSpan({ text: this.formatRelativeTime(s.updatedAt) });
 
       item.onclick = () => {
+        if (this.contentEl.clientWidth > 0 && this.contentEl.clientWidth < 520) {
+          this.sessionListCollapsed = true;
+        }
         this.plugin.retrieveStore.setCurrentSessionId(s.id);
       };
     }

@@ -1,53 +1,7 @@
 /* =========================================================
    MindOS Retrieve (Search + RAG Chat)
+   ── 顶部栏与分段导航栏已统一收口至 task-center.css
    ========================================================= */
-
-/* ── Tab 栏（underline 风格，对齐 Obsidian 原生 Tab） ── */
-.mindos-tab-bar {
-  display: flex;
-  gap: 0;
-  padding: 0 4px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--background-modifier-border);
-  border-radius: 0;
-  flex-shrink: 0;
-}
-
-.mindos-tab-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 0;
-  border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  cursor: pointer;
-  user-select: none;
-  font-size: var(--mindos-text-base);
-  font-weight: 500;
-  color: var(--text-muted);
-  background: transparent;
-  transition: color var(--mindos-transition), border-color var(--mindos-transition);
-}
-.mindos-tab-btn:hover {
-  color: var(--text-normal);
-  background: var(--background-modifier-hover);
-  border-radius: var(--mindos-radius-sm) var(--mindos-radius-sm) 0 0;
-}
-.mindos-tab-btn.is-active {
-  color: var(--mindos-primary);
-  border-bottom-color: var(--mindos-primary);
-  font-weight: 600;
-}
-.mindos-tab-btn.is-active .mindos-tab-btn-icon { color: var(--mindos-primary); }
-
-.mindos-tab-btn-icon { display: flex; }
-.mindos-tab-btn-icon svg { width: 14px; height: 14px; }
-.mindos-tab-btn-label { font-weight: 600; }
 
 /* ── 索引状态卡 ── */
 .mindos-index-card {
@@ -210,16 +164,17 @@
 .mindos-search-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
 .mindos-search-icon svg { width: 16px; height: 16px; }
 
-.mindos-search-input {
+.mindos-search-input-row .mindos-search-input {
   flex: 1;
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   outline: none;
   font-size: var(--mindos-text-md);
   color: var(--text-normal);
-  padding: 8px 0;
+  padding: 6px 0;
 }
-.mindos-search-input::placeholder { color: var(--text-faint); }
+.mindos-search-input-row .mindos-search-input::placeholder { color: var(--text-faint); }
 
 .mindos-search-go-btn {
   width: 32px;
@@ -585,6 +540,7 @@
 }
 
 .mindos-chat-main {
+  position: relative;
   display: flex;
   gap: 10px;
   flex: 1;
@@ -996,7 +952,16 @@
 .mindos-chat-stop-btn:hover { filter: brightness(1.1); }
 .mindos-chat-stop-btn svg { width: 12px; height: 12px; }
 
-/* 响应式：宽度小时隐藏会话列表 */
-@media (max-width: 600px) {
-  .mindos-session-list { display: none; }
+/* 响应式：窄侧栏中会话列表采用抽屉浮层，不挤压聊天区 */
+@container (max-width: 520px) {
+  .mindos-session-list:not(.is-collapsed) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 210px;
+    z-index: 15;
+    box-shadow: var(--mindos-shadow-lg);
+    background: var(--background-secondary);
+  }
 }
